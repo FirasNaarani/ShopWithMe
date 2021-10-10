@@ -88,12 +88,12 @@ namespace ShopWithMe.Controllers
                 string[] _toSplit = product.Split("=");
                 newList.Products.Add(new Product(_toSplit[0], _toSplit[1]));
 
-                if (!favorites.Contains(_toSplit[0]))
+                if (!favorites.Contains(_toSplit[0].ToLower()))
                 {
                     Item item = new();
                     item.Id = Guid.NewGuid().ToString();
                     item.UserId = User.Identity.Name;
-                    item.Name = _toSplit[0];
+                    item.Name = _toSplit[0].ToLower();
                     await _cosmosDbService1.AddItemAsync(item);
                 }
             }
@@ -144,12 +144,12 @@ namespace ShopWithMe.Controllers
             {
                 string[] _toSplit = product.Split("=");
                 newList.Products.Add(new Product(_toSplit[0], _toSplit[1]));
-                if (!favorites.Contains(_toSplit[0]))
+                if (!favorites.Contains(_toSplit[0].ToLower()))
                 {
                     Item item = new();
                     item.Id = Guid.NewGuid().ToString();
                     item.UserId = User.Identity.Name;
-                    item.Name = _toSplit[0];
+                    item.Name = _toSplit[0].ToLower();
                     await _cosmosDbService1.AddItemAsync(item);
                 }
 
@@ -162,6 +162,9 @@ namespace ShopWithMe.Controllers
 
         public ActionResult Delete_product(string Page_type, string id, string Nameproduct, List<string> listproducts, List<string> favorites)
         {
+            if (listproducts.Count == 1) /*Check Save Update*/
+                return RedirectToAction("Delete", new { id = id });
+
             if (listproducts.Count > 1)
                 for (int i = 0; i < listproducts.Count; i++)
                 {
