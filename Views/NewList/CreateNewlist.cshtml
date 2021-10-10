@@ -38,7 +38,11 @@
                         {
                             <li class="list-group-item">
                                 @Html.DisplayFor(modelItem => item)
-                                @Html.ActionLink("Add", "Add_Update", "NewList", new { Page_type = "CreateNewlist", Nameproduct = item, quantity = 1, listproducts = Model.Products, favorites = Model.Favorites }, new { @class = "btn btn-primary" })
+                                @using (Html.BeginForm("Add_Update", "NewList", new { Page_type = "CreateNewlist", Nameproduct = item, listproducts = Model.Products, favorites = Model.Favorites }))
+                                {
+                                    <input type="number" value="1" name="quantity" />
+                                    <input type="submit" value="add" class="btn btn-primary" />}
+
 
                             </li>
                         }
@@ -62,12 +66,15 @@
 </div>
 <div>
     @using (Html.BeginForm("Save", "NewList", new { listproducts = Model.Products, favorites = Model.Favorites }))
-    {
-        <div class="form-group">
+
+    {<div class="form-group">
             <a>List Name</a>
 
-            <input type="text" name="namelist" />
+            <input type="text" name="namelist" required />
             <input type="submit" value="Save" class="btn btn-primary" />
         </div>
     }
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
 </div>

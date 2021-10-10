@@ -23,7 +23,6 @@ namespace ShopWithMe.Controllers
             List<Item> res = new List<Item>();
             foreach (var temp in allitems)
             {
-                var st = User;
                 if (temp.UserId == User.Identity.Name)
                 {
                     res.Add(temp);
@@ -46,8 +45,7 @@ namespace ShopWithMe.Controllers
             if (ModelState.IsValid)
             {
                 item.Id = Guid.NewGuid().ToString();
-                string userId = User.Identity.Name.ToString();
-                item.UserId = userId;
+                item.UserId = User.Identity.Name;
                 await _cosmosDbService.AddItemAsync(item);
                 return RedirectToAction("Index");
             }
@@ -62,6 +60,7 @@ namespace ShopWithMe.Controllers
         {
             if (ModelState.IsValid)
             {
+                item.UserId = User.Identity.Name;
                 await _cosmosDbService.UpdateItemAsync(item.Id, item.Name, item);
                 return RedirectToAction("Index");
             }

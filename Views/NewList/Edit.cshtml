@@ -8,7 +8,7 @@
 }
 
 <h1>Update</h1>
-@Html.ActionLink("Delete list", "Delete", "NewList", new { id = Model.ID}, new { @class = "btn btn-danger" })
+@Html.ActionLink("Delete list", "Delete", "NewList", new { id = Model.ID }, new { @class = "btn btn-danger" })
 
 <div>
     <table class="table table-bordered">
@@ -41,8 +41,11 @@
                         {
                             <li class="list-group-item">
                                 @Html.DisplayFor(modelItem => item)
-                                @Html.ActionLink("add", "Add_Update", "NewList", new { Page_type = "Edit", id = Model.ID, Nameproduct = item, quantity = 1, listproducts = Model.Products, favorites = Model.Favorites }, new { @class = "btn btn-primary" })
-
+                                @using (Html.BeginForm("Add_Update", "NewList", new { Page_type = "Edit", Nameproduct = item, listproducts = Model.Products, favorites = Model.Favorites }))
+                                {
+                                    <input type="number" value="1" name="quantity" />
+                                    <input type="submit" value="add" class="btn btn-primary" />
+                                }
                             </li>
                         }
                     </ul>
@@ -68,7 +71,7 @@
     {
         <div class="form-group">
             <a>Update</a>
-            <input type="text" name="listname" />
+            <input type="text" name="listname" required />
             <input type="submit" value="Save" class="btn btn-primary" />
         </div>
     }

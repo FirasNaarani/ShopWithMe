@@ -30,16 +30,26 @@ namespace ShopWithMe.Controllers
         [ActionName("Index")]
         public async Task<IActionResult> Index()
         {
-            return View(await _cosmosDbService.Get_NewLists_Async("SELECT * FROM c"));
+            var alllists = await _cosmosDbService.Get_NewLists_Async("SELECT * FROM c");
+            List<NewList> res = new List<NewList>();
+            foreach (var temp in alllists)
+            {
+                if (temp.UserId == User.Identity.Name)
+                {
+                    res.Add(temp);
+                }
+            }
+            return View(res);
         }
 
         [ActionName("CreateNewlist")]
-        public async Task<IActionResult> CreateNewlist(List<string> listproducts,List<string> favorites)
+        public async Task<IActionResult> CreateNewlist(List<string> listproducts, List<string> favorites)
         {
             dynamic mymodel = new ExpandoObject();
             if (favorites.Count is 0)
             {
-                mymodel.Favorites = await _cosmosDbService1.GetItemsAsync("SELECT * FROM c");
+                var ls = await _cosmosDbService1.GetItemsAsync("SELECT * FROM c");
+                mymodel.Favorites = await GetItemByName((List<Item>)ls);
                 List<string> list = new();
                 foreach (Item item in mymodel.Favorites)
                     list.Add(item.Name);
@@ -52,20 +62,40 @@ namespace ShopWithMe.Controllers
             return View(mymodel);
         }
 
+        public async Task<IEnumerable<Item>> GetItemByName(List<Item> items)
+        {
+            List<Item> res = new List<Item>();
+            foreach (var temp in items)
+            {
+                if (temp.UserId == User.Identity.Name)
+                {
+                    res.Add(temp);
+                }
+            }
+            return res;
+        }
+
         public async Task<ActionResult> Save(string namelist, List<string> listproducts, List<string> favorites)
         {
             NewList newList = new();
+            newList.UserId = User.Identity.Name;
             newList.NameList = namelist;
             newList.Id = Guid.NewGuid().ToString();
             newList.Products = new();
 
-            foreach (string item in listproducts)
+            foreach (string product in listproducts)
             {
-                string[] arr = item.Split("=");
-                newList.Products.Add(new Product(arr[0], arr[1]));
+                string[] _toSplit = product.Split("=");
+                newList.Products.Add(new Product(_toSplit[0], _toSplit[1]));
 
-                //if (!favorites.Contains(arr[0]))
-                    //await _cosmosDbService1.AddItemAsync(new(Guid.NewGuid().ToString(), arr[0]));
+                if (!favorites.Contains(_toSplit[0]))
+                {
+                    Item item = new();
+                    item.Id = Guid.NewGuid().ToString();
+                    item.UserId = User.Identity.Name;
+                    item.Name = _toSplit[0];
+                    await _cosmosDbService1.AddItemAsync(item);
+                }
             }
 
             await _cosmosDbService.Add_NewList_Async(newList);
@@ -79,7 +109,8 @@ namespace ShopWithMe.Controllers
             mymodel.ID = id;
             if (favorites.Count is 0)
             {
-                mymodel.Favorites = await _cosmosDbService1.GetItemsAsync("SELECT * FROM c");
+                var ls = await _cosmosDbService1.GetItemsAsync("SELECT * FROM c");
+                mymodel.Favorites = await GetItemByName((List<Item>)ls);
                 List<string> list = new();
                 foreach (Item item in mymodel.Favorites)
                     list.Add(item.Name);
@@ -105,15 +136,23 @@ namespace ShopWithMe.Controllers
         public async Task<ActionResult> Update(string id, string listname, List<string> listproducts, List<string> favorites)
         {
             NewList newList = new();
+            newList.UserId = User.Identity.Name;
             newList.NameList = listname;
             newList.Id = id;
             newList.Products = new();
-            foreach (string item in listproducts)
+            foreach (string product in listproducts)
             {
-                string[] arr = item.Split("=");
-                newList.Products.Add(new Product(arr[0], arr[1]));
-                //if (!favorites.Contains(arr[0]))
-                //    //await _cosmosDbService1.AddItemAsync(new(Guid.NewGuid().ToString(), arr[0]));
+                string[] _toSplit = product.Split("=");
+                newList.Products.Add(new Product(_toSplit[0], _toSplit[1]));
+                if (!favorites.Contains(_toSplit[0]))
+                {
+                    Item item = new();
+                    item.Id = Guid.NewGuid().ToString();
+                    item.UserId = User.Identity.Name;
+                    item.Name = _toSplit[0];
+                    await _cosmosDbService1.AddItemAsync(item);
+                }
+
             }
 
             await _cosmosDbService.Update_NewList_Async(newList.Id, newList);
@@ -123,15 +162,16 @@ namespace ShopWithMe.Controllers
 
         public ActionResult Delete_product(string Page_type, string id, string Nameproduct, List<string> listproducts, List<string> favorites)
         {
-            for (int i = 0; i < listproducts.Count; i++)
-            {
-                if (Nameproduct.Equals(listproducts[i]))
+            if (listproducts.Count > 1)
+                for (int i = 0; i < listproducts.Count; i++)
                 {
-                    listproducts.Remove(listproducts[i]);
-                        return RedirectToAction(Page_type, new { id = id, listproducts1 = listproducts, favorites = favorites });
+                    if (Nameproduct.Equals(listproducts[i]))
+                    {
+                        listproducts.Remove(listproducts[i]);
+                        return RedirectToAction(Page_type, new { id = id, listproducts = listproducts, favorites = favorites });
+                    }
                 }
-            }
-            return RedirectToAction(Page_type, new { id = id, listproducts1 = listproducts, favorites = favorites });
+            return RedirectToAction(Page_type, new { id = id, listproducts = listproducts, favorites = favorites });
         }
 
         public ActionResult Add_Update(string Page_type, string id, string Nameproduct, int quantity, List<string> listproducts, List<string> favorites)
