@@ -1,0 +1,73 @@
+﻿@using ShopWithMe
+@model dynamic
+
+@{
+    ViewData["Title"] = "CreateNewlist";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>CreateNewlist</h1>
+<div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">New list</th>
+                <th scope="col">Favorites</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">
+                    <ul class="list-group">
+
+                        @foreach (string product in Model.Products)
+                        {
+                            <li class="list-group-item">
+                                @Html.DisplayFor(modelItem => product)
+
+                                @Html.ActionLink("Delete", "Delete_product", "NewList", new { Page_type = "CreateNewlist", Nameproduct = product, listproducts = Model.Products, favorites = Model.Favorites }, new { @class = "btn btn-primary" })
+                            </li>
+                        }
+
+                    </ul>
+                </th>
+
+                <th scope="row">
+                    <ul class="list-group">
+                        @foreach (string item in Model.Favorites)
+                        {
+                            <li class="list-group-item">
+                                @Html.DisplayFor(modelItem => item)
+                                @Html.ActionLink("Add", "Add_Update", "NewList", new { Page_type = "CreateNewlist", Nameproduct = item, quantity = 1, listproducts = Model.Products, favorites = Model.Favorites }, new { @class = "btn btn-primary" })
+
+                            </li>
+                        }
+                    </ul>
+                </th>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+    @using (Html.BeginForm("Add_Update", "NewList", new { Page_type = "CreateNewlist", listproducts = Model.Products, favorites = Model.Favorites }))
+    {
+        <div class="form-group">
+            <a>Add/Update Product</a>
+            <input type="text" name="Nameproduct" />
+            <input type="number" value="1" name="quantity" />
+            <input type="submit" value="add" class="btn btn-primary" />
+        </div>
+    }
+</div>
+<div>
+    @using (Html.BeginForm("Save", "NewList", new { listproducts = Model.Products, favorites = Model.Favorites }))
+    {
+        <div class="form-group">
+            <a>List Name</a>
+
+            <input type="text" name="namelist" />
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    }
+</div>

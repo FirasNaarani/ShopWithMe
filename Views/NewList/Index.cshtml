@@ -1,0 +1,22 @@
+﻿@model IEnumerable<ShopWithMe.Models.NewList>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="CreateNewlist">CreateNewlist</a>
+</p>
+<table class="table">
+    <tr>
+        @foreach (var item in Model)
+        {
+        <td>
+            @Html.ActionLink(item.NameList.ToString(), "Edit", new { Id = item.Id }, new { @class = "btn-rounded btn btn-info " })
+        </td>
+        }
+    </tr>
+</table>

@@ -1,0 +1,24 @@
+{
+  "dependencies": {
+    "secrets1": {
+      "restored": true,
+      "restoreTime": "2021-10-10T13:30:27.5227312Z"
+    },
+    "cosmosdb1": {
+      "restored": true,
+      "restoreTime": "2021-10-10T13:30:28.7233133Z"
+    }
+  },
+  "parameters": {
+    "cosmosdb1.resourceGroupName": {
+      "Name": "cosmosdb1.resourceGroupName",
+      "Type": "resourceGroup",
+      "Value": "cosmos-resource-group"
+    },
+    "cosmosdb1.subscriptionId": {
+      "Name": "cosmosdb1.subscriptionId",
+      "Type": "subscription",
+      "Value": "58c2a360-5b32-4874-a2d3-8b4a084f855d"
+    }
+  }
+}
