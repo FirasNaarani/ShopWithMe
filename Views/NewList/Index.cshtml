@@ -15,7 +15,7 @@
         @foreach (var item in Model)
         {
         <td>
-            @Html.ActionLink(item.NameList.ToString(), "Edit", new { Id = item.Id }, new { @class = "btn-rounded btn btn-info " })
+            @Html.ActionLink(item.NameList, "Edit", new { Id = item.Id }, new { @class = "btn-rounded btn btn-info " })
         </td>
         }
     </tr>

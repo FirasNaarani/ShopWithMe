@@ -64,8 +64,13 @@ namespace ShopWithMe.Controllers
                 string[] arr = item.Split("=");
                 newList.Products.Add(new Product(arr[0], arr[1]));
 
-                //if (!favorites.Contains(arr[0]))
-                    //await _cosmosDbService1.AddItemAsync(new(Guid.NewGuid().ToString(), arr[0]));
+                if (!favorites.Contains(arr[0]))
+                {
+                    Item item1 = new();
+                    item1.Id = Guid.NewGuid().ToString();
+                    item1.Name = arr[0];
+                    await _cosmosDbService1.AddItemAsync(item1);
+                }
             }
 
             await _cosmosDbService.Add_NewList_Async(newList);
@@ -128,10 +133,10 @@ namespace ShopWithMe.Controllers
                 if (Nameproduct.Equals(listproducts[i]))
                 {
                     listproducts.Remove(listproducts[i]);
-                        return RedirectToAction(Page_type, new { id = id, listproducts1 = listproducts, favorites = favorites });
+                        return RedirectToAction(Page_type, new { id = id, listproducts = listproducts, favorites = favorites });
                 }
             }
-            return RedirectToAction(Page_type, new { id = id, listproducts1 = listproducts, favorites = favorites });
+            return RedirectToAction(Page_type, new { id = id, listproducts = listproducts, favorites = favorites });
         }
 
         public ActionResult Add_Update(string Page_type, string id, string Nameproduct, int quantity, List<string> listproducts, List<string> favorites)

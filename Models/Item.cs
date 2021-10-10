@@ -12,7 +12,6 @@ namespace ShopWithMe.Models
 
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
-
  
         [JsonProperty(PropertyName = "name")]
         [Required]
