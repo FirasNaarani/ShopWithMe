@@ -10,103 +10,114 @@ namespace ShopWithMe.Controllers
 {
     public class ItemController : Controller
     {
-            private readonly ICosmosDbService _cosmosDbService;
-            public ItemController(ICosmosDbService cosmosDbService)
-            {
-                _cosmosDbService = cosmosDbService;
-            }
+        private readonly ICosmosDbService _cosmosDbService;
+        public ItemController(ICosmosDbService cosmosDbService)
+        {
+            _cosmosDbService = cosmosDbService;
+        }
 
-            [ActionName("Index")]
-            public async Task<IActionResult> Index()
+        [ActionName("Index")]
+        public async Task<IActionResult> Index()
+        {
+            var allitems = await _cosmosDbService.GetItemsAsync("SELECT * FROM c");
+            List<Item> res = new List<Item>();
+            foreach (var temp in allitems)
             {
-                return View(await _cosmosDbService.GetItemsAsync("SELECT * FROM c"));
-            }
-
-            [ActionName("Create")]
-            public IActionResult Create()
-            {
-                return View();
-            }
-
-            [HttpPost]
-            [ActionName("Create")]
-            [ValidateAntiForgeryToken]
-            public async Task<ActionResult> CreateAsync(/*[Bind("id,name,role,price")]*/ Item item)
-            {
-                if (ModelState.IsValid)
+                if (temp.UserId == User.Identity.Name)
                 {
-                    item.Id = Guid.NewGuid().ToString();
-                    await _cosmosDbService.AddItemAsync(item);
-                    return RedirectToAction("Index");
+                    res.Add(temp);
                 }
-
-                return View(item);
             }
+            return View(res);
+        }
 
-            [HttpPost]
-            [ActionName("Edit")]
-            [ValidateAntiForgeryToken]
-            public async Task<ActionResult> EditAsync(/*[Bind("id,name,role,price")]*/ Item item)
+        [ActionName("Create")]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ActionName("Create")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateAsync(/*[Bind("id,name,role,price")]*/ Item item)
+        {
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
-                {
-                    await _cosmosDbService.UpdateItemAsync(item.Id,item.Name, item);
-                    return RedirectToAction("Index");
-                }
-
-                return View(item);
-            }
-            
-            
-            [ActionName("Edit")]
-            public async Task<ActionResult> EditAsync(string id , string name)
-            {
-                if (id == null)
-                {
-                    return BadRequest();
-                }
-
-                Item item = await _cosmosDbService.GetItemAsync(id,name);
-                if (item == null)
-                {
-                    return NotFound();
-                }
-
-                return View(item);
-            }
-
-            [ActionName("Delete")]
-            public async Task<ActionResult> DeleteAsync(string id, string name)
-            {
-                if (id == null)
-                {
-                    return BadRequest();
-                }
-
-                Item item = await _cosmosDbService.GetItemAsync(id, name);
-                if (item == null)
-                {
-                    return NotFound();
-                }
-
-                return View(item);
-            }
-
-            [HttpPost]
-            [ActionName("Delete")]
-            [ValidateAntiForgeryToken]
-            public async Task<ActionResult> DeleteConfirmedAsync(/*[Bind("Id,name")]*/ string id , string name)
-            {
-                await _cosmosDbService.DeleteItemAsync(id,name);
+                item.Id = Guid.NewGuid().ToString();
+                item.UserId = User.Identity.Name;
+                await _cosmosDbService.AddItemAsync(item);
                 return RedirectToAction("Index");
             }
 
-            [ActionName("Details")]
-            public async Task<ActionResult> DetailsAsync(string id , string name)
+            return View(item);
+        }
+
+        [HttpPost]
+        [ActionName("Edit")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> EditAsync(/*[Bind("id,name,role,price")]*/ Item item)
+        {
+            if (ModelState.IsValid)
             {
-                return View(await _cosmosDbService.GetItemAsync(id , name));
+                item.UserId = User.Identity.Name;
+                await _cosmosDbService.UpdateItemAsync(item.Id, item.Name, item);
+                return RedirectToAction("Index");
             }
 
+            return View(item);
+        }
+
+
+        [ActionName("Edit")]
+        public async Task<ActionResult> EditAsync(string id, string name)
+        {
+            if (id == null)
+            {
+                return BadRequest();
+            }
+
+            Item item = await _cosmosDbService.GetItemAsync(id, name);
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            return View(item);
+        }
+
+        [ActionName("Delete")]
+        public async Task<ActionResult> DeleteAsync(string id, string name)
+        {
+            if (id == null)
+            {
+                return BadRequest();
+            }
+
+            Item item = await _cosmosDbService.GetItemAsync(id, name);
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            return View(item);
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteConfirmedAsync(/*[Bind("Id,name")]*/ string id, string name)
+        {
+            await _cosmosDbService.DeleteItemAsync(id, name);
+            return RedirectToAction("Index");
+        }
+
+        [ActionName("Details")]
+        public async Task<ActionResult> DetailsAsync(string id, string name)
+        {
+            return View(await _cosmosDbService.GetItemAsync(id, name));
+        }
+
     }
-    
+
 }
