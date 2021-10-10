@@ -13,7 +13,9 @@ namespace ShopWithMe.Models
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
 
- 
+        [JsonProperty(PropertyName = "userId")]
+        public string UserId { get; set; }
+
         [JsonProperty(PropertyName = "name")]
         [Required]
         public string Name { get; set; }
@@ -29,11 +31,6 @@ namespace ShopWithMe.Models
         [JsonProperty(PropertyName = "url")]
         [Required]
         public string Url { get; set; }
-        
-        //public Item(string id, string name)
-        //{
-        //    Id = id;
-        //    Name = name;
-        //}
+
     }
 }
