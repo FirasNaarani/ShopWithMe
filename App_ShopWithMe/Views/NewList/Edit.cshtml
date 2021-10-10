@@ -1,0 +1,75 @@
+﻿@using App_ShopWithMe;
+@model dynamic
+
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Update</h1>
+@Html.ActionLink("Delete list", "Delete", "NewList", new { id = Model.ID}, new { @class = "btn btn-danger" })
+
+<div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">New list</th>
+                <th scope="col">Favorites</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">
+                    <ul class="list-group">
+
+                        @foreach (string product in Model.Products)
+                        {
+                            <li class="list-group-item">
+                                @Html.DisplayFor(modelItem => product)
+
+                                @Html.ActionLink("Delete", "Delete_product", "NewList", new { Page_type = "Edit", id = Model.ID, Nameproduct = product, listproducts = Model.Products, favorites = Model.Favorites }, new { @class = "btn btn-primary" })
+                            </li>
+                        }
+
+                    </ul>
+                </th>
+
+                <th scope="row">
+                    <ul class="list-group">
+                        @foreach (string item in Model.Favorites)
+                        {
+                            <li class="list-group-item">
+                                @Html.DisplayFor(modelItem => item)
+                                @Html.ActionLink("add", "Add_Update", "NewList", new { Page_type = "Edit", id = Model.ID, Nameproduct = item, quantity = 1, listproducts = Model.Products, favorites = Model.Favorites }, new { @class = "btn btn-primary" })
+
+                            </li>
+                        }
+                    </ul>
+                </th>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+    @using (Html.BeginForm("Add_Update", "NewList", new { Page_type = "Edit", id = Model.ID, listproducts = Model.Products, favorites = Model.Favorites }))
+    {
+        <div class="form-group">
+            <a>Add/Update Product</a>
+            <input type="text" name="Nameproduct" />
+            <input type="number" value="1" name="quantity" />
+            <input type="submit" value="add" class="btn btn-primary" />
+        </div>
+    }
+</div>
+<div>
+    @using (Html.BeginForm("Update", "NewList", new { id = Model.ID, listproducts = Model.Products, favorites = Model.Favorites }))
+    {
+        <div class="form-group">
+            <a>Update</a>
+            <input type="text" name="listname" />
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    }
+</div>
