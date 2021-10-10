@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "secrets1": {
+      "type": "secrets.user"
+    },
+    "cosmosdb1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.DocumentDB/databaseAccounts/sql-db-test",
+      "type": "cosmosdb.azure",
+      "connectionId": "AccountEndpoint=https://cosmos-sql-db.documents.azure.com:443/;AccountKey=Pvz7mXnWyqh2P5z0SJlnTIw9ab9PW3kI2rwi5kb39SK8J3btVWawIGJMKn43a0tnwKhnu2atQ8gdOclY25pArw==;",
+      "secretStore": "LocalSecretsFile"
+    }
+  }
+}

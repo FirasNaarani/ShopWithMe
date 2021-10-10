@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "secrets1": {
+      "type": "secrets"
+    },
+    "cosmosdb1": {
+      "type": "cosmosdb",
+      "connectionId": "AccountEndpoint=https://cosmos-sql-db.documents.azure.com:443/;AccountKey=Pvz7mXnWyqh2P5z0SJlnTIw9ab9PW3kI2rwi5kb39SK8J3btVWawIGJMKn43a0tnwKhnu2atQ8gdOclY25pArw==;"
+    }
+  }
+}
