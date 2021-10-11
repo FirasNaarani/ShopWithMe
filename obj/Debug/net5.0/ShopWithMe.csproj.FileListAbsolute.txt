@@ -81,3 +81,4 @@ C:\GitHub\ShopWithMe\obj\Debug\net5.0\ref\ShopWithMe.dll
 C:\GitHub\ShopWithMe\obj\Debug\net5.0\ShopWithMe.pdb
 C:\GitHub\ShopWithMe\obj\Debug\net5.0\ShopWithMe.genruntimeconfig.cache
 C:\GitHub\ShopWithMe\obj\Debug\net5.0\Razor\Views\Home\About.cshtml.g.cs
+C:\GitHub\ShopWithMe\obj\Debug\net5.0\ShopWithMe.csproj.AssemblyReference.cache

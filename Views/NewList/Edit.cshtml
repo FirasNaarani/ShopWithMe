@@ -7,8 +7,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Update</h1>
-@Html.ActionLink("Delete list", "Delete", "NewList", new { id = Model.ID }, new { @class = "btn btn-danger" })
+<center>
+    <h1>.:: Update My List ::.</h1>
+    <hr />
+    @Html.ActionLink("Delete list", "Delete", "NewList", new { id = Model.ID }, new { @class = "btn btn-danger" })
+    <hr />
+</center>
 
 <div>
     <table class="table table-bordered">
@@ -43,7 +47,7 @@
                                 @Html.DisplayFor(modelItem => item)
                                 @using (Html.BeginForm("Add_Update", "NewList", new { Page_type = "Edit", id = Model.ID, Nameproduct = item, listproducts = Model.Products, favorites = Model.Favorites }))
                                 {
-                                    <input type="number" value="1" name="quantity" />
+                                    <input type="number" value="1" name="quantity" min="1" max="50" />
                                     <input type="submit" value="add" class="btn btn-primary" />
                                 }
                             </li>
@@ -58,10 +62,10 @@
 
     @using (Html.BeginForm("Add_Update", "NewList", new { Page_type = "Edit", id = Model.ID, listproducts = Model.Products, favorites = Model.Favorites }))
     {
-        <div class="form-group">
+        <div class="form-group" style="float:left;">
             <a>Add/Update Product</a>
             <input type="text" name="Nameproduct" required />
-            <input type="number" value="1" name="quantity" />
+            <input type="number" value="1" name="quantity" min="1" max="50" />
             <input type="submit" value="add" class="btn btn-primary" />
         </div>
     }
@@ -69,10 +73,21 @@
 <div>
     @using (Html.BeginForm("Update", "NewList", new { id = Model.ID, listproducts = Model.Products, favorites = Model.Favorites }))
     {
-        <div class="form-group">
+        <div class="form-group" style="float:right;">
             <a>Update</a>
             <input type="text" name="listname" required />
             <input type="submit" value="Save" class="btn btn-primary" />
         </div>
     }
 </div>
+
+<br />
+<br />
+
+<center>
+
+    <hr />
+    <div>
+        <a asp-action="Index">>> Back to List <<</a>
+    </div>
+</center>

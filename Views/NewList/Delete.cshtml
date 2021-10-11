@@ -5,13 +5,17 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Delete</h1>
+<center>
+    <h1>.:: Delete List</h1>
+    <hr />
+    <h3>Are you sure you want to delete this?</h3>
+    <hr />
+</center>
 
-<h3>Are you sure you want to delete the list?</h3>
 <div>
-    <h4>@Model.NameList</h4>
+    <center><h4>List Name : @Model.NameList</h4></center>
     <form asp-action="Delete">
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Delete" class="btn btn-danger" />
+        <a asp-action="Index" style="float:right">>> Back to List <<</a>
     </form>
 </div>

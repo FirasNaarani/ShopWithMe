@@ -1,15 +1,18 @@
 ﻿@model IEnumerable<ShopWithMe.Models.Item>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "My Items";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<center>
+    <h1>.:: My Items ::.</h1>
+    <hr />
+    <p>
+        <a asp-action="Create">>> Create New Item <<</a>
+    </p>
+    <hr />
+</center>
 <table class="table">
     <thead>
         <tr>
