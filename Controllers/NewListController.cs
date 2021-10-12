@@ -43,7 +43,7 @@ namespace ShopWithMe.Controllers
         }
 
         [ActionName("CreateNewlist")]
-        public async Task<IActionResult> CreateNewlist(List<string> listproducts, List<string> favorites)
+        public async Task<IActionResult> CreateNewlist(List<string> listproducts, List<string> favorites, List<string> urls)
         {
             Favorites_Products favorites_products = new();
             if (favorites.Count is 0)
@@ -60,7 +60,11 @@ namespace ShopWithMe.Controllers
 
             }
             else
+            {
                 favorites_products.Favorites = favorites;
+                favorites_products.Urls = urls;
+            }
+
 
             favorites_products.Products = listproducts;
             return View(favorites_products);
@@ -107,7 +111,7 @@ namespace ShopWithMe.Controllers
         }
 
         [ActionName("Edit")]
-        public async Task<IActionResult> Edit(string id, List<string> listproducts, List<string> favorites)
+        public async Task<IActionResult> Edit(string id, List<string> listproducts, List<string> favorites, List<string> urls)
         {
             Favorites_Products favorites_products = new();
             favorites_products.IdList = id;
@@ -126,7 +130,11 @@ namespace ShopWithMe.Controllers
 
             }
             else
+            {
                 favorites_products.Favorites = favorites;
+                favorites_products.Urls = urls;
+            }
+
 
             if (listproducts.Count is 0)
             {
@@ -168,8 +176,12 @@ namespace ShopWithMe.Controllers
         }
 
 
-        public ActionResult Delete_product(string Page_type, string id, string Nameproduct, List<string> listproducts, List<string> favorites)
+        public ActionResult Delete_product(string Page_type, string id, string Nameproduct, List<string> listproducts, List<string> favorites, List<string> urls)
         {
+            if (id == null)
+            {
+                return RedirectToAction("CreateNewlist");
+            }
             if (listproducts.Count == 1) /*Check Save Update*/
                 return RedirectToAction("Delete", new { id = id });
 
@@ -179,13 +191,13 @@ namespace ShopWithMe.Controllers
                     if (Nameproduct.Equals(listproducts[i]))
                     {
                         listproducts.Remove(listproducts[i]);
-                        return RedirectToAction(Page_type, new { id = id, listproducts = listproducts, favorites = favorites });
+                        return RedirectToAction(Page_type, new { id = id, listproducts = listproducts, favorites = favorites, urls = urls });
                     }
                 }
-            return RedirectToAction(Page_type, new { id = id, listproducts = listproducts, favorites = favorites });
+            return RedirectToAction(Page_type, new { id = id, listproducts = listproducts, favorites = favorites, urls = urls });
         }
 
-        public ActionResult Add_Update(string Page_type, string id, string Nameproduct, int quantity, List<string> listproducts, List<string> favorites)
+        public ActionResult Add_Update(string Page_type, string id, string Nameproduct, int quantity, List<string> listproducts, List<string> favorites, List<string> urls)
         {
             for (int i = 0; i < listproducts.Count; i++)
             {
@@ -193,11 +205,11 @@ namespace ShopWithMe.Controllers
                 if (Nameproduct.ToLower().Equals(productlist[0].ToLower()))
                 {
                     listproducts[i] = $"{productlist[0]}={quantity}";
-                    return RedirectToAction(Page_type, new { id = id, listproducts = listproducts, favorites = favorites });
+                    return RedirectToAction(Page_type, new { id = id, listproducts = listproducts, favorites = favorites, urls = urls });
                 }
             }
             listproducts.Add($"{Nameproduct}={quantity}");
-            return RedirectToAction(Page_type, new { id = id, listproducts = listproducts, favorites = favorites });
+            return RedirectToAction(Page_type, new { id = id, listproducts = listproducts, favorites = favorites, urls = urls });
         }
 
 
