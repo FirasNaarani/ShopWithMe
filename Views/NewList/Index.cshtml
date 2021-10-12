@@ -1,15 +1,19 @@
 ﻿@model IEnumerable<ShopWithMe.Models.NewList>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "My Lists";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<center>
+    <h1>.:: My Lists ::.</h1>
+    <hr />
+    <p>
+        <a asp-action="CreateNewlist">>> Create New List <<</a>
+    </p>
+    <hr />
+</center>
 
-<p>
-    <a asp-action="CreateNewlist">CreateNewlist</a>
-</p>
 <table class="table">
     <tr>
         @foreach (var item in Model)

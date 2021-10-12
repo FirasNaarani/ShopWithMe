@@ -170,6 +170,9 @@ namespace ShopWithMe.Controllers
 
         public ActionResult Delete_product(string Page_type, string id, string Nameproduct, List<string> listproducts, List<string> favorites)
         {
+            if (listproducts.Count == 1) /*Check Save Update*/
+                return RedirectToAction("Delete", new { id = id });
+
             if (listproducts.Count > 1)
                 for (int i = 0; i < listproducts.Count; i++)
                 {
