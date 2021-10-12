@@ -1,5 +1,5 @@
 ﻿@using ShopWithMe;
-@model dynamic
+@model Favorites_Products
 
 
 @{
@@ -8,7 +8,7 @@
 }
 
 <h1>Update</h1>
-@Html.ActionLink("Delete list", "Delete", "NewList", new { id = Model.ID }, new { @class = "btn btn-danger" })
+@Html.ActionLink("Delete list", "Delete", "NewList", new { id = Model.IdList }, new { @class = "btn btn-danger" })
 
 <div>
     <table class="table table-bordered">
@@ -28,7 +28,7 @@
                             <li class="list-group-item">
                                 @Html.DisplayFor(modelItem => product)
 
-                                @Html.ActionLink("Delete", "Delete_product", "NewList", new { Page_type = "Edit", id = Model.ID, Nameproduct = product, listproducts = Model.Products, favorites = Model.Favorites }, new { @class = "btn btn-primary" })
+                                @Html.ActionLink("Delete", "Delete_product", "NewList", new { Page_type = "Edit", id = Model.IdList, Nameproduct = product, listproducts = Model.Products, favorites = Model.Favorites }, new { @class = "btn btn-primary" })
                             </li>
                         }
 
@@ -36,19 +36,28 @@
                 </th>
 
                 <th scope="row">
-                    <ul class="list-group">
-                        @foreach (string item in Model.Favorites)
-                        {
-                            <li class="list-group-item">
-                                @Html.DisplayFor(modelItem => item)
-                                @using (Html.BeginForm("Add_Update", "NewList", new { Page_type = "Edit", Nameproduct = item, listproducts = Model.Products, favorites = Model.Favorites }))
+
+                    <table>
+                        <tr row="3">
+                            @for (int i = 1; i <= Model.Favorites.Count; i++)
+                            {
+                            <td>
+                                @Html.DisplayFor(modelItem => Model.Favorites[i - 1])
+                               <p><img src="@Model.Urls[i - 1]" alt="ring Photo" width="100" height="100" /></p> 
+                                @using (Html.BeginForm("Add_Update", "NewList", new { Page_type = "Edit", id = Model.IdList, Nameproduct = Model.Favorites[i - 1], listproducts = Model.Products, favorites = Model.Favorites }))
                                 {
                                     <input type="number" value="1" name="quantity" />
-                                    <input type="submit" value="add" class="btn btn-primary" />
+                                    <p> <input type="submit" value="add" class="btn btn-primary" /></p>}
+                            </td>
+                                @if (i % 4 == 0)
+                                {
+                                    <script>
+                                        document.write("</tr><tr>");
+                                    </script>
                                 }
-                            </li>
-                        }
-                    </ul>
+                            }
+                        </tr>
+                    </table>
                 </th>
             </tr>
 
@@ -56,23 +65,23 @@
 
     </table>
 
-    @using (Html.BeginForm("Add_Update", "NewList", new { Page_type = "Edit", id = Model.ID, listproducts = Model.Products, favorites = Model.Favorites }))
+    @using (Html.BeginForm("Add_Update", "NewList", new { Page_type = "Edit", id = Model.IdList, listproducts = Model.Products, favorites = Model.Favorites }))
     {
         <div class="form-group">
             <a>Add/Update Product</a>
-            <input type="text" name="Nameproduct" />
+            <input type="text" name="Nameproduct" required />
             <input type="number" value="1" name="quantity" />
             <input type="submit" value="add" class="btn btn-primary" />
         </div>
     }
-</div>
-<div>
-    @using (Html.BeginForm("Update", "NewList", new { id = Model.ID, listproducts = Model.Products, favorites = Model.Favorites }))
-    {
-        <div class="form-group">
-            <a>Update</a>
-            <input type="text" name="listname" required />
-            <input type="submit" value="Save" class="btn btn-primary" />
-        </div>
-    }
-</div>
+
+    <div>
+        @using (Html.BeginForm("Update", "NewList", new { id = Model.IdList, listproducts = Model.Products, favorites = Model.Favorites }))
+        {
+            <div class="form-group">
+                <a>Update</a>
+                <input type="text" name="listname" required />
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        }
+    </div>

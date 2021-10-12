@@ -45,21 +45,25 @@ namespace ShopWithMe.Controllers
         [ActionName("CreateNewlist")]
         public async Task<IActionResult> CreateNewlist(List<string> listproducts, List<string> favorites)
         {
-            dynamic mymodel = new ExpandoObject();
+            Favorites_Products favorites_products = new();
             if (favorites.Count is 0)
             {
                 var ls = await _cosmosDbService1.GetItemsAsync("SELECT * FROM c");
-                mymodel.Favorites = await GetItemByName((List<Item>)ls);
-                List<string> list = new();
-                foreach (Item item in mymodel.Favorites)
-                    list.Add(item.Name);
-                mymodel.Favorites = list;
+                ls = await GetItemByName((List<Item>)ls);
+                favorites_products.Favorites = new();
+                favorites_products.Urls = new();
+                foreach (Item item in ls)
+                {
+                    favorites_products.Favorites.Add(item.Name);
+                    favorites_products.Urls.Add(item.Url);
+                }
+
             }
             else
-                mymodel.Favorites = favorites;
+                favorites_products.Favorites = favorites;
 
-            mymodel.Products = listproducts;
-            return View(mymodel);
+            favorites_products.Products = listproducts;
+            return View(favorites_products);
         }
 
         public async Task<IEnumerable<Item>> GetItemByName(List<Item> items)
@@ -88,12 +92,12 @@ namespace ShopWithMe.Controllers
                 string[] _toSplit = product.Split("=");
                 newList.Products.Add(new Product(_toSplit[0], _toSplit[1]));
 
-                if (!favorites.Contains(_toSplit[0]))
+                if (!favorites.Contains(_toSplit[0].ToLower()))
                 {
                     Item item = new();
                     item.Id = Guid.NewGuid().ToString();
                     item.UserId = User.Identity.Name;
-                    item.Name = _toSplit[0];
+                    item.Name = _toSplit[0].ToLower();
                     await _cosmosDbService1.AddItemAsync(item);
                 }
             }
@@ -105,31 +109,35 @@ namespace ShopWithMe.Controllers
         [ActionName("Edit")]
         public async Task<IActionResult> Edit(string id, List<string> listproducts, List<string> favorites)
         {
-            dynamic mymodel = new ExpandoObject();
-            mymodel.ID = id;
+            Favorites_Products favorites_products = new();
+            favorites_products.IdList = id;
             if (favorites.Count is 0)
             {
                 var ls = await _cosmosDbService1.GetItemsAsync("SELECT * FROM c");
-                mymodel.Favorites = await GetItemByName((List<Item>)ls);
-                List<string> list = new();
-                foreach (Item item in mymodel.Favorites)
-                    list.Add(item.Name);
-                mymodel.Favorites = list;
+                ls = await GetItemByName((List<Item>)ls);
+                favorites_products.Favorites = new();
+                favorites_products.Urls = new();
+                foreach (Item item in ls)
+                {
+                    favorites_products.Favorites.Add(item.Name);
+                    favorites_products.Urls.Add(item.Url);
+                }
+
+
             }
             else
-                mymodel.Favorites = favorites;
+                favorites_products.Favorites = favorites;
+
             if (listproducts.Count is 0)
             {
                 NewList newlist = await _cosmosDbService.Get_Newlist_Async(id);
-                List<string> list = new();
+                favorites_products.Products = new();
                 foreach (Product product in newlist.Products)
-                    list.Add(product.ToString());
-
-                mymodel.Products = list;
+                    favorites_products.Products.Add(product.ToString());
             }
             else
-                mymodel.Products = listproducts;
-            return View(mymodel);
+                favorites_products.Products = listproducts;
+            return View(favorites_products);
         }
 
 
@@ -144,12 +152,12 @@ namespace ShopWithMe.Controllers
             {
                 string[] _toSplit = product.Split("=");
                 newList.Products.Add(new Product(_toSplit[0], _toSplit[1]));
-                if (!favorites.Contains(_toSplit[0]))
+                if (!favorites.Contains(_toSplit[0].ToLower()))
                 {
                     Item item = new();
                     item.Id = Guid.NewGuid().ToString();
                     item.UserId = User.Identity.Name;
-                    item.Name = _toSplit[0];
+                    item.Name = _toSplit[0].ToLower();
                     await _cosmosDbService1.AddItemAsync(item);
                 }
 
