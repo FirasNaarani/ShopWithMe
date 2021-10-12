@@ -1,15 +1,18 @@
 ﻿@model IEnumerable<ShopWithMe.Models.Item>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "My Items";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<center>
+    <h1>.:: My Items ::.</h1>
+    <hr />
+    <p>
+        <a asp-action="Create">>> Create New Item <<</a>
+    </p>
+    <hr />
+</center>
 <table class="table">
     <thead>
         <tr>
@@ -33,7 +36,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                <img src="@item.Url" alt="ring Photo" width="100" height:="100" />
+                <img src="@item.Url" alt="Empty Photo" width="100" height:="100" />
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
@@ -42,7 +45,7 @@
                 @Html.DisplayFor(modelItem => item.Type)
             </td>
             <td>
-                @item.Price.ToString("#,##0.00₪")
+                @item.Price.ToString("₪#,##0.00")
             </td>
           
             <td>
