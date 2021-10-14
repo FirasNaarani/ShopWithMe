@@ -1,0 +1,22 @@
+﻿@model ShopWithMe.Models.ContainerData
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Create", "test", FormMethod.Post))
+{
+    @Html.LabelFor(m => m.test.FName)
+    @Html.TextBoxFor(m => m.test.FName)
+
+
+    @Html.HiddenFor(m => m.dataInternl.mydata)
+    @Html.HiddenFor(m => m.dataInternl.mydata2)
+    <p><input type="submit" value="add" class="btn btn-primary" /></p>
+
+
+}
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -20,6 +20,10 @@ namespace ShopWithMe.Models
         [Required]
         public string Quantity { get; set; }
 
+        public Product()
+        {
+
+        }
         public Product(string name,string quantity)
         {
             this.Name = name;
