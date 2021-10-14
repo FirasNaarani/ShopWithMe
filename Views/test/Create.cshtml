@@ -9,7 +9,8 @@
 {
     @Html.LabelFor(m => m.test.FName)
     @Html.TextBoxFor(m => m.test.FName)
-
+    @Html.HiddenFor(m => m.test.LName, new { Value = "ya" });
+    @Html.Hidden(Model.test.LName, new { Value = "ya" });
 
     @Html.HiddenFor(m => m.dataInternl.mydata)
     @Html.HiddenFor(m => m.dataInternl.mydata2)
