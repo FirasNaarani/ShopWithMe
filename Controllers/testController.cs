@@ -21,16 +21,16 @@ namespace ShopWithMe.Controllers
             var model = new test()
             {
                 FName = "my product",
-                ListProducts = new List<Product>() {
-                new Product()
+                ListProducts = new List<Proudct>() {
+                new Proudct()
                 {
                     Name ="prod 1",
                     Quantity = "2"
                 }
                 }
             };
-            var ContainerData = new ContainerData() { test = model, dataInternl = new secretDataAdminData() { mydata = "fdfdfd" ,mydata2="232323"} };
-            return View(ContainerData);
+            //var ContainerData = new ContainerData() { test = model, dataInternl = new secretDataAdminData() { mydata = "fdfdfd" ,mydata2="232323"} };
+            return View();
         }
 
         [HttpPost]

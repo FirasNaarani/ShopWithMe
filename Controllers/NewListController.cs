@@ -43,31 +43,13 @@ namespace ShopWithMe.Controllers
         }
 
         [ActionName("CreateNewlist")]
-        public async Task<IActionResult> CreateNewlist(List<string> listproducts, List<string> favorites, List<string> urls)
+        public async Task<IActionResult> CreateNewlist()
         {
-            Favorites_Products favorites_products = new();
-            if (favorites.Count is 0)
-            {
-                var ls = await _cosmosDbService1.GetItemsAsync("SELECT * FROM c");
-                ls = await GetItemByName((List<Item>)ls);
-                favorites_products.Favorites = new();
-                favorites_products.Urls = new();
-                foreach (Item item in ls)
-                {
-                    favorites_products.Favorites.Add(item.Name);
-                    favorites_products.Urls.Add(item.Url);
-                }
-
-            }
-            else
-            {
-                favorites_products.Favorites = favorites;
-                favorites_products.Urls = urls;
-            }
-
-
-            favorites_products.Products = listproducts;
-            return View(favorites_products);
+            ContainerData container = new("CreateNewlist");
+            var ls = await _cosmosDbService1.GetItemsAsync("SELECT * FROM c");
+            ls = await GetItemByName(ls.ToList());
+            container.Favorites = ls.ToList();
+            return View(container);
         }
 
         public async Task<IEnumerable<Item>> GetItemByName(List<Item> items)
@@ -83,133 +65,90 @@ namespace ShopWithMe.Controllers
             return res;
         }
 
-        public async Task<ActionResult> Save(string namelist, List<string> listproducts, List<string> favorites)
+
+
+        [HttpPost]
+        [ActionName("Save")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Save(ContainerData container)
         {
-            NewList newList = new();
-            newList.UserId = User.Identity.Name;
-            newList.NameList = namelist;
-            newList.Id = Guid.NewGuid().ToString();
-            newList.Products = new();
+            container.newList.Id = Guid.NewGuid().ToString();
+            container.newList.UserId = User.Identity.Name;
 
-            foreach (string product in listproducts)
+            foreach (Proudct product in container.newList.Proudcts)
             {
-                string[] _toSplit = product.Split("=");
-                newList.Products.Add(new Product(_toSplit[0], _toSplit[1]));
-
-                if (!favorites.Contains(_toSplit[0].ToLower()))
+                if (!container.Favorites.Exists(x => x.Name == product.Name))
                 {
                     Item item = new();
                     item.Id = Guid.NewGuid().ToString();
                     item.UserId = User.Identity.Name;
-                    item.Name = _toSplit[0].ToLower();
+                    item.Name = product.Name;
                     await _cosmosDbService1.AddItemAsync(item);
                 }
             }
-
-            await _cosmosDbService.Add_NewList_Async(newList);
+            await _cosmosDbService.Add_NewList_Async(container.newList);
             return RedirectToAction("Index");
         }
+
 
         [ActionName("Edit")]
-        public async Task<IActionResult> Edit(string id, List<string> listproducts, List<string> favorites, List<string> urls)
+        public async Task<IActionResult> Edit(string id)
         {
-            Favorites_Products favorites_products = new();
-            favorites_products.IdList = id;
-            if (favorites.Count is 0)
-            {
-                var ls = await _cosmosDbService1.GetItemsAsync("SELECT * FROM c");
-                ls = await GetItemByName((List<Item>)ls);
-                favorites_products.Favorites = new();
-                favorites_products.Urls = new();
-                foreach (Item item in ls)
-                {
-                    favorites_products.Favorites.Add(item.Name);
-                    favorites_products.Urls.Add(item.Url);
-                }
-
-
-            }
-            else
-            {
-                favorites_products.Favorites = favorites;
-                favorites_products.Urls = urls;
-            }
-
-
-            if (listproducts.Count is 0)
-            {
-                NewList newlist = await _cosmosDbService.Get_Newlist_Async(id);
-                favorites_products.Products = new();
-                foreach (Product product in newlist.Products)
-                    favorites_products.Products.Add(product.ToString());
-            }
-            else
-                favorites_products.Products = listproducts;
-            return View(favorites_products);
+            ContainerData container = new("Edit");
+            var ls = await _cosmosDbService1.GetItemsAsync("SELECT * FROM c");
+            ls = await GetItemByName(ls.ToList());
+            container.Favorites = ls.ToList();
+            container.newList = await _cosmosDbService.Get_Newlist_Async(id);
+            return View(container);
         }
 
-
-        public async Task<ActionResult> Update(string id, string listname, List<string> listproducts, List<string> favorites)
+        [HttpPost]
+        [ActionName("Update")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Update(ContainerData container)
         {
-            NewList newList = new();
-            newList.UserId = User.Identity.Name;
-            newList.NameList = listname;
-            newList.Id = id;
-            newList.Products = new();
-            foreach (string product in listproducts)
+            foreach (Proudct product in container.newList.Proudcts)
             {
-                string[] _toSplit = product.Split("=");
-                newList.Products.Add(new Product(_toSplit[0], _toSplit[1]));
-                if (!favorites.Contains(_toSplit[0].ToLower()))
+                if (!container.Favorites.Exists(x => x.Name == product.Name))
                 {
                     Item item = new();
                     item.Id = Guid.NewGuid().ToString();
                     item.UserId = User.Identity.Name;
-                    item.Name = _toSplit[0].ToLower();
+                    item.Name = product.Name;
                     await _cosmosDbService1.AddItemAsync(item);
                 }
-
             }
-
-            await _cosmosDbService.Update_NewList_Async(newList.Id, newList);
+            await _cosmosDbService.Update_NewList_Async(container.newList.Id, container.newList);
             return RedirectToAction("Index");
         }
 
-
-        public ActionResult Delete_product(string Page_type, string id, string Nameproduct, List<string> listproducts, List<string> favorites, List<string> urls)
+        [HttpPost]
+        [ActionName("Delete_product")]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete_product(ContainerData container)
         {
-            if (id == null)
-            {
-                return RedirectToAction("CreateNewlist");
-            }
-            if (listproducts.Count == 1) /*Check Save Update*/
-                return RedirectToAction("Delete", new { id = id });
-
-            if (listproducts.Count > 1)
-                for (int i = 0; i < listproducts.Count; i++)
-                {
-                    if (Nameproduct.Equals(listproducts[i]))
-                    {
-                        listproducts.Remove(listproducts[i]);
-                        return RedirectToAction(Page_type, new { id = id, listproducts = listproducts, favorites = favorites, urls = urls });
-                    }
-                }
-            return RedirectToAction(Page_type, new { id = id, listproducts = listproducts, favorites = favorites, urls = urls });
+            container.newList.Proudcts.Remove(container.newList.Proudcts.Find(r => r.Name == container._product.Name));
+            return View(container.Page_type,container);
         }
 
-        public ActionResult Add_Update(string Page_type, string id, string Nameproduct, int quantity, List<string> listproducts, List<string> favorites, List<string> urls)
+        [HttpPost]
+        [ActionName("Add_Update")]
+        [ValidateAntiForgeryToken]
+        public ActionResult Add_Update(ContainerData container)
         {
-            for (int i = 0; i < listproducts.Count; i++)
+            if (container.newList.Proudcts.Count >= 1)
             {
-                string[] productlist = listproducts[i].Split("=");
-                if (Nameproduct.ToLower().Equals(productlist[0].ToLower()))
+                foreach (Proudct item in container.newList.Proudcts)
                 {
-                    listproducts[i] = $"{productlist[0]}={quantity}";
-                    return RedirectToAction(Page_type, new { id = id, listproducts = listproducts, favorites = favorites, urls = urls });
+                    if (item.Name.Equals(container._product.Name))
+                    {
+                        item.Quantity = container._product.Quantity;
+                        return View(container.Page_type, container);
+                    }
                 }
             }
-            listproducts.Add($"{Nameproduct}={quantity}");
-            return RedirectToAction(Page_type, new { id = id, listproducts = listproducts, favorites = favorites, urls = urls });
+            container.newList.Proudcts.Add(container._product);
+            return View(container.Page_type, container);
         }
 
 

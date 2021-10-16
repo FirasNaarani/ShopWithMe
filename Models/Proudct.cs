@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ShopWithMe.Models
 {
-    public class Product
+    public class Proudct
     {
         //[JsonProperty(PropertyName = "id")]
         //public string Id { get; set; }
@@ -20,16 +20,15 @@ namespace ShopWithMe.Models
         [Required]
         public string Quantity { get; set; }
 
-        public Product()
+        public Proudct()
         {
 
         }
-        public Product(string name,string quantity)
+        public Proudct(string name,string quantity)
         {
             this.Name = name;
             this.Quantity = quantity;
         }
-        public override string ToString() => $"{Name}={Quantity}";
 
     }
 }
