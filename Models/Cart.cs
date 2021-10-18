@@ -19,7 +19,9 @@ namespace ShopWithMe.Models
         [Required]
         public string NameCart { get; set; }
 
-        //[JsonProperty(PropertyName = "products")]
-        //public List<Product> Products { get; set; }
+        [JsonProperty(PropertyName = "price")]
+        [Required]
+        public double Price { get; set; }
+
     }
 }

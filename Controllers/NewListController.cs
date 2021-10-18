@@ -6,7 +6,6 @@ using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -45,7 +44,7 @@ namespace ShopWithMe.Controllers
         [ActionName("CreateNewlist")]
         public async Task<IActionResult> CreateNewlist()
         {
-            ContainerData container = new("CreateNewlist");
+            ContainerDataNewList container = new("CreateNewlist");
             var ls = await _cosmosDbService1.GetItemsAsync("SELECT * FROM c");
             ls = await GetItemByName(ls.ToList());
             container.Favorites = ls.ToList();
@@ -70,7 +69,7 @@ namespace ShopWithMe.Controllers
         [HttpPost]
         [ActionName("Save")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Save(ContainerData container)
+        public async Task<ActionResult> Save(ContainerDataNewList container)
         {
             container.newList.Id = Guid.NewGuid().ToString();
             container.newList.UserId = User.Identity.Name;
@@ -83,6 +82,7 @@ namespace ShopWithMe.Controllers
                     item.Id = Guid.NewGuid().ToString();
                     item.UserId = User.Identity.Name;
                     item.Name = product.Name;
+                    item.Url = "https://icons.iconarchive.com/icons/paomedia/small-n-flat/128/shop-icon.png";
                     await _cosmosDbService1.AddItemAsync(item);
                 }
             }
@@ -94,7 +94,7 @@ namespace ShopWithMe.Controllers
         [ActionName("Edit")]
         public async Task<IActionResult> Edit(string id)
         {
-            ContainerData container = new("Edit");
+            ContainerDataNewList container = new("Edit");
             var ls = await _cosmosDbService1.GetItemsAsync("SELECT * FROM c");
             ls = await GetItemByName(ls.ToList());
             container.Favorites = ls.ToList();
@@ -105,7 +105,7 @@ namespace ShopWithMe.Controllers
         [HttpPost]
         [ActionName("Update")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Update(ContainerData container)
+        public async Task<ActionResult> Update(ContainerDataNewList container)
         {
             foreach (Proudct product in container.newList.Proudcts)
             {
@@ -115,6 +115,7 @@ namespace ShopWithMe.Controllers
                     item.Id = Guid.NewGuid().ToString();
                     item.UserId = User.Identity.Name;
                     item.Name = product.Name;
+                    item.Url = "https://icons.iconarchive.com/icons/paomedia/small-n-flat/128/shop-icon.png";
                     await _cosmosDbService1.AddItemAsync(item);
                 }
             }
@@ -125,29 +126,29 @@ namespace ShopWithMe.Controllers
         [HttpPost]
         [ActionName("Delete_product")]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete_product(ContainerData container)
+        public IActionResult Delete_product(ContainerDataNewList container)
         {
-            container.newList.Proudcts.Remove(container.newList.Proudcts.Find(r => r.Name == container._product.Name));
+            container.newList.Proudcts.Remove(container.newList.Proudcts.Find(r => r.Name == container._proudct.Name));
             return View(container.Page_type,container);
         }
 
         [HttpPost]
         [ActionName("Add_Update")]
         [ValidateAntiForgeryToken]
-        public ActionResult Add_Update(ContainerData container)
+        public ActionResult Add_Update(ContainerDataNewList container)
         {
             if (container.newList.Proudcts.Count >= 1)
             {
                 foreach (Proudct item in container.newList.Proudcts)
                 {
-                    if (item.Name.Equals(container._product.Name))
+                    if (item.Name.Equals(container._proudct.Name))
                     {
-                        item.Quantity = container._product.Quantity;
+                        item.Quantity = container._proudct.Quantity;
                         return View(container.Page_type, container);
                     }
                 }
             }
-            container.newList.Proudcts.Add(container._product);
+            container.newList.Proudcts.Add(container._proudct);
             return View(container.Page_type, container);
         }
 

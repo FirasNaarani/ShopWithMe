@@ -18,13 +18,21 @@ namespace ShopWithMe.Models
 
         [JsonProperty(PropertyName = "quantity")]
         [Required]
-        public string Quantity { get; set; }
+        public int Quantity { get; set; }
+
+        [JsonProperty(PropertyName = "price")]
+        [Required]
+        public double Price { get; set; }
+
+        [JsonProperty(PropertyName = "url")]
+        [Required]
+        public string Url { get; set; }
 
         public Proudct()
         {
 
         }
-        public Proudct(string name,string quantity)
+        public Proudct(string name,int quantity)
         {
             this.Name = name;
             this.Quantity = quantity;

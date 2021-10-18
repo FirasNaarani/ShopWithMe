@@ -22,5 +22,9 @@ namespace ShopWithMe.Models
         [JsonProperty(PropertyName = "products")]
         public List<Proudct> Proudcts { get; set; }
 
+        [JsonProperty(PropertyName = "cart_amount")]
+        public int? Cart_Amount { get; set; }
+
+       
     }
 }

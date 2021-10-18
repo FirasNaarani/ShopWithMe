@@ -26,7 +26,7 @@ namespace ShopWithMe.Models
 
         [JsonProperty(PropertyName = "price")]
         [Required]
-        public int Price { get; set; }
+        public double Price { get; set; }
 
         [JsonProperty(PropertyName = "url")]
         [Required]
