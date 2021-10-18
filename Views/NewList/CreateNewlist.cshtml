@@ -25,33 +25,33 @@
                     <ul class="list-group">
                         @foreach (Proudct product in Model.newList.Proudcts)
                         {
-                        <li class="list-group-item">
-                            @Html.DisplayFor(modelItem => product.Name) @Html.DisplayFor(modelItem => product.Quantity)
+                            <li class="list-group-item">
+                                @Html.DisplayFor(modelItem => product.Name) @Html.DisplayFor(modelItem => product.Quantity)
 
-                            @using (Html.BeginForm("Delete_product", "NewList", FormMethod.Post))
-                            {
-                                <input id="_proudct.Name" name="_proudct.Name" type="hidden" value="@product.Name" />
-                                @for (int j = 0; j < Model.Favorites.Count; j++)
+                                @using (Html.BeginForm("Delete_product", "NewList", FormMethod.Post))
                                 {
-                                    @Html.HiddenFor(m => m.Favorites[j].Id);
-                                    @Html.HiddenFor(m => m.Favorites[j].Name);
-                                    @Html.HiddenFor(m => m.Favorites[j].Price);
-                                    @Html.HiddenFor(m => m.Favorites[j].Url);
-                                    @Html.HiddenFor(m => m.Favorites[j].UserId);
-                                    @Html.HiddenFor(m => m.Favorites[j].Type);
-                                }
-                                @Html.Hidden("Page_type", Model.Page_type);
-                                @Html.Hidden("newList.NameList", Model.newList.NameList)
-                                @Html.HiddenFor(m => m.newList.Cart_Amount);
+                                    <input id="_proudct.Name" name="_proudct.Name" type="hidden" value="@product.Name" />
+                                    @for (int j = 0; j < Model.Favorites.Count; j++)
+                                    {
+                                        @Html.HiddenFor(m => m.Favorites[j].Id);
+                                        @Html.HiddenFor(m => m.Favorites[j].Name);
+                                        @Html.HiddenFor(m => m.Favorites[j].Price);
+                                        @Html.HiddenFor(m => m.Favorites[j].Url);
+                                        @Html.HiddenFor(m => m.Favorites[j].UserId);
+                                        @Html.HiddenFor(m => m.Favorites[j].Type);
+                                    }
+                                    @Html.Hidden("Page_type", Model.Page_type);
+                                    @Html.Hidden("newList.NameList", Model.newList.NameList)
+                                    @Html.HiddenFor(m => m.newList.Cart_Amount);
 
-                                @for (int j = 0; j < Model.newList.Proudcts.Count; j++)
-                                {
-                                    @Html.HiddenFor(m => m.newList.Proudcts[j].Name);
-                                    @Html.HiddenFor(m => m.newList.Proudcts[j].Quantity);
+                                    @for (int j = 0; j < Model.newList.Proudcts.Count; j++)
+                                    {
+                                        @Html.HiddenFor(m => m.newList.Proudcts[j].Name);
+                                        @Html.HiddenFor(m => m.newList.Proudcts[j].Quantity);
+                                    }
+                                    <input type="submit" value="Delete" class="btn btn-primary" />
                                 }
-                                <input type="submit" value="Delete" class="btn btn-primary" />
-                            }
-                        </li>
+                            </li>
                         }
 
                     </ul>
@@ -71,7 +71,7 @@
                                             @using (Html.BeginForm("Add_Update", "NewList", FormMethod.Post))
                                             {
                                                 <input id="_proudct.Name" name="_proudct.Name" type="hidden" value="@Model.Favorites[i].Name" />
-                                                <input id="_proudct.Quantity" name="_proudct.Quantity" type="number" placeholder="Enter Quantity" min="1" max="50" />
+                                                <input id="_proudct.Quantity" name="_proudct.Quantity" type="number" placeholder="Enter Quantity" min="1" max="50" required="required" />
 
                                                 @for (int j = 0; j < Model.Favorites.Count; j++)
                                                 {
@@ -113,7 +113,7 @@
 
     @using (Html.BeginForm("Add_Update", "NewList", FormMethod.Post))
     {
-        <input id="_proudct.Name" name="_proudct.Name" type="text" placeholder="Enter Name proudct" required="required" />
+        <input id="_proudct.Name" name="_proudct.Name" type="text" placeholder="Enter Name proudct" />
         <input id="_proudct.Quantity" name="_proudct.Quantity" type="number" placeholder="Enter Quantity" min="1" max="100" required="required" />
 
         @for (int j = 0; j < Model.Favorites.Count; j++)
@@ -164,11 +164,38 @@
 
 <br />
 <br />
+</center>
+<div>
+    @using (Html.BeginForm("Start", "NewList"))
+    {
+        @Html.TextBoxFor(m => m.newList.NameList, new { @type = "text", @placeholder = "Enter Name List", @required = "required" })
+        @Html.TextBoxFor(m => m.newList.Cart_Amount, new { @type = "number", @placeholder = "Enter Cart Amount", @required = "required" })
+        @Html.Hidden("Page_type", Model.Page_type);
 
+        @for (int j = 0; j < Model.newList.Proudcts.Count; j++)
+        {
+            @Html.HiddenFor(m => m.newList.Proudcts[j].Name);
+            @Html.HiddenFor(m => m.newList.Proudcts[j].Quantity);
+        }
+        @for (int j = 0; j < Model.Favorites.Count; j++)
+        {
+            @Html.HiddenFor(m => m.Favorites[j].Id);
+            @Html.HiddenFor(m => m.Favorites[j].Name);
+            @Html.HiddenFor(m => m.Favorites[j].Price);
+            @Html.HiddenFor(m => m.Favorites[j].Url);
+            @Html.HiddenFor(m => m.Favorites[j].UserId);
+            @Html.HiddenFor(m => m.Favorites[j].Type);
+        }
+        <input type="submit" value="Start" class="btn btn-primary" />
+
+    }
+</div>
 <center>
 
-    <hr />
-    <div>
-        <a asp-action="Index">>> Back to List <<</a>
-    </div>
-</center>
+    <center>
+
+        <hr />
+        <div>
+            <a asp-action="Index">>> Back to List <<</a>
+        </div>
+    </center>

@@ -23,5 +23,8 @@ namespace ShopWithMe.Models
         [Required]
         public double Price { get; set; }
 
+        [JsonProperty(PropertyName = "products")]
+        public List<Proudct> Proudcts { get; set; }
+
     }
 }

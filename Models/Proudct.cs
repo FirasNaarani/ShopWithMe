@@ -9,9 +9,6 @@ namespace ShopWithMe.Models
 {
     public class Proudct
     {
-        //[JsonProperty(PropertyName = "id")]
-        //public string Id { get; set; }
-
         [JsonProperty(PropertyName = "name")]
         [Required]
         public string Name { get; set; }

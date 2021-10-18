@@ -19,7 +19,6 @@ namespace ShopWithMe.Controllers
         private readonly ICosmosDb_NewList_Service _cosmosDbService;
         private readonly ICosmosDbService _cosmosDbService1;
 
-
         public NewListController(ICosmosDb_NewList_Service cosmosDbService, ICosmosDbService cosmosDbService1)
         {
             _cosmosDbService = cosmosDbService;
@@ -64,8 +63,6 @@ namespace ShopWithMe.Controllers
             return res;
         }
 
-
-
         [HttpPost]
         [ActionName("Save")]
         [ValidateAntiForgeryToken]
@@ -89,7 +86,6 @@ namespace ShopWithMe.Controllers
             await _cosmosDbService.Add_NewList_Async(container.newList);
             return RedirectToAction("Index");
         }
-
 
         [ActionName("Edit")]
         public async Task<IActionResult> Edit(string id)
@@ -129,7 +125,7 @@ namespace ShopWithMe.Controllers
         public IActionResult Delete_product(ContainerDataNewList container)
         {
             container.newList.Proudcts.Remove(container.newList.Proudcts.Find(r => r.Name == container._proudct.Name));
-            return View(container.Page_type,container);
+            return View(container.Page_type, container);
         }
 
         [HttpPost]
@@ -178,6 +174,37 @@ namespace ShopWithMe.Controllers
             await _cosmosDbService.Delete_NewList_Async(id);
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        [ActionName("Start")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Start(ContainerDataNewList container)
+        {
+            foreach (Proudct product in container.newList.Proudcts)
+            {
+                if (!container.Favorites.Exists(x => x.Name == product.Name))
+                {
+                    Item item = new();
+                    item.Id = Guid.NewGuid().ToString();
+                    item.UserId = User.Identity.Name;
+                    item.Name = product.Name;
+                    item.Url = "https://icons.iconarchive.com/icons/paomedia/small-n-flat/128/shop-icon.png";
+                    await _cosmosDbService1.AddItemAsync(item);
+                }
+            }
+            if (container.Page_type is "CreateNewlist")
+            {
+                container.newList.Id = Guid.NewGuid().ToString();
+                container.newList.UserId = User.Identity.Name;
+                await _cosmosDbService.Add_NewList_Async(container.newList);
+            }
+            else
+            {
+                await _cosmosDbService.Update_NewList_Async(container.newList.Id, container.newList);
+            }
+            return RedirectToAction("Shopping", "OnlineShopping",new { id = container.newList.Id });
+        }
+
     }
 }
 
