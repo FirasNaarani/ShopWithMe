@@ -9,6 +9,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ShopWithMe.Services
 {
+    public interface ICosmosDbService
+    {
+        Task<IEnumerable<Item>> GetItemsAsync(string query);
+        Task<Item> GetItemAsync(string id);
+        Task AddItemAsync(Item item);
+        Task UpdateItemAsync(string id, Item item);
+        Task DeleteItemAsync(string id);
+
+    }
     public class CosmosDbService : ICosmosDbService
     {
         private Container _container;
@@ -25,17 +34,17 @@ namespace ShopWithMe.Services
             await this._container.CreateItemAsync<Item>(item/*, new PartitionKey(item.Type)*/);
         }
 
-        public async Task DeleteItemAsync(string id,string name )
+        public async Task DeleteItemAsync(string id)
         {
-            await this._container.DeleteItemAsync<Item>(id, new PartitionKey(name));
+            await this._container.DeleteItemAsync<Item>(id, new PartitionKey(id));
         }
 
 
-        public async Task<Item> GetItemAsync(string id,string name)
+        public async Task<Item> GetItemAsync(string id)
         {
             try
             {
-                ItemResponse<Item> response = await this._container.ReadItemAsync<Item>(id, new PartitionKey(name));
+                ItemResponse<Item> response = await this._container.ReadItemAsync<Item>(id, new PartitionKey(id));
                 return response.Resource;
             }
             catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -59,9 +68,9 @@ namespace ShopWithMe.Services
             return results;
         }
 
-        public async Task UpdateItemAsync(string id,string name, Item item)
+        public async Task UpdateItemAsync(string id, Item item)
         {
-            await this._container.UpsertItemAsync<Item>(item, new PartitionKey(name));
+            await this._container.UpsertItemAsync<Item>(item, new PartitionKey(id));
         }
     }
 }

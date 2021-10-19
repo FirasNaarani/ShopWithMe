@@ -62,7 +62,7 @@ namespace ShopWithMe.Controllers
             if (ModelState.IsValid)
             {
                 item.UserId = User.Identity.Name;
-                await _cosmosDbService.UpdateItemAsync(item.Id, item.Name, item);
+                await _cosmosDbService.UpdateItemAsync(item.Id, item);
                 return RedirectToAction("Index");
             }
 
@@ -71,14 +71,14 @@ namespace ShopWithMe.Controllers
 
 
         [ActionName("Edit")]
-        public async Task<ActionResult> EditAsync(string id, string name)
+        public async Task<ActionResult> EditAsync(string id)
         {
             if (id == null)
             {
                 return BadRequest();
             }
 
-            Item item = await _cosmosDbService.GetItemAsync(id, name);
+            Item item = await _cosmosDbService.GetItemAsync(id);
             if (item == null)
             {
                 return NotFound();
@@ -88,14 +88,14 @@ namespace ShopWithMe.Controllers
         }
 
         [ActionName("Delete")]
-        public async Task<ActionResult> DeleteAsync(string id, string name)
+        public async Task<ActionResult> DeleteAsync(string id)
         {
             if (id == null)
             {
                 return BadRequest();
             }
 
-            Item item = await _cosmosDbService.GetItemAsync(id, name);
+            Item item = await _cosmosDbService.GetItemAsync(id);
             if (item == null)
             {
                 return NotFound();
@@ -107,16 +107,16 @@ namespace ShopWithMe.Controllers
         [HttpPost]
         [ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmedAsync(/*[Bind("Id,name")]*/ string id, string name)
+        public async Task<ActionResult> DeleteConfirmedAsync(/*[Bind("Id,name")]*/ string id)
         {
-            await _cosmosDbService.DeleteItemAsync(id, name);
+            await _cosmosDbService.DeleteItemAsync(id);
             return RedirectToAction("Index");
         }
 
         [ActionName("Details")]
-        public async Task<ActionResult> DetailsAsync(string id, string name)
+        public async Task<ActionResult> DetailsAsync(string id)
         {
-            return View(await _cosmosDbService.GetItemAsync(id, name));
+            return View(await _cosmosDbService.GetItemAsync(id));
         }
 
     }
