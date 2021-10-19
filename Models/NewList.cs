@@ -20,7 +20,11 @@ namespace ShopWithMe.Models
         public string NameList { get; set; }
 
         [JsonProperty(PropertyName = "products")]
-        public List<Product> Products { get; set; }
+        public List<Proudct> Proudcts { get; set; }
 
+        [JsonProperty(PropertyName = "cart_amount")]
+        public int? Cart_Amount { get; set; }
+
+       
     }
 }

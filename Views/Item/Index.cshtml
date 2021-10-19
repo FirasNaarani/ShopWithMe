@@ -25,11 +25,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Type)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -37,7 +32,7 @@
         <tr>
             <td>
 
-                <img src="@item.Url" alt="Empty Photo" width="100" height:="100" />
+                <img src="@item.Url" alt="Empty Photo" width="100" height="100" />
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
@@ -45,10 +40,6 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Type)
             </td>
-            <td>
-                @item.Price.ToString("₪#,##0.00")
-            </td>
-          
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.Id, name = item.Name }) |
                 @Html.ActionLink("Details", "Details", new { id = item.Id, name = item.Name }) |

@@ -7,29 +7,33 @@ using System.Threading.Tasks;
 
 namespace ShopWithMe.Models
 {
-    public class Product
+    public class Proudct
     {
-        //[JsonProperty(PropertyName = "id")]
-        //public string Id { get; set; }
-
         [JsonProperty(PropertyName = "name")]
         [Required]
         public string Name { get; set; }
 
         [JsonProperty(PropertyName = "quantity")]
         [Required]
-        public string Quantity { get; set; }
+        public int Quantity { get; set; }
 
-        public Product()
+        [JsonProperty(PropertyName = "price")]
+        [Required]
+        public double Price { get; set; }
+
+        [JsonProperty(PropertyName = "url")]
+        [Required]
+        public string Url { get; set; }
+
+        public Proudct()
         {
 
         }
-        public Product(string name,string quantity)
+        public Proudct(string name,int quantity)
         {
             this.Name = name;
             this.Quantity = quantity;
         }
-        public override string ToString() => $"{Name}={Quantity}";
 
     }
 }
