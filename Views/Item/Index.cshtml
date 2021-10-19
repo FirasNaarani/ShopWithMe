@@ -5,47 +5,102 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<center>
-    <h1>.:: My Items ::.</h1>
-    <hr />
-    <p>
-        <a asp-action="Create">>> Create New Item <<</a>
-    </p>
-    <hr />
-</center>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Url)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Type)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
+<head>
+    <style>
+        h1 {
+            text-shadow: 2px 2px gold;
+            font-family: Garamond, serif;
+        }
 
-                <img src="@item.Url" alt="Empty Photo" width="100" height="100" />
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id, name = item.Name }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id, name = item.Name }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id, name = item.Name })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+        .div {
+            width: 200px;
+            opacity: 60%;
+        }
+
+            .div:hover {
+                opacity: 100%;
+            }
+
+        .item_table {
+            background-color: lightgray;
+            text-align: center;
+            width: 100%;
+            border: 5px double gold;
+            margin: 20px;
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body style="background-image: url(https://smallaxepeppers.com/wp-content/uploads/2019/05/Fresh-farmers-market-fruit-and-vegetable-from-above-with-copy-space-e1432779252529.jpg)">
+    <div style="opacity:90%;background-color:darkgrey">
+        <center>
+            <h1>.:: My Items ::.</h1>
+            <hr />
+            <p>
+                <a asp-action="Create">>> Create New Item <<</a>
+            </p>
+            <hr />
+            <div>
+                <table class="table">
+                    <tbody>
+                        @for (int i = 0, j = 0; i < Model.ToArray().Length;)
+                        {
+                            <tr>
+                                @while (j <= 4)
+                                {
+                                    <td>
+                                        <div class="div">
+                                            <table class="item_table">
+                                                <thead>
+                                                    <tr>
+                                                        <th colspan="3">
+                                                            @Html.DisplayFor(modelItem => Model.ToArray()[i].Name)
+                                                        </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="3">
+                                                            @Html.DisplayFor(modelItem => Model.ToArray()[i].Type)
+                                                        </td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td colspan="3">
+                                                            <img src="@Model.ToArray()[i].Url" alt="Empty Photo" width="100" height="100" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            @Html.ActionLink("Edit", "Edit", new { id = Model.ToArray()[i].Id, name = Model.ToArray()[i].Name })
+
+                                                        </td>
+                                                        <td>
+                                                            @Html.ActionLink("Details", "Details", new { id = Model.ToArray()[i].Id, name = Model.ToArray()[i].Name })
+                                                        </td>
+                                                        <td>
+                                                            @Html.ActionLink("Delete", "Delete", new { id = Model.ToArray()[i].Id, name = Model.ToArray()[i].Name })
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+
+                                            </table>
+                                        </div>
+                                    </td>
+                                    j++;
+                                    i++;
+                                    @if (i >= Model.ToArray().Length)
+                                        break;
+                                }
+                                @if (j > 4)
+                                {
+                                    j = 0;
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </center>
+    </div>
+</body>

@@ -46,7 +46,6 @@ namespace ShopWithMe.Controllers
             {
                 item.Id = Guid.NewGuid().ToString();
                 item.UserId = User.Identity.Name;
-                item.Name = item.Name.ToLower();
                 await _cosmosDbService.AddItemAsync(item);
                 return RedirectToAction("Index");
             }

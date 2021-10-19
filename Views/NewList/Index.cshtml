@@ -4,23 +4,83 @@
     ViewData["Title"] = "My Lists";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<center>
-    <h1>.:: My Lists ::.</h1>
-    <hr />
-    <p>
-        <a asp-action="CreateNewlist" >>> Create New List <<</a>
-    </p>
-    <hr />
-</center>
-
-<table class="table">
-    <tr>
-        @foreach (var item in Model)
-        {
-        <td>
-            @Html.ActionLink(item.NameList, "Edit", new { Id = item.Id }, new { @class = "btn-rounded btn btn-info " })
-        </td>
+<head>
+    <style>
+        h1 {
+            text-shadow: 2px 2px gold;
+            font-family: Garamond, serif;
         }
-    </tr>
-</table>
+
+        .div {
+          /*  display: flex;
+            justify-content: space-between;*/
+            width: 200px;
+            opacity: 60%;
+        }
+
+            .div:hover {
+                opacity: 100%;
+            }
+
+        .item_table  {
+            background-color: lightgray;
+            text-align: center;
+            width: 100%;
+            border: 5px double gold;
+            margin: 20px;
+            padding: 20px;
+        }
+
+        .table {
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+        }
+    </style>
+</head>
+<body style="background-image: url(https://smallaxepeppers.com/wp-content/uploads/2019/05/Fresh-farmers-market-fruit-and-vegetable-from-above-with-copy-space-e1432779252529.jpg)">
+    <div style="opacity:90%;background-color:darkgrey">
+        <center>
+            <h1>.:: My Lists ::.</h1>
+            <hr />
+            <p>
+                <a asp-action="CreateNewlist">>> Create New List <<</a>
+            </p>
+            <hr />
+
+            <div>
+                <table class="table">
+                    <tbody>
+                        @for (int i = 0, j = 0; i < Model.ToArray().Length;)
+                        {
+                            <tr>
+                                @while (j <= 2)
+                                {
+                                    <td>
+                                        <div class="div">
+                                            <table class="item_table">
+                                                <tr>
+                                                    <td>
+                                                        @Html.ActionLink(Model.ToArray()[i].NameList, "Edit", new { Id = Model.ToArray()[i].Id }, new { @class = "btn-rounded btn btn-info " })
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </td>
+                                    j++;
+                                    i++;
+                                    @if (i >= Model.ToArray().Length)
+                                        break;
+                                }
+                                @if (j > 2)
+                                {
+                                    j = 0;
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </center>
+    </div>
+</body>
