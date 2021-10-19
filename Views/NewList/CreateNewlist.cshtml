@@ -6,6 +6,15 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<style>
+    .divScroll {
+        overflow: scroll;
+        height: 100px;
+        width: 200px;
+    }
+</style>
+
+
 <center>
     <h1>.:: Create New List ::.</h1>
     <hr />
@@ -21,10 +30,13 @@
         </thead>
         <tbody>
             <tr>
+
                 <th scope="row">
+
                     <ul class="list-group">
                         @foreach (Proudct product in Model.newList.Proudcts)
                         {
+
                             <li class="list-group-item">
                                 @Html.DisplayFor(modelItem => product.Name) @Html.DisplayFor(modelItem => product.Quantity)
 
@@ -35,7 +47,6 @@
                                     {
                                         @Html.HiddenFor(m => m.Favorites[j].Id);
                                         @Html.HiddenFor(m => m.Favorites[j].Name);
-                                        @Html.HiddenFor(m => m.Favorites[j].Price);
                                         @Html.HiddenFor(m => m.Favorites[j].Url);
                                         @Html.HiddenFor(m => m.Favorites[j].UserId);
                                         @Html.HiddenFor(m => m.Favorites[j].Type);
@@ -53,14 +64,13 @@
                                 }
                             </li>
                         }
-
                     </ul>
+
                 </th>
 
                 <th scope="row">
                     <table>
                         <tr row="3">
-
                             @for (int i = 0; i < Model.Favorites.Count; i++)
                             {
                                 <td>
@@ -77,7 +87,6 @@
                                                 {
                                                     @Html.HiddenFor(m => m.Favorites[j].Id);
                                                     @Html.HiddenFor(m => m.Favorites[j].Name);
-                                                    @Html.HiddenFor(m => m.Favorites[j].Price);
                                                     @Html.HiddenFor(m => m.Favorites[j].Url);
                                                     @Html.HiddenFor(m => m.Favorites[j].UserId);
                                                     @Html.HiddenFor(m => m.Favorites[j].Type);
@@ -100,8 +109,6 @@
                                     WriteLiteral("</tr><tr>");
                             }
                         </tr>
-
-
                     </table>
 
                 </th>
@@ -120,7 +127,6 @@
         {
             @Html.HiddenFor(m => m.Favorites[j].Id);
             @Html.HiddenFor(m => m.Favorites[j].Name);
-            @Html.HiddenFor(m => m.Favorites[j].Price);
             @Html.HiddenFor(m => m.Favorites[j].Url);
             @Html.HiddenFor(m => m.Favorites[j].UserId);
             @Html.HiddenFor(m => m.Favorites[j].Type);
@@ -152,7 +158,6 @@
         {
             @Html.HiddenFor(m => m.Favorites[j].Id);
             @Html.HiddenFor(m => m.Favorites[j].Name);
-            @Html.HiddenFor(m => m.Favorites[j].Price);
             @Html.HiddenFor(m => m.Favorites[j].Url);
             @Html.HiddenFor(m => m.Favorites[j].UserId);
             @Html.HiddenFor(m => m.Favorites[j].Type);
@@ -166,10 +171,13 @@
 <br />
 </center>
 <div>
+    Tentative
     @using (Html.BeginForm("Start", "NewList"))
     {
-        @Html.TextBoxFor(m => m.newList.NameList, new { @type = "text", @placeholder = "Enter Name List", @required = "required" })
-        @Html.TextBoxFor(m => m.newList.Cart_Amount, new { @type = "number", @placeholder = "Enter Cart Amount", @required = "required" })
+        <input id="newList.NameList" name="newList.NameList" type="hidden" value="@Model.newList.NameList" />
+
+        @*@Html.TextBoxFor(m => m.newList.NameList, new { @type = "text", @placeholder = "Enter Name List", @required = "required" })
+            @Html.TextBoxFor(m => m.newList.Cart_Amount, new { @type = "number", @placeholder = "Enter Cart Amount", @required = "required" })*@
         @Html.Hidden("Page_type", Model.Page_type);
 
         @for (int j = 0; j < Model.newList.Proudcts.Count; j++)
@@ -181,7 +189,6 @@
         {
             @Html.HiddenFor(m => m.Favorites[j].Id);
             @Html.HiddenFor(m => m.Favorites[j].Name);
-            @Html.HiddenFor(m => m.Favorites[j].Price);
             @Html.HiddenFor(m => m.Favorites[j].Url);
             @Html.HiddenFor(m => m.Favorites[j].UserId);
             @Html.HiddenFor(m => m.Favorites[j].Type);

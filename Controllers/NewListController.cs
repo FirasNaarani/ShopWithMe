@@ -192,6 +192,7 @@ namespace ShopWithMe.Controllers
                     await _cosmosDbService1.AddItemAsync(item);
                 }
             }
+            container.newList.NameList = container.newList.NameList == null ? "Tentative" : $"{container.newList.NameList}";
             if (container.Page_type is "CreateNewlist")
             {
                 container.newList.Id = Guid.NewGuid().ToString();
@@ -202,7 +203,7 @@ namespace ShopWithMe.Controllers
             {
                 await _cosmosDbService.Update_NewList_Async(container.newList.Id, container.newList);
             }
-            return RedirectToAction("Shopping", "OnlineShopping",new { id = container.newList.Id });
+            return RedirectToAction("Shopping", "OnlineShopping", new { id = container.newList.Id });
         }
 
     }

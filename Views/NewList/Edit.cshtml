@@ -36,7 +36,6 @@
                                     {
                                         @Html.HiddenFor(m => m.Favorites[j].Id);
                                         @Html.HiddenFor(m => m.Favorites[j].Name);
-                                        @Html.HiddenFor(m => m.Favorites[j].Price);
                                         @Html.HiddenFor(m => m.Favorites[j].Url);
                                         @Html.HiddenFor(m => m.Favorites[j].UserId);
                                         @Html.HiddenFor(m => m.Favorites[j].Type);
@@ -80,7 +79,6 @@
                                                 {
                                                     @Html.HiddenFor(m => m.Favorites[j].Id);
                                                     @Html.HiddenFor(m => m.Favorites[j].Name);
-                                                    @Html.HiddenFor(m => m.Favorites[j].Price);
                                                     @Html.HiddenFor(m => m.Favorites[j].Url);
                                                     @Html.HiddenFor(m => m.Favorites[j].UserId);
                                                     @Html.HiddenFor(m => m.Favorites[j].Type);
@@ -125,7 +123,6 @@
         {
             @Html.HiddenFor(m => m.Favorites[j].Id);
             @Html.HiddenFor(m => m.Favorites[j].Name);
-            @Html.HiddenFor(m => m.Favorites[j].Price);
             @Html.HiddenFor(m => m.Favorites[j].Url);
             @Html.HiddenFor(m => m.Favorites[j].UserId);
             @Html.HiddenFor(m => m.Favorites[j].Type);
@@ -162,7 +159,6 @@
         {
             @Html.HiddenFor(m => m.Favorites[j].Id);
             @Html.HiddenFor(m => m.Favorites[j].Name);
-            @Html.HiddenFor(m => m.Favorites[j].Price);
             @Html.HiddenFor(m => m.Favorites[j].Url);
             @Html.HiddenFor(m => m.Favorites[j].UserId);
             @Html.HiddenFor(m => m.Favorites[j].Type);
@@ -178,10 +174,10 @@
     <div>
         @using (Html.BeginForm("Start", "NewList"))
         {
-            @Html.TextBoxFor(m => m.newList.NameList, new { @required = "required", @type = "text" })
-            @Html.TextBoxFor(m => m.newList.Cart_Amount, new { @type = "number", @placeholder = "Enter Cart Amount" })
 
 
+            @Html.HiddenFor(m => m.newList.NameList);
+            @Html.HiddenFor(m => m.newList.Cart_Amount);
             @Html.HiddenFor(m => m.newList.Id);
             @Html.HiddenFor(m => m.newList.UserId);
 
@@ -194,7 +190,6 @@
             {
                 @Html.HiddenFor(m => m.Favorites[j].Id);
                 @Html.HiddenFor(m => m.Favorites[j].Name);
-                @Html.HiddenFor(m => m.Favorites[j].Price);
                 @Html.HiddenFor(m => m.Favorites[j].Url);
                 @Html.HiddenFor(m => m.Favorites[j].UserId);
                 @Html.HiddenFor(m => m.Favorites[j].Type);

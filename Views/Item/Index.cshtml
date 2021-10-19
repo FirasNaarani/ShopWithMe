@@ -25,11 +25,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Type)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -45,10 +40,6 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Type)
             </td>
-            <td>
-                @item.Price.ToString("₪#,##0.00")
-            </td>
-          
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.Id, name = item.Name }) |
                 @Html.ActionLink("Details", "Details", new { id = item.Id, name = item.Name }) |
