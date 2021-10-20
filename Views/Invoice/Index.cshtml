@@ -1,18 +1,110 @@
 ﻿@model IEnumerable<ShopWithMe.Models.Cart>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Invoice";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
-<table class="table">
-    <tr>
-        @foreach (var item in Model)
-        {
-            <td>
-                @Html.ActionLink($"{item.NameCart} {item.Date_Time.ToString("dd/MM/yyyy")}", "Details", new { Id = item.Id }, new { @class = "btn-rounded btn btn-info " })
-            </td>
+<head>
+    <style>
+        h1 {
+            text-shadow: 2px 2px 5px gold;
+            font-family: Garamond, serif;
         }
-    </tr>
-</table>
+
+        .div {
+            width: 150px;
+            height: auto;
+            opacity: 60%;
+            margin: 10px 10px 10px 10px;
+        }
+
+            .div:hover {
+                opacity: 100%;
+            }
+
+        .div_scroll {
+            width: 100%;
+            height: 300px;
+            overflow: auto;
+        }
+
+        .div_marquee {
+            box-shadow: 5px 10px gold;
+            background-color: darkgrey;
+            font-family: 'Copperplate Gothic';
+            font-size: x-large;
+            text-shadow: 2px 2px 8px gold;
+            height: 30px;
+            margin: 40px;
+            opacity: 90%;
+        }
+
+        .item_table {
+            background-color: lightgray;
+            text-align: center;
+            width: 100%;
+            border: 5px double gold;
+        }
+
+        .table {
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+        }
+    </style>
+</head>
+<body style="background-image: url(https://smallaxepeppers.com/wp-content/uploads/2019/05/Fresh-farmers-market-fruit-and-vegetable-from-above-with-copy-space-e1432779252529.jpg)">
+    <div style="opacity:90%;background-color:darkgrey">
+        <center>
+
+            @*Title*@
+            <div>
+                <h1>.:: My Invoice ::.</h1>
+                <hr />
+            </div>
+
+            @*Invoice Table*@
+            <div class="div_scroll">
+                <table class="table">
+                    <tbody>
+                        @for (int i = 0, j = 0; i < Model.ToArray().Length;)
+                        {
+                            <tr>
+                                @while (j <= 2)
+                                {
+                                    <td>
+                                        <div class="div">
+                                            <table class="item_table">
+                                                <tr>
+                                                    <td>
+                                                        @Html.ActionLink($"{Model.ToArray()[i].NameCart} {Model.ToArray()[i].Date_Time.ToString("dd/MM/yyyy")}", "Details", new { Id = Model.ToArray()[i].Id }, new { @class = "btn-rounded btn btn-info " })
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </td>
+                                    j++;
+                                    i++;
+                                    @if (i >= Model.ToArray().Length)
+                                        break;
+                                }
+                                @if (j > 2)
+                                {
+                                    j = 0;
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </center>
+    </div>
+
+    @*Marquee*@
+    <div class="div_marquee">
+        <marquee behavior="scroll" direction="right" scrollamount="12">
+            <p> .:: Shop With Me Always With You ::. </p>
+        </marquee>
+    </div>
+</body>

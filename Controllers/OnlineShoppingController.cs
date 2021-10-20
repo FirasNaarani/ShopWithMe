@@ -29,7 +29,7 @@ namespace ShopWithMe.Controllers
         {
             ContainerDataOnlineShopping container = new();
             container.newList = await cosmosDbService_NewList.Get_Newlist_Async(id);
-            container.cart.NameCart = $"{container.newList.NameList} cart";
+            container.cart.NameCart = $"{container.newList.NameList} Cart";
             return View(container);
         }
 

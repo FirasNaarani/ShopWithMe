@@ -12,6 +12,17 @@
             font-family: Garamond, serif;
         }
 
+        th {
+            font-family: Garamond, serif;
+            text-shadow: 2px 2px 5px gold;
+            font-size: large;
+        }
+
+        td {
+            font-family: Garamond, serif;
+            text-shadow: 2px 2px 5px gold;
+        }
+
         .div {
             width: 200px;
             opacity: 60%;
@@ -52,12 +63,16 @@
 <body style="background-image: url(https://smallaxepeppers.com/wp-content/uploads/2019/05/Fresh-farmers-market-fruit-and-vegetable-from-above-with-copy-space-e1432779252529.jpg)">
     <div style="opacity:90%;background-color:darkgrey">
         <center>
-            <h1>.:: My Items ::.</h1>
-            <hr />
-            <p>
-                <a asp-action="Create">>> Create New Item <<</a>
-            </p>
-            <hr />
+
+            @*Title*@
+            <div>
+                <h1>.:: My Items ::.</h1>
+                <hr />
+                <p>
+                    <a asp-action="Create">>> Create New Item <<</a>
+                </p>
+                <hr />
+            </div>
 
             @*List Scroll Item*@
             <div class="div_scroll">

@@ -54,17 +54,23 @@
 <body style="background-image: url(https://smallaxepeppers.com/wp-content/uploads/2019/05/Fresh-farmers-market-fruit-and-vegetable-from-above-with-copy-space-e1432779252529.jpg)">
     <div style="opacity:90%;background-color:darkgrey">
         <center>
-            <h1>.:: Details Item ::.</h1>
-            <hr />
 
+            @*Title*@
+            <div>
+                <h1>.:: Details Item ::.</h1>
+                <hr />
+            </div>
+
+            @*Item Card*@
             <div class="card">
-                <img src="@Model.Url" alt="@Html.DisplayFor(model => model.Name)" style="width:9b0%">
+                <img src="@Model.Url" alt="@Html.DisplayFor(model => model.Name)" style="width:auto;height:200px">
                 <h1>@Html.DisplayFor(model => model.Name)</h1>
                 <p class="price">@Html.DisplayFor(model => model.Type)</p>
             </div>
 
             <hr />
 
+            @*Back To List*@
             <div>
                 <a asp-action="Index">>> Back to List <<</a>
             </div>
