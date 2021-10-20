@@ -13,6 +13,8 @@ namespace ShopWithMe.Models
 
         public Proudct _proudct { get; set; }
 
+        public string action { get; set; }
+
         public ContainerDataOnlineShopping()
         {
             this.cart = new();

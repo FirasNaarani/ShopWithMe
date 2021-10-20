@@ -22,7 +22,7 @@ namespace ShopWithMe.Services
 
         private Container _container;
 
-        public CosmosDB_newlist(CosmosClient dbClient,    string databaseName, string containerName)
+        public CosmosDB_newlist(CosmosClient dbClient,string databaseName, string containerName)
         {
             this._container = dbClient.GetContainer(databaseName, containerName);
         }

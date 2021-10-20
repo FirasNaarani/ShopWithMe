@@ -11,6 +11,7 @@ namespace ShopWithMe.Controllers
     public class ItemController : Controller
     {
         private readonly ICosmosDbService _cosmosDbService;
+
         public ItemController(ICosmosDbService cosmosDbService)
         {
             _cosmosDbService = cosmosDbService;
@@ -19,16 +20,22 @@ namespace ShopWithMe.Controllers
         [ActionName("Index")]
         public async Task<IActionResult> Index()
         {
-            var allitems = await _cosmosDbService.GetItemsAsync("SELECT * FROM c");
+            var ls = await _cosmosDbService.GetItemsAsync("SELECT * FROM c");
+            ls = await GetItemByName(ls.ToList());
+            List<Item> res = ls.ToList();
+            return View(res);
+        }
+        public async Task<IEnumerable<Item>> GetItemByName(List<Item> items)
+        {
             List<Item> res = new List<Item>();
-            foreach (var temp in allitems)
+            foreach (var temp in items)
             {
                 if (temp.UserId == User.Identity.Name)
                 {
                     res.Add(temp);
                 }
             }
-            return View(res);
+            return res;
         }
 
         [ActionName("Create")]
@@ -46,7 +53,6 @@ namespace ShopWithMe.Controllers
             {
                 item.Id = Guid.NewGuid().ToString();
                 item.UserId = User.Identity.Name;
-                item.Name = item.Name.ToLower();
                 await _cosmosDbService.AddItemAsync(item);
                 return RedirectToAction("Index");
             }

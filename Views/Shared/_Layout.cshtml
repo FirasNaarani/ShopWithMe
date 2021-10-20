@@ -27,12 +27,11 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="About">Contact Us</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="CartOnline" asp-action="Index">Invoice</a>
-                        </li>
-
                         @if (User.Identity.IsAuthenticated)
                         {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Invoice" asp-action="Index">Invoices</a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Item" asp-action="Index">My Items</a>
                             </li>
@@ -51,7 +50,7 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-muted" style="background-color:goldenrod;opacity:90%">
         <div class="container">
             &copy; 2021 - ShopWithMeApplication - <a asp-area="" asp-controller="Home" asp-action="About">Contact Us</a>
         </div>

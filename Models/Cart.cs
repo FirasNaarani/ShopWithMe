@@ -19,12 +19,14 @@ namespace ShopWithMe.Models
         [Required]
         public string NameCart { get; set; }
 
-        [JsonProperty(PropertyName = "price")]
+        [JsonProperty(PropertyName = "total")]
         [Required]
-        public double Price { get; set; }
+        public double Total { get; set; }
 
         [JsonProperty(PropertyName = "products")]
         public List<Proudct> Proudcts { get; set; }
 
+        [JsonProperty(PropertyName = "dateTime")]
+        public DateTime Date_Time { get; set; }
     }
 }

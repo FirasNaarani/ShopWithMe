@@ -73,7 +73,7 @@ namespace ShopWithMe.Controllers
 
             foreach (Proudct product in container.newList.Proudcts)
             {
-                if (!container.Favorites.Exists(x => x.Name == product.Name))
+                if (!container.Favorites.Exists(x => x.Name.ToLower() == product.Name.ToLower()))
                 {
                     Item item = new();
                     item.Id = Guid.NewGuid().ToString();
@@ -105,7 +105,7 @@ namespace ShopWithMe.Controllers
         {
             foreach (Proudct product in container.newList.Proudcts)
             {
-                if (!container.Favorites.Exists(x => x.Name == product.Name))
+                if (!container.Favorites.Exists(x => x.Name.ToLower() == product.Name.ToLower()))
                 {
                     Item item = new();
                     item.Id = Guid.NewGuid().ToString();
@@ -137,7 +137,7 @@ namespace ShopWithMe.Controllers
             {
                 foreach (Proudct item in container.newList.Proudcts)
                 {
-                    if (item.Name.Equals(container._proudct.Name))
+                    if (item.Name.ToLower().Equals(container._proudct.Name.ToLower()))
                     {
                         item.Quantity = container._proudct.Quantity;
                         return View(container.Page_type, container);
@@ -182,7 +182,7 @@ namespace ShopWithMe.Controllers
         {
             foreach (Proudct product in container.newList.Proudcts)
             {
-                if (!container.Favorites.Exists(x => x.Name == product.Name))
+                if (!container.Favorites.Exists(x => x.Name.ToLower() == product.Name.ToLower()))
                 {
                     Item item = new();
                     item.Id = Guid.NewGuid().ToString();

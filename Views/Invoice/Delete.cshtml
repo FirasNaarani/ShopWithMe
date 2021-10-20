@@ -1,0 +1,24 @@
+﻿@model ShopWithMe.Models.Cart
+
+@{
+    ViewData["Title"] = "DeleteAsync";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<center>
+    <h1>.:: Delete Invoice ::.</h1>
+    <hr />
+    <h3>Are you sure you want to delete this?</h3>
+    <hr />
+</center>
+
+<div>
+    <center><h4>Invoice Name : @Model.NameCart</h4></center>
+    <form asp-action="Delete">
+        <input type="submit" value="Delete" class="btn btn-danger" />
+        <a asp-action="Index" style="float:right">>> Back to List <<</a>
+    </form>
+</div>
