@@ -6,15 +6,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<style>
-    .divScroll {
-        overflow: scroll;
-        height: 100px;
-        width: 200px;
-    }
-</style>
-
-
 <center>
     <h1>.:: Create New List ::.</h1>
     <hr />
@@ -171,7 +162,6 @@
 <br />
 </center>
 <div>
-    Tentative
     @using (Html.BeginForm("Start", "NewList"))
     {
         <input id="newList.NameList" name="newList.NameList" type="hidden" value="@Model.newList.NameList" />

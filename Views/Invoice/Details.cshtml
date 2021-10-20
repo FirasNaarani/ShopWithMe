@@ -1,0 +1,93 @@
+﻿@model ShopWithMe.Models.Cart
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Cart</h4>
+    <div>
+        <table class="table">
+            <tr>
+                <th scope="col">@Html.DisplayFor(model => model.Date_Time)</th>
+                <th scope="col">@Html.DisplayFor(model => model.Id)</th>
+                <th scope="col">@Html.DisplayFor(model => model.UserId)</th>
+                <th scope="col">@Html.DisplayFor(model => model.NameCart)</th>
+            </tr>
+        </table>
+    </div>
+    <div>
+        <table class="table">
+            <tr>
+                <th scope="col">
+                    <ul class="list-group">
+                        @foreach (Proudct proudct in Model.Proudcts)
+                        {
+                            <li class="list-group-item">
+                                @Html.DisplayFor(modelItem => proudct.Name)
+                                @Html.DisplayFor(modelItem => proudct.Quantity)
+                                @proudct.Price.ToString("₪#,##0.00")
+                            </li>
+                        }
+                    </ul>
+                </th>
+            </tr>
+            <center>
+                <th scope="col">
+                    @Model.Total.ToString("₪#,##0.00")
+                </th>
+            </center>
+
+        </table>
+    </div>
+
+    <a> @Html.ActionLink("Delete", "Delete", new { id = Model.Id }, new { @class = "btn btn-danger" })</a> 
+
+
+    <a asp-action="Index">Back to List</a>
+
+
+    @*<hr />
+            <dl class="row">
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Date_Time)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Date_Time)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Id)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Id)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.UserId)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.UserId)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.NameCart)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.NameCart)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Total)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Total)
+                </dd>
+
+
+            </dl>
+        </div>
+            <div>
+                @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+
+            </div>*@
