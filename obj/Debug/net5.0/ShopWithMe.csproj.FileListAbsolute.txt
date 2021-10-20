@@ -160,4 +160,3 @@ C:\GitHub\ShopWithMe\obj\Debug\net5.0\Razor\Views\OnlineShopping\Shopping.cshtml
 C:\GitHub\ShopWithMe\obj\Debug\net5.0\Razor\Views\Invoice\Index.cshtml.g.cs
 C:\GitHub\ShopWithMe\obj\Debug\net5.0\Razor\Views\Invoice\Details.cshtml.g.cs
 C:\GitHub\ShopWithMe\obj\Debug\net5.0\Razor\Views\Invoice\Delete.cshtml.g.cs
-C:\GitHub\ShopWithMe\obj\Debug\net5.0\ShopWithMe.csproj.AssemblyReference.cache
