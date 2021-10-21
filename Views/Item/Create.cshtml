@@ -8,7 +8,7 @@
 <head>
     <style>
         h1 {
-            text-shadow: 2px 2px gold;
+            text-shadow: 2px 2px 5px gold;
             font-family: Garamond, serif;
         }
     </style>
@@ -17,25 +17,30 @@
 <body style="background-image: url(https://smallaxepeppers.com/wp-content/uploads/2019/05/Fresh-farmers-market-fruit-and-vegetable-from-above-with-copy-space-e1432779252529.jpg)">
     <div style="opacity:90%;background-color:darkgrey">
         <center>
-            <h1>.:: Create New Item ::.</h1>
-            <hr />
 
+            @*Title*@
+            <div>
+                <h1>.:: Create New Item ::.</h1>
+                <hr />
+            </div>
+
+            @*Inputs*@
             <div>
                 <div class="col-md-4">
                     <form asp-action="Create">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-group">
-                            <input asp-for="Name" class="form-control"  placeholder="Enter Item Name" />
+                            <input asp-for="Name" class="form-control" placeholder="Enter Item Name" />
                             <span asp-validation-for="Name" class="text-danger"></span>
                         </div>
                         <br />
                         <div class="form-group">
-                            <input asp-for="Type" class="form-control"  placeholder="Enter Item Type" />
+                            <input asp-for="Type" class="form-control" placeholder="Enter Item Type" />
                             <span asp-validation-for="Type" class="text-danger"></span>
                         </div>
                         <br />
                         <div class="form-group">
-                            <input asp-for="Url" class="form-control"  placeholder="Enter URL Address" />
+                            <input asp-for="Url" class="form-control" placeholder="Enter URL Address" />
                             <span asp-validation-for="Url" class="text-danger"></span>
                         </div>
                         <br />
@@ -48,6 +53,7 @@
 
             <hr />
 
+            @*Back To List*@
             <div>
                 <a asp-action="Index">>> Back to List <<</a>
             </div>

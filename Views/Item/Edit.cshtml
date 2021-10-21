@@ -8,7 +8,7 @@
 <head>
     <style>
         h1 {
-            text-shadow: 2px 2px gold;
+            text-shadow: 2px 2px 5px gold;
             font-family: Garamond, serif;
         }
     </style>
@@ -17,9 +17,14 @@
 <body style="background-image: url(https://smallaxepeppers.com/wp-content/uploads/2019/05/Fresh-farmers-market-fruit-and-vegetable-from-above-with-copy-space-e1432779252529.jpg)">
     <div style="opacity:90%;background-color:darkgrey">
         <center>
-            <h1>.:: Edit Item ::.</h1>
-            <hr />
 
+            @*Title*@
+            <div>
+                <h1>.:: Edit Item ::.</h1>
+                <hr />
+            </div>
+
+            @*Inputs*@
             <div>
                 <div class="col-md-4">
                     <form asp-action="Edit">
@@ -50,7 +55,7 @@
 
             <hr />
 
-
+            @*Back To List*@
             <div>
                 <a asp-action="Index">>> Back to List <<</a>
             </div>
