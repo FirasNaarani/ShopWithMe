@@ -45,6 +45,17 @@ namespace ShopWithMe.Controllers
                     container.newList.Proudcts[i].Quantity -= container._proudct.Quantity;
                 }
             }
+
+            for (int i = 0; i < container.cart.Proudcts.Count; i++)
+            {
+                if (container.cart.Proudcts[i].Name.ToLower().Equals(container._proudct.Name.ToLower()))
+                {
+                    container.cart.Proudcts[i].Quantity += container._proudct.Quantity;
+                    container.cart.Proudcts[i].Price += (container._proudct.Quantity * container._proudct.Price);
+                    container.cart.Total += (container._proudct.Quantity * container._proudct.Price);
+                    return View("Shopping", container);
+                }
+            }
             container._proudct.Price = (container._proudct.Quantity * container._proudct.Price);
             container.cart.Proudcts.Add(container._proudct);
             container.cart.Total += container._proudct.Price;
@@ -60,8 +71,11 @@ namespace ShopWithMe.Controllers
                 container.newList.Proudcts.Remove(container.newList.Proudcts.Find(r => r.Name == container._proudct.Name));
             else
             {
-                container.cart.Proudcts.Remove(container.cart.Proudcts.Find(r => r.Name == container._proudct.Name));
+                Proudct proudct2 = container.newList.Proudcts.Find(r => r.Name == container._proudct.Name);
+                proudct2.Quantity += container._proudct.Quantity;
                 container.cart.Total -= container._proudct.Price;
+                container.cart.Proudcts.Remove(container.cart.Proudcts.Find(r => r.Name == container._proudct.Name));
+
             }
             return View("Shopping", container);
         }
@@ -95,11 +109,13 @@ namespace ShopWithMe.Controllers
             var ls = await cosmosDbService_Item.GetItemsAsync("SELECT * FROM c");
             ls = await GetItemByName(ls.ToList());
             List<Item> Favorites = ls.ToList();
+            NewList list = await cosmosDbService_NewList.Get_Newlist_Async(container.newList.Id);
             bool bo = false;
             foreach (Proudct product in container.newList.Proudcts)
             {
                 if (!Favorites.Exists(x => x.Name.ToLower() == product.Name.ToLower()))
                 {
+                    list.Proudcts.Add(new(product.Name, product.Quantity = 1));
                     bo = true;
                     Item item = new();
                     item.Id = Guid.NewGuid().ToString();
@@ -110,13 +126,14 @@ namespace ShopWithMe.Controllers
                 }
             }
             if (bo)
-                await cosmosDbService_NewList.Update_NewList_Async(container.newList.Id, container.newList);
+            {
+                await cosmosDbService_NewList.Update_NewList_Async(list.Id, list);
+            }
             container.cart.Id = Guid.NewGuid().ToString();
             container.cart.UserId = User.Identity.Name;
             container.cart.Date_Time = DateTime.Now;
             await cosmosDbService_Invoice.Add_Invoice_Async(container.cart);
-            return RedirectToAction("Index", "Home");
-
+            return RedirectToAction("Details", "Invoice", new { id = container.cart.Id });
         }
 
         public async Task<IEnumerable<Item>> GetItemByName(List<Item> items)
@@ -131,6 +148,5 @@ namespace ShopWithMe.Controllers
             }
             return res;
         }
-
     }
 }
