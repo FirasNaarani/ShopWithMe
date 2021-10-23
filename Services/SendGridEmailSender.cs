@@ -32,7 +32,7 @@ namespace ShopWithMe.Services
                 From = new EmailAddress(Options.SenderEmail, Options.SenderName),
                 Subject = "Join Invitation ",
                 PlainTextContent = message,
-                HtmlContent = "<center><aside><h3>I'am Using 'Shop With Me Application' to facilitate the shopping process, I need your help with shopping<h3/><a href='" + message + "'>.:: Join Me ::.</a><br/><address>Shop Wth Me Support Team</address><aside/><center/>"
+                HtmlContent = "<center><aside><h3>I'am Using 'Shop With Me Application' to facilitate the shopping process, I need your help with shopping<h3/><a href='" + message + "'>.:: Join Me ::.</a><br/><address>Shop With Me Support Team</address><aside/><center/>"
             };
             msg.AddTo(new EmailAddress(email));
 
