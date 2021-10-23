@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Identity.Web.UI;
 using Microsoft.Identity.Web;
+using Microsoft.AspNetCore.Http;
 
 namespace ShopWithMe
 {
@@ -45,6 +46,18 @@ namespace ShopWithMe
             services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme).AddMicrosoftIdentityWebApp(Configuration.GetSection("AzureAdB2C"));
             services.AddControllersWithViews();
             services.AddRazorPages().AddMicrosoftIdentityUI();
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+
+
+            services.AddTransient<IEmailSender, SendGridEmailSender>();
+            services.Configure<SendGridEmailSenderOptions>(options =>
+            {
+                options.ApiKey = Configuration["ExternalProviders:SendGrid:ApiKey"];
+                options.SenderEmail = Configuration["ExternalProviders:SendGrid:SenderEmail"];
+                options.SenderName = Configuration["ExternalProviders:SendGrid:SenderName"];
+            });
         }
 
         /// <summary>

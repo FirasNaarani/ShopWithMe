@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,12 +16,15 @@ namespace ShopWithMe.Models
 
         public string action { get; set; }
 
+        public string CartUrl { get; set; }
+
         public ContainerDataOnlineShopping()
         {
             this.cart = new();
             cart.Proudcts = new();
             this.newList = new();
             _proudct = new();
+            this.CartUrl = "";
         }
     }
 }

@@ -15,21 +15,34 @@ namespace ShopWithMe.Controllers
         private readonly ICosmosDb_NewList_Service cosmosDbService_NewList;
         private readonly ICosmosDb_Invoice_Service cosmosDbService_Invoice;
         private readonly ICosmosDbService cosmosDbService_Item;
+        private readonly IEmailSender _emailSender;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
 
-        public OnlineShoppingController(ICosmosDb_NewList_Service cosmosDbServicenewlist, ICosmosDb_Invoice_Service cosmosDbServiceinvoice, ICosmosDbService cosmosDbService_item)
+        public OnlineShoppingController(ICosmosDb_NewList_Service cosmosDbServicenewlist, ICosmosDb_Invoice_Service cosmosDbServiceinvoice, ICosmosDbService cosmosDbService_item, IEmailSender emailSender, IHttpContextAccessor httpContextAccessor)
         {
             cosmosDbService_NewList = cosmosDbServicenewlist;
             cosmosDbService_Invoice = cosmosDbServiceinvoice;
             cosmosDbService_Item = cosmosDbService_item;
+            _emailSender = emailSender;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [ActionName("Shopping")]
         public async Task<IActionResult> Shopping(string id)
         {
             ContainerDataOnlineShopping container = new();
+            container.newList.UserId = User.Identity.Name;
             container.newList = await cosmosDbService_NewList.Get_Newlist_Async(id);
             container.cart.NameCart = $"{container.newList.NameList} Cart";
+            container.CartUrl= string.Concat(
+                        HttpContext.Request.Scheme,
+                        "://",
+                        HttpContext.Request.Host.ToUriComponent(),
+                        HttpContext.Request.PathBase.ToUriComponent(),
+                        HttpContext.Request.Path.ToUriComponent(),
+                        HttpContext.Request.QueryString.ToUriComponent());
+
             return View(container);
         }
 
@@ -147,6 +160,18 @@ namespace ShopWithMe.Controllers
                 }
             }
             return res;
+        }
+
+        [HttpPost]
+        [ActionName("Invite")]
+        [ValidateAntiForgeryToken]
+        public  async Task<ActionResult> Invite(ContainerDataOnlineShopping container,string Email)
+        {
+            string url = container.CartUrl;
+   
+            await _emailSender.SendEmailAsync(Email, "Invited", url);
+
+            return RedirectToAction("Shopping", "OnlineShopping", new { id = container.cart.Id });
         }
     }
 }
