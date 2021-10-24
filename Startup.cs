@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Identity.Web.UI;
 using Microsoft.Identity.Web;
 using Microsoft.AspNetCore.Http;
+using ShopWithMe.Hubs_Service;
 
 namespace ShopWithMe
 {
@@ -54,7 +55,11 @@ namespace ShopWithMe
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 
-
+            services.AddSignalR(o =>
+            {
+                o.EnableDetailedErrors = true;
+                o.MaximumReceiveMessageSize = null;
+            });
             services.AddTransient<IEmailSender, SendGridEmailSender>();
             services.Configure<SendGridEmailSenderOptions>(options =>
             {
@@ -164,6 +169,7 @@ namespace ShopWithMe
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
+                endpoints.MapHub<Shopping>("/shopping");
             });
         }
     }
