@@ -7,7 +7,7 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
     <style>
-        h1, h4, h2 {
+        h1, h3, h4 {
             font-family: Garamond, serif;
         }
 
@@ -15,22 +15,45 @@
             text-shadow: 2px 2px 5px gold;
         }
 
-        h2 {
+        h3 {
             text-shadow: 2px 2px 5px red;
         }
 
         h4 {
             text-shadow: 2px 2px 5px gold;
         }
+
+        .table {
+            text-align: center;
+        }
+
+        .div_marquee {
+            box-shadow: 5px 10px gold;
+            background-color: darkgrey;
+            font-family: 'Copperplate Gothic';
+            font-size: x-large;
+            text-shadow: 2px 2px 8px gold;
+            height: 30px;
+            margin: 40px;
+            opacity: 90%;
+        }
+
+        body {
+            background-image: url(https://smallaxepeppers.com/wp-content/uploads/2019/05/Fresh-farmers-market-fruit-and-vegetable-from-above-with-copy-space-e1432779252529.jpg);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: relative;
+        }
     </style>
 </head>
 
 <body style="background-image: url(https://smallaxepeppers.com/wp-content/uploads/2019/05/Fresh-farmers-market-fruit-and-vegetable-from-above-with-copy-space-e1432779252529.jpg)">
     <div style="opacity:90%;background-color:darkgrey;width:auto">
-       
+
         @*Title*@
         <div class="text-center">
-            <h1 class="display-4">.:: Welcome To Shop With Me ::.</h1>
+            <h1 class="display-5">Welcome To Shop With Me</h1>
             <hr />
             <div>
                 <h4 style="border: 5px outset red; background-color:cadetblue; text-align: center;">
@@ -40,84 +63,46 @@
         </div>
 
         @*Carousel Slide*@
-        <div style="width:100%">
-            <section class="home">
-                <div id="carousel" class="carousel slide" data-ride="carousel" style="height:inherit;">
-                    <div class="carousel-controls">
-                        <ol class="carousel-indicators">
-                            <li data-target="#carousel" data-slide-to="0" class="active"</li>
-                            <li data-target="#carousel" data-slide-to="1"></li>
-                            <li data-target="#carousel" data-slide-to="2"></li>
-                            <li data-target="#carousel" data-slide-to="3"></li>
-
-                        </ol>
-                        <a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
-                            <img src="~/Pic/left-arrow.svg" alt="Prev">
-                        </a>
-                        <a class="carousel-control-next" href="#carousel" role="button" data-slide="next">
-                            <img src="~/Pic/right-arrow.svg" alt="Next">
-                        </a>
-                    </div>
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <div class="container">
-                                <table style="width:100%">
-                                    <tr>
-                                        <td>
-                                            <h2>My Items View</h2>
-                                        </td>
-                                        <td>
-                                            <img src="~/Pic/My Items.png" width="450px" height="350px" />
-                                        </td>
-                                    </tr>
-                                </table>
+        <div style="width:contain">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            <h1>Application Views</h1>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                        <img class="d-block w-100" src="/Pic/My Items.png" alt="My Items View">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img class="d-block w-100" src="/Pic/My Lists.png" alt="My Lists View">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img class="d-block w-100" src="/Pic/New List.png" alt="New List View">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img class="d-block w-100" src="/Pic/My Invoices.png" alt="My Invoices View">
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="container">
-                                <table style="width:100%">
-                                    <tr>
-                                        <td>
-                                            <h2>My Lists View</h2>
-                                        </td>
-                                        <td>
-                                            <img src="~/Pic/My Lists.png" width="450px" height="350px" />
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="container">
-                                <table style="width:100%">
-                                    <tr>
-                                        <td>
-                                            <h2>New List View</h2>
-                                        </td>
-                                        <td>
-                                            <img src="~/Pic/New List.png" width="450px" height="350px" />
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="container">
-                                <table style="width:100%">
-                                    <tr>
-                                        <td>
-                                            <h2>My Invoices View</h2>
-                                        </td>
-                                        <td>
-                                            <img src="~/Pic/My Invoices.png" width="450px" height="350px" />
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
+
+    @*Marquee*@
+    <div class="div_marquee">
+        <marquee behavior="scroll" direction="right" scrollamount="12">
+            <p> .:: Shop With Me Always With You ::. </p>
+        </marquee>
+    </div>
+    <br /><br />
 </body>
