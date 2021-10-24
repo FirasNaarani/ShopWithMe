@@ -11,7 +11,7 @@ namespace ShopWithMe.Controllers
 {
     public class OnlineShoppingController : Controller
     {
-
+        private readonly ICosmosDb_shoppingOL_Service cosmosDbService_Shopping;
         private readonly ICosmosDb_NewList_Service cosmosDbService_NewList;
         private readonly ICosmosDb_Invoice_Service cosmosDbService_Invoice;
         private readonly ICosmosDbService cosmosDbService_Item;
@@ -19,11 +19,12 @@ namespace ShopWithMe.Controllers
         private readonly IHttpContextAccessor _httpContextAccessor;
 
 
-        public OnlineShoppingController(ICosmosDb_NewList_Service cosmosDbServicenewlist, ICosmosDb_Invoice_Service cosmosDbServiceinvoice, ICosmosDbService cosmosDbService_item, IEmailSender emailSender, IHttpContextAccessor httpContextAccessor)
+        public OnlineShoppingController(ICosmosDb_NewList_Service cosmosDbServicenewlist, ICosmosDb_Invoice_Service cosmosDbServiceinvoice, ICosmosDbService cosmosDbService_item, IEmailSender emailSender, ICosmosDb_shoppingOL_Service cosmosDbService_shopping, IHttpContextAccessor httpContextAccessor)
         {
             cosmosDbService_NewList = cosmosDbServicenewlist;
             cosmosDbService_Invoice = cosmosDbServiceinvoice;
             cosmosDbService_Item = cosmosDbService_item;
+            cosmosDbService_Shopping = cosmosDbService_shopping;
             _emailSender = emailSender;
             _httpContextAccessor = httpContextAccessor;
         }
@@ -31,11 +32,9 @@ namespace ShopWithMe.Controllers
         [ActionName("Shopping")]
         public async Task<IActionResult> Shopping(string id)
         {
-            ContainerDataOnlineShopping container = new();
-            container.newList.UserId = User.Identity.Name;
-            container.newList = await cosmosDbService_NewList.Get_Newlist_Async(id);
-            container.cart.NameCart = $"{container.newList.NameList} Cart";
-            container.CartUrl= string.Concat(
+            shoppingOL container = new();
+            container = await cosmosDbService_Shopping.Get_shoppingOL_Async(id);
+            container.CartUrl = string.Concat(
                         HttpContext.Request.Scheme,
                         "://",
                         HttpContext.Request.Host.ToUriComponent(),
@@ -43,51 +42,53 @@ namespace ShopWithMe.Controllers
                         HttpContext.Request.Path.ToUriComponent(),
                         HttpContext.Request.QueryString.ToUriComponent());
 
+            await cosmosDbService_Shopping.Update_shoppingOL_Async(id, container);
+
             return View(container);
         }
 
         [HttpPost]
         [ActionName("AddToCart")]
         [ValidateAntiForgeryToken]
-        public IActionResult AddToCart(ContainerDataOnlineShopping container)
+        public IActionResult AddToCart(shoppingOL container)
         {
-            for (int i = 0; i < container.newList.Proudcts.Count; i++)
+            for (int i = 0; i < container.NewList.Proudcts.Count; i++)
             {
-                if (container.newList.Proudcts[i].Name.ToLower().Equals(container._proudct.Name.ToLower()))
+                if (container.NewList.Proudcts[i].Name.ToLower().Equals(container._proudct.Name.ToLower()))
                 {
-                    container.newList.Proudcts[i].Quantity -= container._proudct.Quantity;
+                    container.NewList.Proudcts[i].Quantity -= container._proudct.Quantity;
                 }
             }
 
-            for (int i = 0; i < container.cart.Proudcts.Count; i++)
+            for (int i = 0; i < container.Cart.Proudcts.Count; i++)
             {
-                if (container.cart.Proudcts[i].Name.ToLower().Equals(container._proudct.Name.ToLower()))
+                if (container.Cart.Proudcts[i].Name.ToLower().Equals(container._proudct.Name.ToLower()))
                 {
-                    container.cart.Proudcts[i].Quantity += container._proudct.Quantity;
-                    container.cart.Proudcts[i].Price += (container._proudct.Quantity * container._proudct.Price);
-                    container.cart.Total += (container._proudct.Quantity * container._proudct.Price);
+                    container.Cart.Proudcts[i].Quantity += container._proudct.Quantity;
+                    container.Cart.Proudcts[i].Price += (container._proudct.Quantity * container._proudct.Price);
+                    container.Cart.Total += (container._proudct.Quantity * container._proudct.Price);
                     return View("Shopping", container);
                 }
             }
             container._proudct.Price = (container._proudct.Quantity * container._proudct.Price);
-            container.cart.Proudcts.Add(container._proudct);
-            container.cart.Total += container._proudct.Price;
+            container.Cart.Proudcts.Add(container._proudct);
+            container.Cart.Total += container._proudct.Price;
             return View("Shopping", container);
         }
 
         [HttpPost]
         [ActionName("Delete_product")]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete_product(ContainerDataOnlineShopping container)
+        public IActionResult Delete_product(shoppingOL container)
         {
             if (container.action is "NewList")
-                container.newList.Proudcts.Remove(container.newList.Proudcts.Find(r => r.Name == container._proudct.Name));
+                container.NewList.Proudcts.Remove(container.NewList.Proudcts.Find(r => r.Name == container._proudct.Name));
             else
             {
-                Proudct proudct2 = container.newList.Proudcts.Find(r => r.Name == container._proudct.Name);
+                Proudct proudct2 = container.NewList.Proudcts.Find(r => r.Name == container._proudct.Name);
                 proudct2.Quantity += container._proudct.Quantity;
-                container.cart.Total -= container._proudct.Price;
-                container.cart.Proudcts.Remove(container.cart.Proudcts.Find(r => r.Name == container._proudct.Name));
+                container.Cart.Total -= container._proudct.Price;
+                container.Cart.Proudcts.Remove(container.Cart.Proudcts.Find(r => r.Name == container._proudct.Name));
 
             }
             return View("Shopping", container);
@@ -96,11 +97,11 @@ namespace ShopWithMe.Controllers
         [HttpPost]
         [ActionName("Add_Update")]
         [ValidateAntiForgeryToken]
-        public ActionResult Add_Update(ContainerDataOnlineShopping container)
+        public ActionResult Add_Update(shoppingOL container)
         {
-            if (container.newList.Proudcts.Count >= 1)
+            if (container.NewList.Proudcts.Count >= 1)
             {
-                foreach (Proudct item in container.newList.Proudcts)
+                foreach (Proudct item in container.NewList.Proudcts)
                 {
                     if (item.Name.ToLower().Equals(container._proudct.Name.ToLower()))
                     {
@@ -109,7 +110,7 @@ namespace ShopWithMe.Controllers
                     }
                 }
             }
-            container.newList.Proudcts.Add(container._proudct);
+            container.NewList.Proudcts.Add(container._proudct);
             return View("Shopping", container);
         }
 
@@ -117,14 +118,14 @@ namespace ShopWithMe.Controllers
         [HttpPost]
         [ActionName("Save_and_finish")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Save_and_finish(ContainerDataOnlineShopping container)
+        public async Task<ActionResult> Save_and_finish(shoppingOL container)
         {
             var ls = await cosmosDbService_Item.GetItemsAsync("SELECT * FROM c");
             ls = await GetItemByName(ls.ToList());
             List<Item> Favorites = ls.ToList();
-            NewList list = await cosmosDbService_NewList.Get_Newlist_Async(container.newList.Id);
+            NewList list = await cosmosDbService_NewList.Get_Newlist_Async(container.NewList.Id);
             bool bo = false;
-            foreach (Proudct product in container.newList.Proudcts)
+            foreach (Proudct product in container.NewList.Proudcts)
             {
                 if (!Favorites.Exists(x => x.Name.ToLower() == product.Name.ToLower()))
                 {
@@ -142,11 +143,11 @@ namespace ShopWithMe.Controllers
             {
                 await cosmosDbService_NewList.Update_NewList_Async(list.Id, list);
             }
-            container.cart.Id = Guid.NewGuid().ToString();
-            container.cart.UserId = User.Identity.Name;
-            container.cart.Date_Time = DateTime.Now;
-            await cosmosDbService_Invoice.Add_Invoice_Async(container.cart);
-            return RedirectToAction("Details", "Invoice", new { id = container.cart.Id });
+            container.Cart.Id = Guid.NewGuid().ToString();
+            container.Cart.UserId = User.Identity.Name;
+            container.Cart.Date_Time = DateTime.Now;
+            await cosmosDbService_Invoice.Add_Invoice_Async(container.Cart);
+            return RedirectToAction("Details", "Invoice", new { id = container.Cart.Id });
         }
 
         public async Task<IEnumerable<Item>> GetItemByName(List<Item> items)
@@ -165,13 +166,13 @@ namespace ShopWithMe.Controllers
         [HttpPost]
         [ActionName("Invite")]
         [ValidateAntiForgeryToken]
-        public  async Task<ActionResult> Invite(ContainerDataOnlineShopping container,string Email)
+        public async Task<ActionResult> Invite(shoppingOL container, string Email)
         {
             string url = container.CartUrl;
-   
+
             await _emailSender.SendEmailAsync(Email, "Invited", url);
 
-            return RedirectToAction("Shopping", "OnlineShopping", new { id = container.cart.Id });
+            return RedirectToAction("Shopping", "OnlineShopping", new { id = container.Cart.Id });
         }
     }
 }

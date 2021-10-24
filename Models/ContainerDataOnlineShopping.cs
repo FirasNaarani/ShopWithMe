@@ -24,7 +24,6 @@ namespace ShopWithMe.Models
             cart.Proudcts = new();
             this.newList = new();
             _proudct = new();
-            this.CartUrl = "";
         }
     }
 }
