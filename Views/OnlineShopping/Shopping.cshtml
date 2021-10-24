@@ -1,9 +1,11 @@
 ﻿@using ShopWithMe
+@using ShopWithMe.Models
 @model shoppingOL
 
 @{
     ViewData["Title"] = "Shopping";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    List<Proudct> products = Model.NewList.Proudcts;
 }
 
 <head>
@@ -155,7 +157,7 @@
 
                         @*Scroll REQURE*@
                         <tbody style="width: 100%; height: 150px; overflow: scroll;">
-                            @foreach (Proudct proudct in Model.NewList.Proudcts)
+                            @foreach (Proudct proudct in products)
                             {
                                 <tr>
                                     <td scope="col">
@@ -200,7 +202,7 @@
 
                                             @Html.HiddenFor(m => m.Cart.NameCart);
                                             <input id="Cart.Total" name="Cart.Total" type="hidden" value="@Model.Cart.Total" />
-
+                                            @Html.HiddenFor(m => m.Cart.Id);
                                             @Html.HiddenFor(m => m.Cart.Total);
 
                                             @for (int j = 0; j < Model.Cart.Proudcts.Count; j++)
@@ -271,10 +273,12 @@
                                                 @Html.HiddenFor(m => m.NewList.Proudcts[j].Quantity);
                                             }
                                             @Html.HiddenFor(m => m.Cart.NameCart)
+                                            @Html.HiddenFor(m => m.Cart.Id);
                                             <input id="Cart.Total" name="Cart.Total" type="hidden" value="@Model.Cart.Total" />
                                             @for (int j = 0; j < Model.Cart.Proudcts.Count; j++)
                                             {
                                                 @Html.HiddenFor(m => m.Cart.Proudcts[j].Name);
+
                                                 @Html.HiddenFor(m => m.Cart.Proudcts[j].Quantity);
                                                 @Html.HiddenFor(m => m.Cart.Proudcts[j].Price);
 
@@ -355,35 +359,36 @@
                                     </td>
 
                                     @*Delete*@
-                                    <td>
-                                        @using (Html.BeginForm("Delete_product", "OnlineShopping", FormMethod.Post))
+                                <td>
+                                    @using (Html.BeginForm("Delete_product", "OnlineShopping", FormMethod.Post))
+                                    {
+                                        @Html.HiddenFor(m => m.id);
+                                        <input id="_proudct.Name" name="_proudct.Name" type="hidden" value="@proudct.Name" />
+                                        <input id="_proudct.Price" name="_proudct.Price" type="hidden" value="@proudct.Price" />
+                                        <input id="action" name="action" type="hidden" value="Cart" />
+                                        @Html.Hidden("NewList.NameList", Model.NewList.NameList)
+                                        @Html.HiddenFor(m => m.NewList.Cart_Amount);
+                                        @Html.HiddenFor(m => m.NewList.Id);
+                                        @Html.HiddenFor(m => m.NewList.UserId);
+                                        @for (int j = 0; j < Model.NewList.Proudcts.Count; j++)
                                         {
-                                            @Html.HiddenFor(m => m.id);
-                                            <input id="_proudct.Name" name="_proudct.Name" type="hidden" value="@proudct.Name" />
-                                            <input id="_proudct.Price" name="_proudct.Price" type="hidden" value="@proudct.Price" />
-                                            <input id="action" name="action" type="hidden" value="Cart" />
-                                            @Html.Hidden("NewList.NameList", Model.NewList.NameList)
-                                            @Html.HiddenFor(m => m.NewList.Cart_Amount);
-                                            @Html.HiddenFor(m => m.NewList.Id);
-                                            @Html.HiddenFor(m => m.NewList.UserId);
-                                            @for (int j = 0; j < Model.NewList.Proudcts.Count; j++)
-                                            {
-                                                @Html.HiddenFor(m => m.NewList.Proudcts[j].Name);
-                                                @Html.HiddenFor(m => m.NewList.Proudcts[j].Quantity);
-                                            }
-                                            @Html.HiddenFor(m => m.Cart.NameCart)
-                                            <input id="Cart.Total" name="Cart.Total" type="hidden" value="@Model.Cart.Total" />
-
-                                            @for (int j = 0; j < Model.Cart.Proudcts.Count; j++)
-                                            {
-                                                @Html.HiddenFor(m => m.Cart.Proudcts[j].Name);
-                                                @Html.HiddenFor(m => m.Cart.Proudcts[j].Quantity);
-                                                @Html.HiddenFor(m => m.Cart.Proudcts[j].Price);
-
-                                            }
-                                            <input type="submit" value="Delete" class="btn btn-primary" style="width:150px;background-color:darkred" />
+                                            @Html.HiddenFor(m => m.NewList.Proudcts[j].Name);
+                                            @Html.HiddenFor(m => m.NewList.Proudcts[j].Quantity);
                                         }
-                                    </td>
+                                        @Html.HiddenFor(m => m.Cart.NameCart)
+                                        @Html.HiddenFor(m => m.Cart.Id);
+                                        <input id="Cart.Total" name="Cart.Total" type="hidden" value="@Model.Cart.Total" />
+
+                                        @for (int j = 0; j < Model.Cart.Proudcts.Count; j++)
+                                        {
+                                            @Html.HiddenFor(m => m.Cart.Proudcts[j].Name);
+                                            @Html.HiddenFor(m => m.Cart.Proudcts[j].Quantity);
+                                            @Html.HiddenFor(m => m.Cart.Proudcts[j].Price);
+
+                                        }
+                                        <input type="submit" value="Delete" class="btn btn-primary" style="width:150px;background-color:darkred" />
+                                    }
+                                </td>
 
                                 </tr>
                             }
@@ -411,6 +416,7 @@
                                     }
                                     @Html.HiddenFor(m => m.Cart.NameCart)
                                     <input id="Cart.Total" name="Cart.Total" type="hidden" value="@Model.Cart.Total" />
+                                    @Html.HiddenFor(m => m.Cart.Id);
 
                                     @for (int j = 0; j < Model.Cart.Proudcts.Count; j++)
                                     {
@@ -442,4 +448,29 @@
 
         </center>
     </div>
+    
+    <input type="hidden" value="@Model.id" id="cart-id" />
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script>
+
+        var connection = new signalR.HubConnectionBuilder().withUrl("/shopping").build();
+        connection.start().then(function () {
+        }).catch(function (err) {
+            return console.error(err.toString());
+        });
+
+        var cartId = document.querySelector("#cart-id").value;
+        connection.on("UserConnected", function (connectionId) {
+            connection.invoke("AddToGroup", cartId, connectionId);
+            console.log("User with the connection id of" + connectionId + " has been added to group " + cartId);
+
+        });
+
+        connection.on("ShoppingListUpdated", function () {
+            var tbody = document.querySelector("#");
+            tbody.innerHTML = "";
+            var HTML = ``;
+
+        })
+    </script>
 </body>

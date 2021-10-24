@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using ShopWithMe.Hubs_Service;
 using ShopWithMe.Models;
 using ShopWithMe.Services;
 using System;
@@ -11,6 +13,7 @@ namespace ShopWithMe.Controllers
 {
     public class OnlineShoppingController : Controller
     {
+        private readonly IHubContext<Shopping> _hubContext;
         private readonly ICosmosDb_shoppingOL_Service cosmosDbService_Shopping;
         private readonly ICosmosDb_NewList_Service cosmosDbService_NewList;
         private readonly ICosmosDb_Invoice_Service cosmosDbService_Invoice;
@@ -19,8 +22,9 @@ namespace ShopWithMe.Controllers
         private readonly IHttpContextAccessor _httpContextAccessor;
 
 
-        public OnlineShoppingController(ICosmosDb_NewList_Service cosmosDbServicenewlist, ICosmosDb_Invoice_Service cosmosDbServiceinvoice, ICosmosDbService cosmosDbService_item, IEmailSender emailSender, ICosmosDb_shoppingOL_Service cosmosDbService_shopping, IHttpContextAccessor httpContextAccessor)
+        public OnlineShoppingController(ICosmosDb_NewList_Service cosmosDbServicenewlist, ICosmosDb_Invoice_Service cosmosDbServiceinvoice, ICosmosDbService cosmosDbService_item, IEmailSender emailSender, ICosmosDb_shoppingOL_Service cosmosDbService_shopping, IHttpContextAccessor httpContextAccessor, IHubContext<Shopping> hubContext)
         {
+            _hubContext = hubContext;
             cosmosDbService_NewList = cosmosDbServicenewlist;
             cosmosDbService_Invoice = cosmosDbServiceinvoice;
             cosmosDbService_Item = cosmosDbService_item;
@@ -50,7 +54,7 @@ namespace ShopWithMe.Controllers
         [HttpPost]
         [ActionName("AddToCart")]
         [ValidateAntiForgeryToken]
-        public IActionResult AddToCart(shoppingOL container)
+        public async Task<IActionResult> AddToCart(shoppingOL container)
         {
             for (int i = 0; i < container.NewList.Proudcts.Count; i++)
             {
@@ -73,13 +77,16 @@ namespace ShopWithMe.Controllers
             container._proudct.Price = (container._proudct.Quantity * container._proudct.Price);
             container.Cart.Proudcts.Add(container._proudct);
             container.Cart.Total += container._proudct.Price;
+
+            await cosmosDbService_Shopping.Update_shoppingOL_Async(container.id, container);
+            await _hubContext.Clients.All.SendAsync("ShoppingListUpdated");
             return View("Shopping", container);
         }
 
         [HttpPost]
         [ActionName("Delete_product")]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete_product(shoppingOL container)
+        public async Task<IActionResult> Delete_product(shoppingOL container)
         {
             if (container.action is "NewList")
                 container.NewList.Proudcts.Remove(container.NewList.Proudcts.Find(r => r.Name == container._proudct.Name));
@@ -91,13 +98,15 @@ namespace ShopWithMe.Controllers
                 container.Cart.Proudcts.Remove(container.Cart.Proudcts.Find(r => r.Name == container._proudct.Name));
 
             }
+            await cosmosDbService_Shopping.Update_shoppingOL_Async(container.id, container);
+
             return View("Shopping", container);
         }
 
         [HttpPost]
         [ActionName("Add_Update")]
         [ValidateAntiForgeryToken]
-        public ActionResult Add_Update(shoppingOL container)
+        public async Task<IActionResult> Add_Update(shoppingOL container)
         {
             if (container.NewList.Proudcts.Count >= 1)
             {
@@ -111,6 +120,8 @@ namespace ShopWithMe.Controllers
                 }
             }
             container.NewList.Proudcts.Add(container._proudct);
+            await cosmosDbService_Shopping.Update_shoppingOL_Async(container.id, container);
+
             return View("Shopping", container);
         }
 
@@ -147,6 +158,8 @@ namespace ShopWithMe.Controllers
             container.Cart.UserId = User.Identity.Name;
             container.Cart.Date_Time = DateTime.Now;
             await cosmosDbService_Invoice.Add_Invoice_Async(container.Cart);
+            await cosmosDbService_Shopping.Update_shoppingOL_Async(container.id, container);
+
             return RedirectToAction("Details", "Invoice", new { id = container.Cart.Id });
         }
 
