@@ -48,7 +48,7 @@
     <style>
         .flip-card {
             background-color: transparent;
-            width: 250px;
+            width: 200px;
             height: 350px;
             perspective: 1000px;
         }
@@ -88,17 +88,28 @@
     </style>
 
     <style>
-        h1 {
+        h1, h2 {
             color: black;
             text-shadow: 2px 2px 5px gold;
             font-family: Garamond, serif;
         }
 
         body {
-            background-image: url(https://th.bing.com/th/id/R.e93aaddb7ddb98515a92e602ab248b69?rik=%2bDtyIpBVEaEavQ&pid=ImgRaw&r=0);
+            background-image: url(https://th.bing.com/th/id/R.da35bf6aebd0f0d50f47ab2d6c220333?rik=dKWAwZW%2bsPBSVA&riu=http%3a%2f%2fwww.webbcountytx.gov%2f2018%2fInnerPageBackground%2fimages%2fContactUs%2fContact2.png&ehk=gnpz7vpw2zSdwLvokW8kDUfGJEs2HNwCTA0DgmF2XMw%3d&risl=&pid=ImgRaw&r=0);
+            background-position: center;
             background-repeat: no-repeat;
-            background-attachment: fixed;
             background-size: cover;
+        }
+
+        .div_marquee {
+            box-shadow: 5px 10px gold;
+            background-color: darkgrey;
+            font-family: 'Copperplate Gothic';
+            font-size: x-large;
+            text-shadow: 2px 2px 8px gold;
+            height: 30px;
+            margin: 35px;
+            opacity: 90%;
         }
     </style>
 </head>
@@ -110,52 +121,62 @@
             <h1>.:: Contact Us ::.</h1>
             <hr />
         </div>
+
+
+        @*Firas Naarani Card*@
+        <div class="flip-card" style="float:left">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <img src="~/Pic/FirasNaarani_Pic.jpeg" alt="Avatar" style="width:200px;height:350px;">
+                </div>
+                <div class="flip-card-back">
+                    <h2>Firas Naarani</h2>
+                    <hr />
+                    <p>Software Engineer 💻</p>
+                    <p>Israel, Nazareth</p>
+                    <hr />
+                    <a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/Firas1Naarani/" class="fa fa-facebook"></a>
+                    <a href="mailto:firas.narani.1999@gmail.com" class="fa fa-google"></a>
+                    <a target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/firas_naarani/" class="fa fa-instagram"></a>
+                    <a target="_blank" rel="noopener noreferrer" href="https://wa.me/+972522918291" class="fa fa-whatsapp"></a>
+                    <a target="_blank" rel="noopener noreferrer" href="https://github.com/FirasNaarani" class="fa fa-github"></a>
+                    <hr />
+                    <img src="https://th.bing.com/th/id/R.e93aaddb7ddb98515a92e602ab248b69?rik=%2bDtyIpBVEaEavQ&pid=ImgRaw&r=0" style="width:180px" />
+                </div>
+            </div>
+        </div>
+
+        @*Yakir Panker Card*@
+        <div class="flip-card" style="float:right">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <img src="~/Pic/YakirPanker_Pic.jpeg" alt="Avatar" style="width:200px;height:350px;">
+                </div>
+                <div class="flip-card-back">
+                    <h2>Yakir Panker</h2>
+                    <hr />
+                    <p>Software Engineer 💻</p>
+                    <p>Israel, Afula</p>
+                    <hr />
+                    <a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/yakir.panker" class="fa fa-facebook"></a>
+                    <a href="mailto:yakirpanker@gmail.com" class="fa fa-google"></a>
+                    <a target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/in/yakir_panker/" class="fa fa-linkedin"></a>
+                    <a target="_blank" rel="noopener noreferrer" href="https://wa.me/+972526696799" class="fa fa-whatsapp"></a>
+                    <a target="_blank" rel="noopener noreferrer" href="https://github.com/YakirPanker" class="fa fa-github"></a>
+                    <hr />
+                    <img src="https://th.bing.com/th/id/R.e93aaddb7ddb98515a92e602ab248b69?rik=%2bDtyIpBVEaEavQ&pid=ImgRaw&r=0" style="width:180px" />
+                </div>
+            </div>
+        </div>
+        
+        <div style="height:320px"></div>
     </center>
-
-    @*Firas Naarani Card*@
-    <div class="flip-card" style="float:left">
-        <div class="flip-card-inner">
-            <div class="flip-card-front">
-                <img src="~/Pic/FirasNaarani_Pic.jpeg" alt="Avatar" style="width:250px;height:350px;">
-            </div>
-            <div class="flip-card-back">
-                <h1>Firas Naarani</h1>
-                <hr />
-                <p>Software Engineer 💻</p>
-                <p>Israel, Nazareth</p>
-                <hr />
-                <a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/Firas1Naarani/" class="fa fa-facebook"></a>
-                <a href="mailto:firas.narani.1999@gmail.com" class="fa fa-google"></a>
-                <a target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/firas_naarani/" class="fa fa-instagram"></a>
-                <a target="_blank" rel="noopener noreferrer" href="https://wa.me/+972522918291" class="fa fa-whatsapp"></a>
-                <a target="_blank" rel="noopener noreferrer" href="https://github.com/FirasNaarani" class="fa fa-github"></a>
-                <hr />
-                <p>.:: We Here For You ::.</p>
-            </div>
-        </div>
-    </div>
-
-    @*Yakir Panker Card*@
-    <div class="flip-card" style="float:right">
-        <div class="flip-card-inner">
-            <div class="flip-card-front">
-                <img src="~/Pic/YakirPanker_Pic.jpeg" alt="Avatar" style="width:250px;height:350px;">
-            </div>
-            <div class="flip-card-back">
-                <h1>Yakir Panker</h1>
-                <hr />
-                <p>Software Engineer 💻</p>
-                <p>Israel, Afula</p>
-                <hr />
-                <a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/yakir.panker" class="fa fa-facebook"></a>
-                <a href="mailto:yakirpanker@gmail.com" class="fa fa-google"></a>
-                <a target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/in/yakir_panker/" class="fa fa-linkedin"></a>
-                <a target="_blank" rel="noopener noreferrer" href="https://wa.me/+972526696799" class="fa fa-whatsapp"></a>
-                <a target="_blank" rel="noopener noreferrer" href="https://github.com/YakirPanker" class="fa fa-github"></a>
-                <hr />
-                <p>.:: We Here For You ::.</p>
-            </div>
-        </div>
+    
+    @*Marquee*@
+    <div class="div_marquee">
+        <marquee behavior="scroll" direction="right" scrollamount="12">
+            <p> .:: Shop With Me Always With You ::. </p>
+        </marquee>
     </div>
 
 </body>
