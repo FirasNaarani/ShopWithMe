@@ -163,3 +163,4 @@ C:\GitHub\ShopWithMe\obj\Debug\net5.0\Razor\Views\Invoice\Delete.cshtml.g.cs
 C:\GitHub\ShopWithMe\bin\Debug\net5.0\SendGrid.dll
 C:\GitHub\ShopWithMe\bin\Debug\net5.0\StarkbankEcdsa.dll
 C:\GitHub\ShopWithMe\obj\Debug\net5.0\ShopWithMe.csproj.AssemblyReference.cache
+C:\GitHub\ShopWithMe\obj\Debug\net5.0\Razor\Views\OnlineShopping\Frame.cshtml.g.cs

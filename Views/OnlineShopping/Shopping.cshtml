@@ -1,9 +1,11 @@
 ﻿@using ShopWithMe
+@using ShopWithMe.Models
 @model shoppingOL
 
 @{
     ViewData["Title"] = "Shopping";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    List<Proudct> products = Model.NewList.Proudcts;
 }
 
 <head>
@@ -65,6 +67,14 @@
         }
     </style>
 
+    @*<meta http-equiv="Refresh" content="10">
+        <script language="JavaScript">
+            function myrefresh() {
+                window.location.reload();
+            }
+            setTimeout('myrefresh ()'، 4000);
+        </script>*@
+
     @*Email Sender Function*@
     <script>
         function myFunction() {
@@ -83,6 +93,7 @@
 
             @*Title*@
             <div>
+                <div id="test"></div>
                 <h1>.:: Shopping ::.</h1>
                 <hr />
                 @if (User.Identity.Name == Model.NewList.UserId)
@@ -102,10 +113,17 @@
                             </tr>
                         </table>
                         <input id="Cart.Id" name="Cart.Id" type="hidden" value="@Model.Cart.Id" />
+                        @Html.HiddenFor(m => m.id);
                         @Html.Hidden("NewList.NameList", Model.NewList.NameList)
                         @Html.HiddenFor(m => m.NewList.Cart_Amount);
                         @Html.HiddenFor(m => m.NewList.Id);
                         @Html.HiddenFor(m => m.NewList.UserId);
+
+                        @for (int j = 0; j < Model.NewList.Proudcts.Count; j++)
+                        {
+                            @Html.HiddenFor(m => m.NewList.Proudcts[j].Name);
+                            <input type="hidden" @Html.Raw(string.Format($"id=NewList.Proudcts[{j}].Quantity name= NewList.Proudcts[{j}].Quantity value= {Model.NewList.Proudcts[j].Quantity}")) />
+                        }
                     }
                     @*<script type="text/javascript">
                             $(document).ready(function () {
@@ -155,7 +173,7 @@
 
                         @*Scroll REQURE*@
                         <tbody style="width: 100%; height: 150px; overflow: scroll;">
-                            @foreach (Proudct proudct in Model.NewList.Proudcts)
+                            @foreach (Proudct proudct in products)
                             {
                                 <tr>
                                     <td scope="col">
@@ -171,6 +189,8 @@
                                         @using (Html.BeginForm("AddToCart", "OnlineShopping", FormMethod.Post))
                                         {
                                             @Html.HiddenFor(m => m.id);
+                                            @Html.HiddenFor(m => m.Cart.UserId);
+                                            @Html.HiddenFor(m => m.CartUrl);
                                             <input id="_proudct.Name" name="_proudct.Name" type="hidden" value="@proudct.Name" />
                                             <table>
                                                 <tr>
@@ -200,7 +220,7 @@
 
                                             @Html.HiddenFor(m => m.Cart.NameCart);
                                             <input id="Cart.Total" name="Cart.Total" type="hidden" value="@Model.Cart.Total" />
-
+                                            @Html.HiddenFor(m => m.Cart.Id);
                                             @Html.HiddenFor(m => m.Cart.Total);
 
                                             @for (int j = 0; j < Model.Cart.Proudcts.Count; j++)
@@ -271,10 +291,12 @@
                                                 @Html.HiddenFor(m => m.NewList.Proudcts[j].Quantity);
                                             }
                                             @Html.HiddenFor(m => m.Cart.NameCart)
+                                            @Html.HiddenFor(m => m.Cart.Id);
                                             <input id="Cart.Total" name="Cart.Total" type="hidden" value="@Model.Cart.Total" />
                                             @for (int j = 0; j < Model.Cart.Proudcts.Count; j++)
                                             {
                                                 @Html.HiddenFor(m => m.Cart.Proudcts[j].Name);
+
                                                 @Html.HiddenFor(m => m.Cart.Proudcts[j].Quantity);
                                                 @Html.HiddenFor(m => m.Cart.Proudcts[j].Price);
 
@@ -372,6 +394,7 @@
                                                 @Html.HiddenFor(m => m.NewList.Proudcts[j].Quantity);
                                             }
                                             @Html.HiddenFor(m => m.Cart.NameCart)
+                                            @Html.HiddenFor(m => m.Cart.Id);
                                             <input id="Cart.Total" name="Cart.Total" type="hidden" value="@Model.Cart.Total" />
 
                                             @for (int j = 0; j < Model.Cart.Proudcts.Count; j++)
@@ -411,6 +434,7 @@
                                     }
                                     @Html.HiddenFor(m => m.Cart.NameCart)
                                     <input id="Cart.Total" name="Cart.Total" type="hidden" value="@Model.Cart.Total" />
+                                    @Html.HiddenFor(m => m.Cart.Id);
 
                                     @for (int j = 0; j < Model.Cart.Proudcts.Count; j++)
                                     {
@@ -442,4 +466,29 @@
 
         </center>
     </div>
+
+    <input type="hidden" value="@Model.id" id="cart-id" />
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script>
+
+        var connection = new signalR.HubConnectionBuilder().withUrl("/shopping").build();
+        connection.start().then(function () {
+        }).catch(function (err) {
+            return console.error(err.toString());
+        });
+
+        var cartId = document.querySelector("#cart-id").value;
+        connection.on("UserConnected", function (connectionId) {
+            connection.invoke("AddToGroup", cartId, connectionId);
+            console.log("User with the connection id of" + connectionId + " has been added to group " + cartId);
+
+        });
+
+        connection.on("ShoppingListUpdated", function () {
+            var tbody = document.querySelector("test");
+            tbody.innerHTML = "";
+            var HTML = `<h1>FirasTest<h1/>`;
+            tbody.innerHTML = HTML;
+        })
+    </script>
 </body>
