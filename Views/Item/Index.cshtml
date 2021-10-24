@@ -7,6 +7,13 @@
 
 <head>
     <style>
+        body {
+            background-image: url(https://smallaxepeppers.com/wp-content/uploads/2019/05/Fresh-farmers-market-fruit-and-vegetable-from-above-with-copy-space-e1432779252529.jpg);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
         h1 {
             text-shadow: 2px 2px 5px gold;
             font-family: Garamond, serif;
@@ -60,7 +67,7 @@
     </style>
 </head>
 
-<body style="background-image: url(https://smallaxepeppers.com/wp-content/uploads/2019/05/Fresh-farmers-market-fruit-and-vegetable-from-above-with-copy-space-e1432779252529.jpg)">
+<body>
     <div style="opacity:90%;background-color:darkgrey">
         <center>
 
@@ -80,57 +87,57 @@
                     <tbody>
                         @for (int i = 0, j = 0; i < Model.ToArray().Length;)
                         {
-                            <tr>
-                                @while (j <= 4)
+                        <tr>
+                            @while (j <= 4)
                                 {
-                                    <td>
-                                        <div class="div">
-                                            <table class="item_table">
-                                                <thead>
-                                                    <tr>
-                                                        <th colspan="3">
-                                                            @Html.DisplayFor(modelItem => Model.ToArray()[i].Name)
-                                                        </th>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="3">
-                                                            @Html.DisplayFor(modelItem => Model.ToArray()[i].Type)
-                                                        </td>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td colspan="3">
-                                                            <img src="@Model.ToArray()[i].Url" alt="Empty Photo" width="100" height="100" />
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            @Html.ActionLink("Edit", "Edit", new { id = Model.ToArray()[i].Id, name = Model.ToArray()[i].Name })
+                            <td>
+                                <div class="div">
+                                    <table class="item_table">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="3">
+                                                    @Html.DisplayFor(modelItem => Model.ToArray()[i].Name)
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3">
+                                                    @Html.DisplayFor(modelItem => Model.ToArray()[i].Type)
+                                                </td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="3">
+                                                    <img src="@Model.ToArray()[i].Url" alt="Empty Photo" width="100" height="100" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    @Html.ActionLink("Edit", "Edit", new { id = Model.ToArray()[i].Id, name = Model.ToArray()[i].Name })
 
-                                                        </td>
-                                                        <td>
-                                                            @Html.ActionLink("Details", "Details", new { id = Model.ToArray()[i].Id, name = Model.ToArray()[i].Name })
-                                                        </td>
-                                                        <td>
-                                                            @Html.ActionLink("Delete", "Delete", new { id = Model.ToArray()[i].Id, name = Model.ToArray()[i].Name })
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
+                                                </td>
+                                                <td>
+                                                    @Html.ActionLink("Details", "Details", new { id = Model.ToArray()[i].Id, name = Model.ToArray()[i].Name })
+                                                </td>
+                                                <td>
+                                                    @Html.ActionLink("Delete", "Delete", new { id = Model.ToArray()[i].Id, name = Model.ToArray()[i].Name })
+                                                </td>
+                                            </tr>
+                                        </tbody>
 
-                                            </table>
-                                        </div>
-                                    </td>
+                                    </table>
+                                </div>
+                            </td>
                                     j++;
                                     i++;
-                                    @if (i >= Model.ToArray().Length)
+                            @if (i >= Model.ToArray().Length)
                                         break;
                                 }
-                                @if (j > 4)
+                            @if (j > 4)
                                 {
                                     j = 0;
                                 }
-                            </tr>
+                        </tr>
                         }
                     </tbody>
                 </table>
