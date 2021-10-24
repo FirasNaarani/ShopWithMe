@@ -12,17 +12,18 @@ using System.Threading.Tasks;
 
 namespace ShopWithMe.Controllers
 {
-    
+
     public class NewListController : Controller
     {
-
+        private readonly ICosmosDb_shoppingOL_Service _cosmosDbService_Shopping;
         private readonly ICosmosDb_NewList_Service _cosmosDbService;
         private readonly ICosmosDbService _cosmosDbService1;
 
-        public NewListController(ICosmosDb_NewList_Service cosmosDbService, ICosmosDbService cosmosDbService1)
+        public NewListController(ICosmosDb_NewList_Service cosmosDbService, ICosmosDbService cosmosDbService1, ICosmosDb_shoppingOL_Service cosmosDb_Shopping)
         {
             _cosmosDbService = cosmosDbService;
             _cosmosDbService1 = cosmosDbService1;
+            _cosmosDbService_Shopping = cosmosDb_Shopping;
         }
 
         [ActionName("Index")]
@@ -180,6 +181,7 @@ namespace ShopWithMe.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Start(ContainerDataNewList container)
         {
+            shoppingOL shopping = new();
             foreach (Proudct product in container.newList.Proudcts)
             {
                 if (!container.Favorites.Exists(x => x.Name.ToLower() == product.Name.ToLower()))
@@ -203,7 +205,18 @@ namespace ShopWithMe.Controllers
             {
                 await _cosmosDbService.Update_NewList_Async(container.newList.Id, container.newList);
             }
-            return RedirectToAction("Shopping", "OnlineShopping", new { id = container.newList.Id });
+
+            shopping.id = Guid.NewGuid().ToString();
+            shopping.NewList = container.newList;
+            shopping.Cart = new();
+            shopping.Cart.Id = Guid.NewGuid().ToString();
+            shopping.Cart.UserId = User.Identity.Name;
+            shopping.Cart.NameCart = $"{container.newList.NameList} Cart";
+            shopping.Cart.Proudcts = new();
+
+            await _cosmosDbService_Shopping.Add_shoppingOL_Async(shopping);
+
+            return RedirectToAction("Shopping", "OnlineShopping", new { id = shopping.id });
         }
 
     }

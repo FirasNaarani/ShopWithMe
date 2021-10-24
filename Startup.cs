@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Identity.Web.UI;
 using Microsoft.Identity.Web;
+using Microsoft.AspNetCore.Http;
 
 namespace ShopWithMe
 {
@@ -41,10 +42,26 @@ namespace ShopWithMe
             services.AddControllersWithViews();
             services.AddSingleton<ICosmosDb_Invoice_Service>(InitializeCosmosClientInstanceAsync2(Configuration.GetSection("CosmosDb2")).GetAwaiter().GetResult());
 
+            //CosmosDb_Shopping
+            services.AddControllersWithViews();
+            services.AddSingleton<ICosmosDb_shoppingOL_Service>(InitializeCosmosClientInstanceAsync3(Configuration.GetSection("CosmosDb3")).GetAwaiter().GetResult());
+
             //B2C
             services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme).AddMicrosoftIdentityWebApp(Configuration.GetSection("AzureAdB2C"));
             services.AddControllersWithViews();
             services.AddRazorPages().AddMicrosoftIdentityUI();
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+
+
+            services.AddTransient<IEmailSender, SendGridEmailSender>();
+            services.Configure<SendGridEmailSenderOptions>(options =>
+            {
+                options.ApiKey = Configuration["ExternalProviders:SendGrid:ApiKey"];
+                options.SenderEmail = Configuration["ExternalProviders:SendGrid:SenderEmail"];
+                options.SenderName = Configuration["ExternalProviders:SendGrid:SenderName"];
+            });
         }
 
         /// <summary>
@@ -101,6 +118,23 @@ namespace ShopWithMe
             return cosmosDbService;
         }
 
+        /// <summary>
+        /// Creates a Cosmos DB database and a container with the specified partition key. 
+        /// </summary>
+        /// <returns></returns>
+        private static async Task<CosmosDB_shoppingOL> InitializeCosmosClientInstanceAsync3(IConfigurationSection configurationSection)
+        {
+            string databaseName = configurationSection.GetSection("DatabaseName").Value;
+            string containerName = configurationSection.GetSection("ContainerName").Value;
+            string account = configurationSection.GetSection("Account").Value;
+            string key = configurationSection.GetSection("Key").Value;
+            Microsoft.Azure.Cosmos.CosmosClient client = new Microsoft.Azure.Cosmos.CosmosClient(account, key);
+            CosmosDB_shoppingOL cosmosDbService = new CosmosDB_shoppingOL(client, databaseName, containerName);
+            Microsoft.Azure.Cosmos.DatabaseResponse database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
+            await database.Database.CreateContainerIfNotExistsAsync(containerName, "/id");
+
+            return cosmosDbService;
+        }
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
