@@ -143,7 +143,7 @@ namespace ShopWithMe.Controllers
             {
                 await cosmosDbService_NewList.Update_NewList_Async(list.Id, list);
             }
-            container.Cart.Id = Guid.NewGuid().ToString();
+            container.Cart.Id = container.id;
             container.Cart.UserId = User.Identity.Name;
             container.Cart.Date_Time = DateTime.Now;
             await cosmosDbService_Invoice.Add_Invoice_Async(container.Cart);

@@ -11,11 +11,14 @@ namespace ShopWithMe.Controllers
     public class InvoiceController : Controller
     {
         private readonly ICosmosDb_Invoice_Service _cosmosDbService;
+        private readonly ICosmosDb_shoppingOL_Service _cosmosDbService_Shopping;
 
 
-        public InvoiceController(ICosmosDb_Invoice_Service cosmosDbService)
+
+        public InvoiceController(ICosmosDb_Invoice_Service cosmosDbService, ICosmosDb_shoppingOL_Service cosmosDb_ShoppingOL)
         {
             _cosmosDbService = cosmosDbService;
+            _cosmosDbService_Shopping = cosmosDb_ShoppingOL;
         }
 
         [ActionName("Index")]
@@ -68,6 +71,7 @@ namespace ShopWithMe.Controllers
         public async Task<ActionResult> DeleteConfirmedAsync(string id)
         {
             await _cosmosDbService.Delete_Invoice_Async(id);
+            await _cosmosDbService_Shopping.Delete_shoppingOL_Async(id);
             return RedirectToAction("Index");
         }
 

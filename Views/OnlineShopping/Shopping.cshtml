@@ -108,19 +108,19 @@
                         @Html.HiddenFor(m => m.NewList.UserId);
                     }
                     @*<script type="text/javascript">
-                        $(document).ready(function () {
-                            $(document).on('click', '.Sender', function () {
-                                $.ajax({
-                                    url: 'get_table.php',
-                                    method: "Post",
-                                    dataType: 'json',
-                                    success: function (response) {
-                                        $('#table-to-refresh').html(response);
-                                    }
+                            $(document).ready(function () {
+                                $(document).on('click', '.Sender', function () {
+                                    $.ajax({
+                                        url: 'get_table.php',
+                                        method: "Post",
+                                        dataType: 'json',
+                                        success: function (response) {
+                                            $('#table-to-refresh').html(response);
+                                        }
+                                    });
                                 });
                             });
-                        });
-                    </script>*@
+                        </script>*@
                 }
             </div>
 
@@ -170,6 +170,7 @@
                                     <td scope="col">
                                         @using (Html.BeginForm("AddToCart", "OnlineShopping", FormMethod.Post))
                                         {
+                                            @Html.HiddenFor(m => m.id);
                                             <input id="_proudct.Name" name="_proudct.Name" type="hidden" value="@proudct.Name" />
                                             <table>
                                                 <tr>
@@ -216,6 +217,7 @@
                                         <td scope="col">
                                             @using (Html.BeginForm("Delete_product", "OnlineShopping", FormMethod.Post))
                                             {
+                                                @Html.HiddenFor(m => m.id);
 
                                                 <input id="_proudct.Name" name="_proudct.Name" type="hidden" value="@proudct.Name" />
                                                 <input id="action" name="action" type="hidden" value="NewList" />
@@ -258,6 +260,7 @@
                                     <td colspan="5">
                                         @using (Html.BeginForm("Add_Update", "OnlineShopping", FormMethod.Post))
                                         {
+                                            @Html.HiddenFor(m => m.id);
                                             @Html.Hidden("NewList.NameList", Model.NewList.NameList)
                                             @Html.HiddenFor(m => m.NewList.Cart_Amount);
                                             @Html.HiddenFor(m => m.NewList.Id);
@@ -355,6 +358,7 @@
                                     <td>
                                         @using (Html.BeginForm("Delete_product", "OnlineShopping", FormMethod.Post))
                                         {
+                                            @Html.HiddenFor(m => m.id);
                                             <input id="_proudct.Name" name="_proudct.Name" type="hidden" value="@proudct.Name" />
                                             <input id="_proudct.Price" name="_proudct.Price" type="hidden" value="@proudct.Price" />
                                             <input id="action" name="action" type="hidden" value="Cart" />
@@ -395,7 +399,7 @@
                                 @using (Html.BeginForm("Save_and_finish", "OnlineShopping", FormMethod.Post))
                                 {
                                     <input id="action" name="action" type="hidden" value="Cart" />
-
+                                    @Html.HiddenFor(m => m.id);
                                     @Html.Hidden("NewList.NameList", Model.NewList.NameList)
                                     @Html.HiddenFor(m => m.NewList.Cart_Amount);
                                     @Html.HiddenFor(m => m.NewList.Id);
