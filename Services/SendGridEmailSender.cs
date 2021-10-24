@@ -10,9 +10,7 @@ namespace ShopWithMe.Services
 {
     public class SendGridEmailSender : IEmailSender
     {
-        public SendGridEmailSender(
-            IOptions<SendGridEmailSenderOptions> options
-            )
+        public SendGridEmailSender(IOptions<SendGridEmailSenderOptions> options)
         {
             this.Options = options.Value;
         }

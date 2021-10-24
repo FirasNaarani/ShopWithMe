@@ -38,13 +38,17 @@ namespace ShopWithMe.Controllers
         {
             shoppingOL container = new();
             container = await cosmosDbService_Shopping.Get_shoppingOL_Async(id);
-            container.CartUrl = string.Concat(
-                        HttpContext.Request.Scheme,
-                        "://",
-                        HttpContext.Request.Host.ToUriComponent(),
-                        HttpContext.Request.PathBase.ToUriComponent(),
-                        HttpContext.Request.Path.ToUriComponent(),
-                        HttpContext.Request.QueryString.ToUriComponent());
+            if (container.CartUrl == null)
+            {
+                container.CartUrl = string.Concat(
+                                        HttpContext.Request.Scheme,
+                                        "://",
+                                        HttpContext.Request.Host.ToUriComponent(),
+                                        HttpContext.Request.PathBase.ToUriComponent(),
+                                        HttpContext.Request.Path.ToUriComponent(),
+                                        HttpContext.Request.QueryString.ToUriComponent());
+
+            }
 
             await cosmosDbService_Shopping.Update_shoppingOL_Async(id, container);
 
@@ -185,7 +189,7 @@ namespace ShopWithMe.Controllers
 
             await _emailSender.SendEmailAsync(Email, "Invited", url);
 
-            return RedirectToAction("Shopping", "OnlineShopping", new { id = container.Cart.Id });
+            return RedirectToAction("Shopping", "OnlineShopping", new { id = container.id });
         }
     }
 }

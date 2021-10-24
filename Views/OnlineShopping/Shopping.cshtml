@@ -66,14 +66,14 @@
             background-color: #f2f2f2;
         }
     </style>
-    
+
     @*<meta http-equiv="Refresh" content="10">
-    <script language="JavaScript">
-        function myrefresh() {
-            window.location.reload();
-        }
-        setTimeout('myrefresh ()'، 4000);
-    </script>*@
+        <script language="JavaScript">
+            function myrefresh() {
+                window.location.reload();
+            }
+            setTimeout('myrefresh ()'، 4000);
+        </script>*@
 
     @*Email Sender Function*@
     <script>
@@ -113,10 +113,17 @@
                             </tr>
                         </table>
                         <input id="Cart.Id" name="Cart.Id" type="hidden" value="@Model.Cart.Id" />
+                        @Html.HiddenFor(m => m.id);
                         @Html.Hidden("NewList.NameList", Model.NewList.NameList)
                         @Html.HiddenFor(m => m.NewList.Cart_Amount);
                         @Html.HiddenFor(m => m.NewList.Id);
                         @Html.HiddenFor(m => m.NewList.UserId);
+
+                        @for (int j = 0; j < Model.NewList.Proudcts.Count; j++)
+                        {
+                            @Html.HiddenFor(m => m.NewList.Proudcts[j].Name);
+                            <input type="hidden" @Html.Raw(string.Format($"id=NewList.Proudcts[{j}].Quantity name= NewList.Proudcts[{j}].Quantity value= {Model.NewList.Proudcts[j].Quantity}")) />
+                        }
                     }
                     @*<script type="text/javascript">
                             $(document).ready(function () {
@@ -370,36 +377,36 @@
                                     </td>
 
                                     @*Delete*@
-                                <td>
-                                    @using (Html.BeginForm("Delete_product", "OnlineShopping", FormMethod.Post))
-                                    {
-                                        @Html.HiddenFor(m => m.id);
-                                        <input id="_proudct.Name" name="_proudct.Name" type="hidden" value="@proudct.Name" />
-                                        <input id="_proudct.Price" name="_proudct.Price" type="hidden" value="@proudct.Price" />
-                                        <input id="action" name="action" type="hidden" value="Cart" />
-                                        @Html.Hidden("NewList.NameList", Model.NewList.NameList)
-                                        @Html.HiddenFor(m => m.NewList.Cart_Amount);
-                                        @Html.HiddenFor(m => m.NewList.Id);
-                                        @Html.HiddenFor(m => m.NewList.UserId);
-                                        @for (int j = 0; j < Model.NewList.Proudcts.Count; j++)
+                                    <td>
+                                        @using (Html.BeginForm("Delete_product", "OnlineShopping", FormMethod.Post))
                                         {
-                                            @Html.HiddenFor(m => m.NewList.Proudcts[j].Name);
-                                            @Html.HiddenFor(m => m.NewList.Proudcts[j].Quantity);
-                                        }
-                                        @Html.HiddenFor(m => m.Cart.NameCart)
-                                        @Html.HiddenFor(m => m.Cart.Id);
-                                        <input id="Cart.Total" name="Cart.Total" type="hidden" value="@Model.Cart.Total" />
+                                            @Html.HiddenFor(m => m.id);
+                                            <input id="_proudct.Name" name="_proudct.Name" type="hidden" value="@proudct.Name" />
+                                            <input id="_proudct.Price" name="_proudct.Price" type="hidden" value="@proudct.Price" />
+                                            <input id="action" name="action" type="hidden" value="Cart" />
+                                            @Html.Hidden("NewList.NameList", Model.NewList.NameList)
+                                            @Html.HiddenFor(m => m.NewList.Cart_Amount);
+                                            @Html.HiddenFor(m => m.NewList.Id);
+                                            @Html.HiddenFor(m => m.NewList.UserId);
+                                            @for (int j = 0; j < Model.NewList.Proudcts.Count; j++)
+                                            {
+                                                @Html.HiddenFor(m => m.NewList.Proudcts[j].Name);
+                                                @Html.HiddenFor(m => m.NewList.Proudcts[j].Quantity);
+                                            }
+                                            @Html.HiddenFor(m => m.Cart.NameCart)
+                                            @Html.HiddenFor(m => m.Cart.Id);
+                                            <input id="Cart.Total" name="Cart.Total" type="hidden" value="@Model.Cart.Total" />
 
-                                        @for (int j = 0; j < Model.Cart.Proudcts.Count; j++)
-                                        {
-                                            @Html.HiddenFor(m => m.Cart.Proudcts[j].Name);
-                                            @Html.HiddenFor(m => m.Cart.Proudcts[j].Quantity);
-                                            @Html.HiddenFor(m => m.Cart.Proudcts[j].Price);
+                                            @for (int j = 0; j < Model.Cart.Proudcts.Count; j++)
+                                            {
+                                                @Html.HiddenFor(m => m.Cart.Proudcts[j].Name);
+                                                @Html.HiddenFor(m => m.Cart.Proudcts[j].Quantity);
+                                                @Html.HiddenFor(m => m.Cart.Proudcts[j].Price);
 
+                                            }
+                                            <input type="submit" value="Delete" class="btn btn-primary" style="width:150px;background-color:darkred" />
                                         }
-                                        <input type="submit" value="Delete" class="btn btn-primary" style="width:150px;background-color:darkred" />
-                                    }
-                                </td>
+                                    </td>
 
                                 </tr>
                             }
@@ -459,7 +466,7 @@
 
         </center>
     </div>
-    
+
     <input type="hidden" value="@Model.id" id="cart-id" />
     <script src="~/js/signalr/dist/browser/signalr.js"></script>
     <script>
