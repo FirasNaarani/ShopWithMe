@@ -287,8 +287,11 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                @using (Html.BeginForm("Save", "NewList"))
+                                                @using (Html.BeginForm("Update", "NewList", FormMethod.Post))
                                                 {
+                                                    @Html.HiddenFor(m => m.newList.Id);
+                                                    @Html.HiddenFor(m => m.newList.UserId);
+
                                                     @for (int j = 0; j < Model.newList.Proudcts.Count; j++)
                                                     {
                                                         @Html.HiddenFor(m => m.newList.Proudcts[j].Name);
@@ -325,7 +328,7 @@
                                                             </tr>
                                                             <tr>
                                                                 <td>
-                                                                    <input type="submit" value="Save" class="btn btn-primary" style="width:100px; font-family: Garamond, serif" />
+                                                                    <input type="submit" value="Update" class="btn btn-primary" style="width:100px; font-family: Garamond, serif" />
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -348,7 +351,7 @@
             @if (Model.newList.Proudcts.Count is not 0)
             {
                 <div style="width:200px">
-                    @using (Html.BeginForm("Start", "NewList"))
+                    @using (Html.BeginForm("Start", "NewList", FormMethod.Post))
                     {
                         @Html.HiddenFor(m => m.newList.NameList);
                         @Html.HiddenFor(m => m.newList.Cart_Amount);

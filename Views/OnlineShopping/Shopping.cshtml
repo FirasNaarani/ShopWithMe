@@ -88,13 +88,7 @@
         }
     </style>
 
-    @*<meta http-equiv="Refresh" content="10">
-        <script language="JavaScript">
-            function myrefresh() {
-                window.location.reload();
-            }
-            setTimeout('myrefresh ()'، 4000);
-        </script>*@
+    <meta http-equiv="refresh" content="10; url=@Model.CartUrl" />
 
     @*Email Sender Function*@
     <script>
@@ -514,11 +508,5 @@
 
         });
 
-        connection.on("ShoppingListUpdated", function () {
-            var tbody = document.querySelector("test");
-            tbody.innerHTML = "";
-            var HTML = `<h1>FirasTest<h1/>`;
-            tbody.innerHTML = HTML;
-        })
     </script>
 </body>
