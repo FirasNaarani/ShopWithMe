@@ -9,6 +9,9 @@
 }
 
 <head>
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+
     <style>
         body {
             background-image: url(https://smallaxepeppers.com/wp-content/uploads/2019/05/Fresh-farmers-market-fruit-and-vegetable-from-above-with-copy-space-e1432779252529.jpg);
@@ -87,14 +90,15 @@
             /*overflow-x: hidden;*/ /* Hide the horizontal scroll */
         }
     </style>
-
     @*<meta http-equiv="Refresh" content="10">
-        <script language="JavaScript">
-            function myrefresh() {
-                window.location.reload();
-            }
-            setTimeout('myrefresh ()'، 4000);
-        </script>*@
+    <script language="JavaScript">
+
+        function myrefresh() {
+            window.location.reload();
+        }
+        setTimeout('myrefresh ()'، 4000);
+    </script>*@
+
 
     @*Email Sender Function*@
     <script>
@@ -109,13 +113,15 @@
 </head>
 
 <body>
+
     <div style="opacity:90%;background-color:darkgrey;">
         <center>
 
+
             @*Title*@
             <div>
-                <div id="test"></div>
                 <h1>.:: Shopping ::.</h1>
+
                 <hr />
                 @if (User.Identity.Name == Model.NewList.UserId)
                 {
@@ -229,7 +235,7 @@
 
                                             @Html.Hidden("NewList.NameList", Model.NewList.NameList)
                                             @Html.HiddenFor(m => m.NewList.Cart_Amount);
-                                            Html.Hidden("NewList.Id", Model.NewList.Id);
+                                            @Html.Hidden("NewList.Id", Model.NewList.Id);
                                             @*@Html.HiddenFor(m => m.NewList.Id);*@
                                             @Html.HiddenFor(m => m.NewList.UserId);
 
@@ -301,6 +307,7 @@
                                     <td colspan="5">
                                         @using (Html.BeginForm("Add_Update", "OnlineShopping", FormMethod.Post))
                                         {
+
                                             @Html.HiddenFor(m => m.id);
                                             @Html.Hidden("NewList.NameList", Model.NewList.NameList)
                                             @Html.HiddenFor(m => m.NewList.Cart_Amount);
@@ -487,6 +494,13 @@
 
         </center>
     </div>
+    <div id="ip"> <span id="printCalendar"></span></div>
+
+
+    
+    <meta http-equiv="refresh" content="10;url=@Model.CartUrl" id="reload" />
+
+
 
     <input type="hidden" value="@Model.id" id="cart-id" />
     <script src="~/js/signalr/dist/browser/signalr.js"></script>
@@ -505,11 +519,22 @@
 
         });
 
-        connection.on("ShoppingListUpdated", function () {
-            var tbody = document.querySelector("test");
-            tbody.innerHTML = "";
-            var HTML = `<h1>FirasTest<h1/>`;
-            tbody.innerHTML = HTML;
-        })
+        //connection.on("ShoppingListUpdated", function () {
+        //    window.onload = function () {
+        //        var reload = document.getElementById('reload');
+        //        reload.parentNode.removeChild(reload);
+        //    }
+        //})
+
+
+
+
+                        //connection.on("ShoppingListUpdated", function (container) {
+                        //    var tbody = document.querySelector("test");
+                        //    tbody.innerHTML = "";
+                        //    var HTML = `<h1>FirasTest<h1/>`;
+                        //    tbody.innerHTML = HTML;
+                        //})
     </script>
+
 </body>

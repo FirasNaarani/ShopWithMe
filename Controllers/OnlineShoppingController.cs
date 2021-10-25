@@ -7,6 +7,7 @@ using ShopWithMe.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace ShopWithMe.Controllers
@@ -19,10 +20,9 @@ namespace ShopWithMe.Controllers
         private readonly ICosmosDb_Invoice_Service cosmosDbService_Invoice;
         private readonly ICosmosDbService cosmosDbService_Item;
         private readonly IEmailSender _emailSender;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
 
-        public OnlineShoppingController(ICosmosDb_NewList_Service cosmosDbServicenewlist, ICosmosDb_Invoice_Service cosmosDbServiceinvoice, ICosmosDbService cosmosDbService_item, IEmailSender emailSender, ICosmosDb_shoppingOL_Service cosmosDbService_shopping, IHttpContextAccessor httpContextAccessor, IHubContext<Shopping> hubContext)
+        public OnlineShoppingController(ICosmosDb_NewList_Service cosmosDbServicenewlist, ICosmosDb_Invoice_Service cosmosDbServiceinvoice, ICosmosDbService cosmosDbService_item, IEmailSender emailSender, ICosmosDb_shoppingOL_Service cosmosDbService_shopping, IHubContext<Shopping> hubContext)
         {
             _hubContext = hubContext;
             cosmosDbService_NewList = cosmosDbServicenewlist;
@@ -30,7 +30,6 @@ namespace ShopWithMe.Controllers
             cosmosDbService_Item = cosmosDbService_item;
             cosmosDbService_Shopping = cosmosDbService_shopping;
             _emailSender = emailSender;
-            _httpContextAccessor = httpContextAccessor;
         }
 
         [ActionName("Shopping")]
@@ -74,18 +73,21 @@ namespace ShopWithMe.Controllers
                 {
                     container.Cart.Proudcts[i].Quantity += container._proudct.Quantity;
                     container.Cart.Proudcts[i].Price += (container._proudct.Quantity * container._proudct.Price);
+
                     container.Cart.Total += (container._proudct.Quantity * container._proudct.Price);
-                    return View("Shopping", container);
+                    return RedirectToAction("Shopping", new { id = container.id }); ;
                 }
             }
             container._proudct.Price = (container._proudct.Quantity * container._proudct.Price);
             container.Cart.Proudcts.Add(container._proudct);
             container.Cart.Total += container._proudct.Price;
-
+            //var opt = new JsonSerializerOptions() { WriteIndented = true };
+            //var strJson = JsonSerializer.Serialize<shoppingOL>(container, opt);
             await cosmosDbService_Shopping.Update_shoppingOL_Async(container.id, container);
-            await _hubContext.Clients.All.SendAsync("ShoppingListUpdated");
-            return View("Shopping", container);
+            await _hubContext.Clients.All.SendAsync("ShoppingListUpdated", container);
+            return RedirectToAction("Shopping",new { id= container.id });
         }
+
 
         [HttpPost]
         [ActionName("Delete_product")]
@@ -104,7 +106,7 @@ namespace ShopWithMe.Controllers
             }
             await cosmosDbService_Shopping.Update_shoppingOL_Async(container.id, container);
 
-            return View("Shopping", container);
+            return RedirectToAction("Shopping", new { id = container.id }); ;
         }
 
         [HttpPost]
@@ -119,14 +121,14 @@ namespace ShopWithMe.Controllers
                     if (item.Name.ToLower().Equals(container._proudct.Name.ToLower()))
                     {
                         item.Quantity = container._proudct.Quantity;
-                        return View("Shopping", container);
+                        return RedirectToAction("Shopping", new { id = container.id }); ;
                     }
                 }
             }
             container.NewList.Proudcts.Add(container._proudct);
             await cosmosDbService_Shopping.Update_shoppingOL_Async(container.id, container);
 
-            return View("Shopping", container);
+            return RedirectToAction("Shopping", new { id = container.id }); ;
         }
 
 
@@ -162,8 +164,7 @@ namespace ShopWithMe.Controllers
             container.Cart.UserId = User.Identity.Name;
             container.Cart.Date_Time = DateTime.Now;
             await cosmosDbService_Invoice.Add_Invoice_Async(container.Cart);
-            await cosmosDbService_Shopping.Update_shoppingOL_Async(container.id, container);
-
+            await cosmosDbService_Shopping.Delete_shoppingOL_Async(container.id);
             return RedirectToAction("Details", "Invoice", new { id = container.Cart.Id });
         }
 
@@ -191,5 +192,8 @@ namespace ShopWithMe.Controllers
 
             return RedirectToAction("Shopping", "OnlineShopping", new { id = container.id });
         }
+
+
+
     }
 }
