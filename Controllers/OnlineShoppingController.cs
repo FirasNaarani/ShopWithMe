@@ -85,7 +85,7 @@ namespace ShopWithMe.Controllers
             //var strJson = JsonSerializer.Serialize<shoppingOL>(container, opt);
             await cosmosDbService_Shopping.Update_shoppingOL_Async(container.id, container);
             await _hubContext.Clients.All.SendAsync("ShoppingListUpdated", container);
-            return RedirectToAction("Shopping",new { id= container.id });
+            return RedirectToAction("Shopping", new { id = container.id });
         }
 
 
