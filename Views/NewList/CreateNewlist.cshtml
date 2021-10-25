@@ -8,6 +8,13 @@
 
 <head>
     <style>
+        body {
+            background-image: url(https://smallaxepeppers.com/wp-content/uploads/2019/05/Fresh-farmers-market-fruit-and-vegetable-from-above-with-copy-space-e1432779252529.jpg);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
         h1 {
             text-shadow: 2px 2px 5px gold;
             font-family: Garamond, serif;
@@ -17,6 +24,7 @@
             border: 5px double gold;
             width: 100%;
             text-align: center;
+            table-layout: fixed;
         }
 
         th {
@@ -35,7 +43,7 @@
             }
 
         .div_scroll {
-            width:100%;
+            width: 100%;
             height: 250px;
             overflow: auto;
         }
@@ -43,15 +51,16 @@
         .item_table {
             background-color: lightgray;
             text-align: center;
-            width: fit-content;
+            width: 100%;
             border: 5px double gold;
-            margin: 0px 20px 20px 20px;
+            margin: 10px;
+            padding: 20px;
         }
     </style>
 </head>
 
-<body style="background-image: url(https://smallaxepeppers.com/wp-content/uploads/2019/05/Fresh-farmers-market-fruit-and-vegetable-from-above-with-copy-space-e1432779252529.jpg)">
-    <div style="opacity:90%;background-color:darkgrey;width:fit-content">
+<body>
+    <div style="opacity:90%;background-color:darkgrey">
         <center>
 
             @*Title*@
@@ -61,7 +70,7 @@
             </div>
 
             @*Table 1*@
-            <div style="width:fit-content">
+            <div style="width:contain">
                 <table class="table_List">
                     <thead>
                         <tr>
@@ -79,32 +88,32 @@
                                         @foreach (Proudct product in Model.newList.Proudcts)
                                         {
 
-                                            <li class="list-group-item" style="font-family: Garamond, serif; text-shadow: 2px 2px 5px gold; font-size: large;">
-                                                @Html.DisplayFor(modelItem => product.Name) @Html.DisplayFor(modelItem => product.Quantity)
+                                        <li class="list-group-item" style="font-family: Garamond, serif; text-shadow: 2px 2px 5px gold; font-size: large;">
+                                            @Html.DisplayFor(modelItem => product.Name) @Html.DisplayFor(modelItem => product.Quantity)
 
-                                                @using (Html.BeginForm("Delete_product", "NewList", FormMethod.Post))
+                                            @using (Html.BeginForm("Delete_product", "NewList", FormMethod.Post))
                                                 {
-                                                    <input id="_proudct.Name" name="_proudct.Name" type="hidden" value="@product.Name" />
-                                                    @for (int j = 0; j < Model.Favorites.Count; j++)
+                                            <input id="_proudct.Name" name="_proudct.Name" type="hidden" value="@product.Name" />
+                                            @for (int j = 0; j < Model.Favorites.Count; j++)
                                                     {
-                                                        @Html.HiddenFor(m => m.Favorites[j].Id);
-                                                        @Html.HiddenFor(m => m.Favorites[j].Name);
-                                                        @Html.HiddenFor(m => m.Favorites[j].Url);
-                                                        @Html.HiddenFor(m => m.Favorites[j].UserId);
-                                                        @Html.HiddenFor(m => m.Favorites[j].Type);
+                                            @Html.HiddenFor(m => m.Favorites[j].Id);
+                                            @Html.HiddenFor(m => m.Favorites[j].Name);
+                                            @Html.HiddenFor(m => m.Favorites[j].Url);
+                                            @Html.HiddenFor(m => m.Favorites[j].UserId);
+                                            @Html.HiddenFor(m => m.Favorites[j].Type);
                                                     }
-                                                    @Html.Hidden("Page_type", Model.Page_type);
-                                                    @Html.Hidden("newList.NameList", Model.newList.NameList)
-                                                    @Html.HiddenFor(m => m.newList.Cart_Amount);
+                                            @Html.Hidden("Page_type", Model.Page_type);
+                                            @Html.Hidden("newList.NameList", Model.newList.NameList)
+                                            @Html.HiddenFor(m => m.newList.Cart_Amount);
 
-                                                    @for (int j = 0; j < Model.newList.Proudcts.Count; j++)
+                                            @for (int j = 0; j < Model.newList.Proudcts.Count; j++)
                                                     {
-                                                        @Html.HiddenFor(m => m.newList.Proudcts[j].Name);
-                                                        @Html.HiddenFor(m => m.newList.Proudcts[j].Quantity);
+                                            @Html.HiddenFor(m => m.newList.Proudcts[j].Name);
+                                            @Html.HiddenFor(m => m.newList.Proudcts[j].Quantity);
                                                     }
-                                                    <input type="submit" value="Delete" class="btn btn-primary" />
+                                            <input type="submit" value="Delete" class="btn btn-primary" />
                                                 }
-                                            </li>
+                                        </li>
                                         }
                                     </ul>
                                 </div>
@@ -118,76 +127,76 @@
                                         <tbody>
                                             @for (int i = 0, c = 0; i < Model.Favorites.Count;)
                                             {
-                                                <tr>
-                                                    @while (c < 3)
+                                            <tr>
+                                                @while (c < 3)
                                                     {
-                                                        <td>
-                                                            <div class="div">
-                                                                <table class="item_table">
-                                                                    <tbody>
-                                                                        <tr>
-                                                                            <th>
-                                                                                @Html.DisplayFor(m => Model.Favorites[i].Name)
-                                                                            </th>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>
-                                                                                <img src="@Model.Favorites[i].Url" alt="@Model.Favorites[i].Name" width="100" height="100" />
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>
-                                                                                @using (Html.BeginForm("Add_Update", "NewList", FormMethod.Post))
+                                                <td>
+                                                    <div class="div">
+                                                        <table class="item_table">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <th>
+                                                                        @Html.DisplayFor(m => Model.Favorites[i].Name)
+                                                                    </th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <img src="@Model.Favorites[i].Url" alt="@Model.Favorites[i].Name" width="100" height="100" />
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        @using (Html.BeginForm("Add_Update", "NewList", FormMethod.Post))
                                                                                 {
-                                                                                    <input id="_proudct.Name" name="_proudct.Name" type="hidden" value="@Model.Favorites[i].Name" />
+                                                                        <input id="_proudct.Name" name="_proudct.Name" type="hidden" value="@Model.Favorites[i].Name" />
 
-                                                                                    @for (int j = 0; j < Model.Favorites.Count; j++)
+                                                                        @for (int j = 0; j < Model.Favorites.Count; j++)
                                                                                     {
-                                                                                        @Html.HiddenFor(m => m.Favorites[j].Id);
-                                                                                        @Html.HiddenFor(m => m.Favorites[j].Name);
-                                                                                        @Html.HiddenFor(m => m.Favorites[j].Url);
-                                                                                        @Html.HiddenFor(m => m.Favorites[j].UserId);
-                                                                                        @Html.HiddenFor(m => m.Favorites[j].Type);
+                                                                        @Html.HiddenFor(m => m.Favorites[j].Id);
+                                                                        @Html.HiddenFor(m => m.Favorites[j].Name);
+                                                                        @Html.HiddenFor(m => m.Favorites[j].Url);
+                                                                        @Html.HiddenFor(m => m.Favorites[j].UserId);
+                                                                        @Html.HiddenFor(m => m.Favorites[j].Type);
                                                                                     }
-                                                                                    @Html.Hidden("Page_type", Model.Page_type);
-                                                                                    @Html.Hidden("newList.NameList", Model.newList.NameList)
-                                                                                    @Html.HiddenFor(m => m.newList.Cart_Amount);
+                                                                        @Html.Hidden("Page_type", Model.Page_type);
+                                                                        @Html.Hidden("newList.NameList", Model.newList.NameList)
+                                                                        @Html.HiddenFor(m => m.newList.Cart_Amount);
 
-                                                                                    @for (int j = 0; j < Model.newList.Proudcts.Count; j++)
+                                                                        @for (int j = 0; j < Model.newList.Proudcts.Count; j++)
                                                                                     {
-                                                                                        @Html.HiddenFor(m => m.newList.Proudcts[j].Name);
-                                                                                        @Html.HiddenFor(m => m.newList.Proudcts[j].Quantity);
+                                                                        @Html.HiddenFor(m => m.newList.Proudcts[j].Name);
+                                                                        @Html.HiddenFor(m => m.newList.Proudcts[j].Quantity);
                                                                                     }
 
-                                                                                    <table width="100%">
-                                                                                        @*Quantity & Add Button*@
-                                                                                        <tr>
-                                                                                            <td width="60%">
-                                                                                                <input id="_proudct.Quantity" name="_proudct.Quantity" type="number" placeholder="Enter Quantity" min="1" max="50" required="required" style="width:130px" />
-                                                                                            </td>
-                                                                                            <td width="40%">
-                                                                                                <input type="submit" value="Add" class="btn btn-primary" style=" font-family: Garamond, serif " />
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                    </table>
+                                                                        <table width="100%">
+                                                                            @*Quantity & Add Button*@
+                                                                            <tr>
+                                                                                <td width="60%">
+                                                                                    <input id="_proudct.Quantity" name="_proudct.Quantity" type="number" placeholder="Enter Quantity" min="1" max="50" required="required" style="width:130px" />
+                                                                                </td>
+                                                                                <td width="40%">
+                                                                                    <input type="submit" value="Add" class="btn btn-primary" style=" font-family: Garamond, serif " />
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
                                                                                 }
-                                                                            </td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </td>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </td>
                                                         c++;
                                                         i++;
-                                                        @if (i >= Model.Favorites.Count)
+                                                @if (i >= Model.Favorites.Count)
                                                             break;
                                                     }
-                                                    @if (c > 2)
+                                                @if (c > 2)
                                                     {
                                                         c = 0;
                                                     }
 
-                                                </tr>
+                                            </tr>
                                             }
                                         </tbody>
                                     </table>
@@ -200,58 +209,62 @@
             </div>
 
             @*Table 2*@
-            <div style="width:fit-content">
+            <div style="width:contain">
                 <table>
                     <tbody>
                         <tr>
                             @*Add New Item*@
-                            <td width="50%">
+                            <td>
                                 <table class="table_List">
                                     <tbody>
                                         <tr>
                                             <td>
                                                 @using (Html.BeginForm("Add_Update", "NewList", FormMethod.Post))
                                                 {
-                                                    @for (int j = 0; j < Model.Favorites.Count; j++)
+                                                @for (int j = 0; j < Model.Favorites.Count; j++)
                                                     {
-                                                        @Html.HiddenFor(m => m.Favorites[j].Id);
-                                                        @Html.HiddenFor(m => m.Favorites[j].Name);
-                                                        @Html.HiddenFor(m => m.Favorites[j].Url);
-                                                        @Html.HiddenFor(m => m.Favorites[j].UserId);
-                                                        @Html.HiddenFor(m => m.Favorites[j].Type);
+                                                @Html.HiddenFor(m => m.Favorites[j].Id);
+                                                @Html.HiddenFor(m => m.Favorites[j].Name);
+                                                @Html.HiddenFor(m => m.Favorites[j].Url);
+                                                @Html.HiddenFor(m => m.Favorites[j].UserId);
+                                                @Html.HiddenFor(m => m.Favorites[j].Type);
                                                     }
-                                                    @Html.Hidden("Page_type", Model.Page_type);
-                                                    @Html.Hidden("newList.NameList", Model.newList.NameList)
-                                                    @Html.HiddenFor(m => m.newList.Cart_Amount);
+                                                @Html.Hidden("Page_type", Model.Page_type);
+                                                @Html.Hidden("newList.NameList", Model.newList.NameList)
+                                                @Html.HiddenFor(m => m.newList.Cart_Amount);
 
-                                                    @for (int j = 0; j < Model.newList.Proudcts.Count; j++)
+                                                @for (int j = 0; j < Model.newList.Proudcts.Count; j++)
                                                     {
-                                                        @Html.HiddenFor(m => m.newList.Proudcts[j].Name);
-                                                        @Html.HiddenFor(m => m.newList.Proudcts[j].Quantity);
+                                                @Html.HiddenFor(m => m.newList.Proudcts[j].Name);
+                                                @Html.HiddenFor(m => m.newList.Proudcts[j].Quantity);
                                                     }
                                                     /*Table*/
-                                                    <table>
-                                                        <thead>
-                                                            <tr>
-                                                                <th colspan="2">
-                                                                    .:: Add New Item ::.
-                                                                </th>
-                                                            </tr>
-                                                            <tr>
-                                                                <td width="50%">
-                                                                    <input id="_proudct.Name" name="_proudct.Name" type="text" placeholder="Enter Name Item" style="width:100%" />
-                                                                </td>
-                                                                <td width="50%">
-                                                                    <input id="_proudct.Quantity" name="_proudct.Quantity" type="number" placeholder="Enter Quantity" min="1" max="100" required="required" style="width:100%" />
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td colspan="2">
-                                                                    <input type="submit" value="Add" class="btn btn-primary" style="width:100px; font-family: Garamond, serif" />
-                                                                </td>
-                                                            </tr>
-                                                        </thead>
-                                                    </table>
+                                                <table style="width:100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>
+                                                                .:: Add New Item ::.
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <input id="_proudct.Name" name="_proudct.Name" type="text" placeholder="Enter Name Item" style="width:180px" />
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input id="_proudct.Quantity" name="_proudct.Quantity" type="number" placeholder="Enter Quantity" min="1" max="100" required="required" style="width:180px" />
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="submit" value="Add" class="btn btn-primary" style="width:100px; font-family: Garamond, serif" />
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
                                                 }
                                             </td>
                                         </tr>
@@ -260,50 +273,54 @@
                             </td>
 
                             @*Last Step*@
-                            <td width="50%">
+                            <td>
                                 <table class="table_List">
                                     <tbody>
                                         <tr>
                                             <td>
                                                 @using (Html.BeginForm("Save", "NewList"))
                                                 {
-                                                    @for (int j = 0; j < Model.newList.Proudcts.Count; j++)
+                                                @for (int j = 0; j < Model.newList.Proudcts.Count; j++)
                                                     {
-                                                        @Html.HiddenFor(m => m.newList.Proudcts[j].Name);
-                                                        @Html.HiddenFor(m => m.newList.Proudcts[j].Quantity);
+                                                @Html.HiddenFor(m => m.newList.Proudcts[j].Name);
+                                                @Html.HiddenFor(m => m.newList.Proudcts[j].Quantity);
                                                     }
-                                                    @for (int j = 0; j < Model.Favorites.Count; j++)
+                                                @for (int j = 0; j < Model.Favorites.Count; j++)
                                                     {
-                                                        @Html.HiddenFor(m => m.Favorites[j].Id);
-                                                        @Html.HiddenFor(m => m.Favorites[j].Name);
-                                                        @Html.HiddenFor(m => m.Favorites[j].Url);
-                                                        @Html.HiddenFor(m => m.Favorites[j].UserId);
-                                                        @Html.HiddenFor(m => m.Favorites[j].Type);
+                                                @Html.HiddenFor(m => m.Favorites[j].Id);
+                                                @Html.HiddenFor(m => m.Favorites[j].Name);
+                                                @Html.HiddenFor(m => m.Favorites[j].Url);
+                                                @Html.HiddenFor(m => m.Favorites[j].UserId);
+                                                @Html.HiddenFor(m => m.Favorites[j].Type);
                                                     }
 
                                                     /*Table*/
-                                                    <table>
-                                                        <thead>
-                                                            <tr>
-                                                                <th colspan="2">
-                                                                    .:: Last Step ::.
-                                                                </th>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    @Html.TextBoxFor(m => m.newList.NameList, new { @type = "text", @placeholder = "Enter Name List", @required = "required" })
-                                                                </td>
-                                                                <td>
-                                                                    @Html.TextBoxFor(m => m.newList.Cart_Amount, new { @type = "number", @placeholder = "Enter Cart Amount", @required = "required" })
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td colspan="2">
-                                                                    <input type="submit" value="Save" class="btn btn-primary" style="width:100px; font-family: Garamond, serif" />
-                                                                </td>
-                                                            </tr>
-                                                        </thead>
-                                                    </table>
+                                                <table style="width:100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>
+                                                                .:: Last Step ::.
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                @Html.TextBoxFor(m => m.newList.NameList, new { @type = "text", @placeholder = "Enter Name List", @required = "required" })
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                @Html.TextBoxFor(m => m.newList.Cart_Amount, new { @type = "number", @placeholder = "Enter Cart Amount", @required = "required" })
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="submit" value="Save" class="btn btn-primary" style="width:100px; font-family: Garamond, serif" />
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
                                                 }
                                             </td>
                                         </tr>
@@ -321,30 +338,30 @@
             @*Start*@
             @if (Model.newList.Proudcts.Count is not 0)
             {
-                <div style="width:200px">
-                    @using (Html.BeginForm("Start", "NewList"))
+            <div style="width:200px">
+                @using (Html.BeginForm("Start", "NewList"))
                     {
-                        <input id="newList.NameList" name="newList.NameList" type="hidden" value="@Model.newList.NameList" />
+                <input id="newList.NameList" name="newList.NameList" type="hidden" value="@Model.newList.NameList" />
 
-                        @Html.Hidden("Page_type", Model.Page_type);
+                @Html.Hidden("Page_type", Model.Page_type);
 
-                        @for (int j = 0; j < Model.newList.Proudcts.Count; j++)
+                @for (int j = 0; j < Model.newList.Proudcts.Count; j++)
                         {
-                            @Html.HiddenFor(m => m.newList.Proudcts[j].Name);
-                            @Html.HiddenFor(m => m.newList.Proudcts[j].Quantity);
+                @Html.HiddenFor(m => m.newList.Proudcts[j].Name);
+                @Html.HiddenFor(m => m.newList.Proudcts[j].Quantity);
                         }
-                        @for (int j = 0; j < Model.Favorites.Count; j++)
+                @for (int j = 0; j < Model.Favorites.Count; j++)
                         {
-                            @Html.HiddenFor(m => m.Favorites[j].Id);
-                            @Html.HiddenFor(m => m.Favorites[j].Name);
-                            @Html.HiddenFor(m => m.Favorites[j].Url);
-                            @Html.HiddenFor(m => m.Favorites[j].UserId);
-                            @Html.HiddenFor(m => m.Favorites[j].Type);
+                @Html.HiddenFor(m => m.Favorites[j].Id);
+                @Html.HiddenFor(m => m.Favorites[j].Name);
+                @Html.HiddenFor(m => m.Favorites[j].Url);
+                @Html.HiddenFor(m => m.Favorites[j].UserId);
+                @Html.HiddenFor(m => m.Favorites[j].Type);
                         }
-                        <input type="submit" value="Start" class="btn btn-primary" style="width: 200px; background-color: forestgreen; font-family: Garamond, serif" />
+                <input type="submit" value="Start" class="btn btn-primary" style="width: 200px; background-color: forestgreen; font-family: Garamond, serif" />
 
                     }
-                </div>
+            </div>
             }
 
 
