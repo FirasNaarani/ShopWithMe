@@ -119,47 +119,47 @@
                 <hr />
                 @if (User.Identity.Name == Model.NewList.UserId)
                 {
-                @using (Html.BeginForm("Invite", "OnlineShopping", FormMethod.Post))
+                    @using (Html.BeginForm("Invite", "OnlineShopping", FormMethod.Post))
                     {
-                <table>
-                    <tr>
-                        <th scope="col">
-                            <input type="email" id="Email" name="email" placeholder="Friend Email" required>
-                        </th>
-                        <th scope="col" width="200px">
-                            <button id="ShareCart" value="@Model.CartUrl" onclick="myFunction()" style="width:100%;background-color:chartreuse">Invite Friend</button>
-                            <input id="CartUrl" name="CartUrl" type="hidden" />
-                            @*<button class="Sender">Send</button>*@
-                        </th>
-                    </tr>
-                </table>
-                <input id="Cart.Id" name="Cart.Id" type="hidden" value="@Model.Cart.Id" />
-                @Html.HiddenFor(m => m.id);
-                @Html.Hidden("NewList.NameList", Model.NewList.NameList)
-                @Html.HiddenFor(m => m.NewList.Cart_Amount);
-                @Html.HiddenFor(m => m.NewList.Id);
-                @Html.HiddenFor(m => m.NewList.UserId);
+                        <table>
+                            <tr>
+                                <th scope="col">
+                                    <input type="email" id="Email" name="email" placeholder="Friend Email" required>
+                                </th>
+                                <th scope="col" width="200px">
+                                    <button id="ShareCart" value="@Model.CartUrl" onclick="myFunction()" style="width:100%;background-color:chartreuse">Invite Friend</button>
+                                    <input id="CartUrl" name="CartUrl" type="hidden" />
+                                    @*<button class="Sender">Send</button>*@
+                                </th>
+                            </tr>
+                        </table>
+                        <input id="Cart.Id" name="Cart.Id" type="hidden" value="@Model.Cart.Id" />
+                        @Html.HiddenFor(m => m.id);
+                        @Html.Hidden("NewList.NameList", Model.NewList.NameList)
+                        @Html.HiddenFor(m => m.NewList.Cart_Amount);
+                        @Html.HiddenFor(m => m.NewList.Id);
+                        @Html.HiddenFor(m => m.NewList.UserId);
 
-                @for (int j = 0; j < Model.NewList.Proudcts.Count; j++)
+                        @for (int j = 0; j < Model.NewList.Proudcts.Count; j++)
                         {
-                @Html.HiddenFor(m => m.NewList.Proudcts[j].Name);
-                <input type="hidden" @Html.Raw(string.Format($"id=NewList.Proudcts[{j}].Quantity name= NewList.Proudcts[{j}].Quantity value= {Model.NewList.Proudcts[j].Quantity}")) />
+                            @Html.HiddenFor(m => m.NewList.Proudcts[j].Name);
+                            <input type="hidden" @Html.Raw(string.Format($"id=NewList.Proudcts[{j}].Quantity name= NewList.Proudcts[{j}].Quantity value= {Model.NewList.Proudcts[j].Quantity}")) />
                         }
                     }
-                @*<script type="text/javascript">
-                        $(document).ready(function () {
-                            $(document).on('click', '.Sender', function () {
-                                $.ajax({
-                                    url: 'get_table.php',
-                                    method: "Post",
-                                    dataType: 'json',
-                                    success: function (response) {
-                                        $('#table-to-refresh').html(response);
-                                    }
+                    @*<script type="text/javascript">
+                            $(document).ready(function () {
+                                $(document).on('click', '.Sender', function () {
+                                    $.ajax({
+                                        url: 'get_table.php',
+                                        method: "Post",
+                                        dataType: 'json',
+                                        success: function (response) {
+                                            $('#table-to-refresh').html(response);
+                                        }
+                                    });
                                 });
                             });
-                        });
-                    </script>*@
+                        </script>*@
                 }
             </div>
 
@@ -186,7 +186,7 @@
                                 <th scope="col">Add To Cart</th>
                                 @if (User.Identity.Name == Model.NewList.UserId)
                                 {
-                                <th scope="col">Edit</th>
+                                    <th scope="col">Edit</th>
                                 }
 
                             </tr>
@@ -196,151 +196,150 @@
                         <tbody class="tbody_scroll">
                             @foreach (Proudct proudct in products)
                             {
-                            <tr>
-                                <td scope="col">
-                                    <input type="checkbox">
-                                </td>
-                                <td scope="col">
-                                    @Html.DisplayFor(modelItem => proudct.Name)
-                                </td>
-                                <td scope="col">
-                                    @Html.DisplayFor(modelItem => proudct.Quantity)
-                                </td>
-                                <td scope="col">
-                                    @using (Html.BeginForm("AddToCart", "OnlineShopping", FormMethod.Post))
+                                <tr>
+                                    <td scope="col">
+                                        <input type="checkbox">
+                                    </td>
+                                    <td scope="col">
+                                        @Html.DisplayFor(modelItem => proudct.Name)
+                                    </td>
+                                    <td scope="col">
+                                        @Html.DisplayFor(modelItem => proudct.Quantity)
+                                    </td>
+                                    <td scope="col">
+                                        @using (Html.BeginForm("AddToCart", "OnlineShopping", FormMethod.Post))
                                         {
-                                    @Html.HiddenFor(m => m.id);
-                                    @Html.HiddenFor(m => m.Cart.UserId);
-                                    @Html.HiddenFor(m => m.CartUrl);
-                                    <input id="_proudct.Name" name="_proudct.Name" type="hidden" value="@proudct.Name" />
-                                    <table>
-                                        <tr>
-                                            <td>
-                                                <input id="_proudct.Quantity" name="_proudct.Quantity" type="number" placeholder="Enter Quantity" min="1" max="@proudct.Quantity" required="required" style="width:150px" />
-                                            </td>
-                                            <td>
-                                                <input id="_proudct.Price" name="_proudct.Price" type="number" placeholder="Enter Price" min="1" max="100" required="required" style="width:150px" />
-                                            </td>
-                                            <td>
-                                                <input type="submit" value="Add to Cart" class="btn btn-primary" />
-                                            </td>
-                                        </tr>
-                                    </table>
+                                            @Html.HiddenFor(m => m.id);
+                                            @Html.HiddenFor(m => m.Cart.UserId);
+                                            @Html.HiddenFor(m => m.CartUrl);
+                                            <input id="_proudct.Name" name="_proudct.Name" type="hidden" value="@proudct.Name" />
+                                            <table>
+                                                <tr>
+                                                    <td>
+                                                        <input id="_proudct.Quantity" name="_proudct.Quantity" type="number" placeholder="Enter Quantity" min="1" max="@proudct.Quantity" required="required" style="width:150px" />
+                                                    </td>
+                                                    <td>
+                                                        <input id="_proudct.Price" name="_proudct.Price" type="number" placeholder="Enter Price" min="1" max="100" required="required" style="width:150px" />
+                                                    </td>
+                                                    <td>
+                                                        <input type="submit" value="Add to Cart" class="btn btn-primary" />
+                                                    </td>
+                                                </tr>
+                                            </table>
 
-                                    @Html.Hidden("NewList.NameList", Model.NewList.NameList)
-                                    @Html.HiddenFor(m => m.NewList.Cart_Amount);
-                                            Html.Hidden("NewList.Id", Model.NewList.Id);
-                                    @*@Html.HiddenFor(m => m.NewList.Id);*@
-                                    @Html.HiddenFor(m => m.NewList.UserId);
+                                            @Html.Hidden("NewList.NameList", Model.NewList.NameList)
+                                            @Html.HiddenFor(m => m.NewList.Cart_Amount);
+                                            @Html.Hidden("NewList.Id", Model.NewList.Id);
+                                            @Html.HiddenFor(m => m.NewList.UserId);
 
-                                    @for (int j = 0; j < Model.NewList.Proudcts.Count; j++)
+                                            @for (int j = 0; j < Model.NewList.Proudcts.Count; j++)
                                             {
-                                    @Html.HiddenFor(m => m.NewList.Proudcts[j].Name);
-                                    <input type="hidden" @Html.Raw(string.Format($"id=NewList.Proudcts[{j}].Quantity name= NewList.Proudcts[{j}].Quantity value= {Model.NewList.Proudcts[j].Quantity}")) />
+                                                @Html.HiddenFor(m => m.NewList.Proudcts[j].Name);
+                                                <input type="hidden" @Html.Raw(string.Format($"id=NewList.Proudcts[{j}].Quantity name= NewList.Proudcts[{j}].Quantity value= {Model.NewList.Proudcts[j].Quantity}")) />
                                             }
 
-                                    @Html.HiddenFor(m => m.Cart.NameCart);
-                                    <input id="Cart.Total" name="Cart.Total" type="hidden" value="@Model.Cart.Total" />
-                                    @Html.HiddenFor(m => m.Cart.Id);
-                                    @Html.HiddenFor(m => m.Cart.Total);
+                                            @Html.HiddenFor(m => m.Cart.NameCart);
+                                            <input id="Cart.Total" name="Cart.Total" type="hidden" value="@Model.Cart.Total" />
+                                            @Html.HiddenFor(m => m.Cart.Id);
+                                            @Html.HiddenFor(m => m.Cart.Total);
 
-                                    @for (int j = 0; j < Model.Cart.Proudcts.Count; j++)
+                                            @for (int j = 0; j < Model.Cart.Proudcts.Count; j++)
                                             {
-                                    @Html.HiddenFor(m => m.Cart.Proudcts[j].Name);
-                                    @Html.HiddenFor(m => m.Cart.Proudcts[j].Quantity);
-                                    @Html.HiddenFor(m => m.Cart.Proudcts[j].Price);
+                                                @Html.HiddenFor(m => m.Cart.Proudcts[j].Name);
+                                                @Html.HiddenFor(m => m.Cart.Proudcts[j].Quantity);
+                                                @Html.HiddenFor(m => m.Cart.Proudcts[j].Price);
 
                                             }
                                         }
-                                </td>
-                                @if (User.Identity.Name == Model.NewList.UserId)
+                                    </td>
+                                    @if (User.Identity.Name == Model.NewList.UserId)
                                     {
-                                <td scope="col">
-                                    @using (Html.BeginForm("Delete_product", "OnlineShopping", FormMethod.Post))
+                                        <td scope="col">
+                                            @using (Html.BeginForm("Delete_product", "OnlineShopping", FormMethod.Post))
                                             {
-                                    @Html.HiddenFor(m => m.id);
+                                                @Html.HiddenFor(m => m.id);
 
-                                    <input id="_proudct.Name" name="_proudct.Name" type="hidden" value="@proudct.Name" />
-                                    <input id="action" name="action" type="hidden" value="NewList" />
+                                                <input id="_proudct.Name" name="_proudct.Name" type="hidden" value="@proudct.Name" />
+                                                <input id="action" name="action" type="hidden" value="NewList" />
 
-                                    @Html.Hidden("NewList.NameList", Model.NewList.NameList)
-                                    @Html.HiddenFor(m => m.NewList.Cart_Amount);
-                                    @Html.HiddenFor(m => m.NewList.Id);
-                                    @Html.HiddenFor(m => m.NewList.UserId);
-                                    @for (int j = 0; j < Model.NewList.Proudcts.Count; j++)
+                                                @Html.Hidden("NewList.NameList", Model.NewList.NameList)
+                                                @Html.HiddenFor(m => m.NewList.Cart_Amount);
+                                                @Html.HiddenFor(m => m.NewList.Id);
+                                                @Html.HiddenFor(m => m.NewList.UserId);
+                                                @for (int j = 0; j < Model.NewList.Proudcts.Count; j++)
                                                 {
-                                    @Html.HiddenFor(m => m.NewList.Proudcts[j].Name);
-                                    <input type="hidden" @Html.Raw(string.Format($"id=NewList.Proudcts[{j}].Quantity name= NewList.Proudcts[{j}].Quantity value= {Model.NewList.Proudcts[j].Quantity}")) />
+                                                    @Html.HiddenFor(m => m.NewList.Proudcts[j].Name);
+                                                    <input type="hidden" @Html.Raw(string.Format($"id=NewList.Proudcts[{j}].Quantity name= NewList.Proudcts[{j}].Quantity value= {Model.NewList.Proudcts[j].Quantity}")) />
                                                 }
-                                    @Html.HiddenFor(m => m.Cart.NameCart)
-                                    <input id="Cart.Total" name="Cart.Total" type="hidden" value="@Model.Cart.Total" />
+                                                @Html.HiddenFor(m => m.Cart.NameCart)
+                                                <input id="Cart.Total" name="Cart.Total" type="hidden" value="@Model.Cart.Total" />
 
-                                    @for (int j = 0; j < Model.Cart.Proudcts.Count; j++)
+                                                @for (int j = 0; j < Model.Cart.Proudcts.Count; j++)
                                                 {
-                                    @Html.HiddenFor(m => m.Cart.Proudcts[j].Name);
-                                    @Html.HiddenFor(m => m.Cart.Proudcts[j].Quantity);
-                                    @Html.HiddenFor(m => m.Cart.Proudcts[j].Price);
+                                                    @Html.HiddenFor(m => m.Cart.Proudcts[j].Name);
+                                                    @Html.HiddenFor(m => m.Cart.Proudcts[j].Quantity);
+                                                    @Html.HiddenFor(m => m.Cart.Proudcts[j].Price);
 
                                                 }
-                                    <input type="submit" value="Delete" class="btn btn-primary" style="width:150px;background-color:darkred" />
+                                                <input type="submit" value="Delete" class="btn btn-primary" style="width:150px;background-color:darkred" />
                                             }
-                                </td>
+                                        </td>
                                     }
 
-                            </tr>
+                                </tr>
                             }
 
                         </tbody>
                         @if (User.Identity.Name == Model.NewList.UserId)
                         {
-                        <tfoot>
-                            <tr>
-                                <th colspan="5">Create New Item</th>
-                            </tr>
-                            <tr>
-                                <td colspan="5">
-                                    @using (Html.BeginForm("Add_Update", "OnlineShopping", FormMethod.Post))
+                            <tfoot>
+                                <tr>
+                                    <th colspan="5">Create New Item</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="5">
+                                        @using (Html.BeginForm("Add_Update", "OnlineShopping", FormMethod.Post))
                                         {
-                                    @Html.HiddenFor(m => m.id);
-                                    @Html.Hidden("NewList.NameList", Model.NewList.NameList)
-                                    @Html.HiddenFor(m => m.NewList.Cart_Amount);
-                                    @Html.HiddenFor(m => m.NewList.Id);
-                                    @Html.HiddenFor(m => m.NewList.UserId);
-                                    @for (int j = 0; j < Model.NewList.Proudcts.Count; j++)
+                                            @Html.HiddenFor(m => m.id);
+                                            @Html.Hidden("NewList.NameList", Model.NewList.NameList)
+                                            @Html.HiddenFor(m => m.NewList.Cart_Amount);
+                                            @Html.HiddenFor(m => m.NewList.Id);
+                                            @Html.HiddenFor(m => m.NewList.UserId);
+                                            @for (int j = 0; j < Model.NewList.Proudcts.Count; j++)
                                             {
-                                    @Html.HiddenFor(m => m.NewList.Proudcts[j].Name);
-                                    @Html.HiddenFor(m => m.NewList.Proudcts[j].Quantity);
+                                                @Html.HiddenFor(m => m.NewList.Proudcts[j].Name);
+                                                @Html.HiddenFor(m => m.NewList.Proudcts[j].Quantity);
                                             }
-                                    @Html.HiddenFor(m => m.Cart.NameCart)
-                                    @Html.HiddenFor(m => m.Cart.Id);
-                                    <input id="Cart.Total" name="Cart.Total" type="hidden" value="@Model.Cart.Total" />
-                                    @for (int j = 0; j < Model.Cart.Proudcts.Count; j++)
+                                            @Html.HiddenFor(m => m.Cart.NameCart)
+                                            @Html.HiddenFor(m => m.Cart.Id);
+                                            <input id="Cart.Total" name="Cart.Total" type="hidden" value="@Model.Cart.Total" />
+                                            @for (int j = 0; j < Model.Cart.Proudcts.Count; j++)
                                             {
-                                    @Html.HiddenFor(m => m.Cart.Proudcts[j].Name);
+                                                @Html.HiddenFor(m => m.Cart.Proudcts[j].Name);
 
-                                    @Html.HiddenFor(m => m.Cart.Proudcts[j].Quantity);
-                                    @Html.HiddenFor(m => m.Cart.Proudcts[j].Price);
+                                                @Html.HiddenFor(m => m.Cart.Proudcts[j].Quantity);
+                                                @Html.HiddenFor(m => m.Cart.Proudcts[j].Price);
 
                                             }
 
                                             /*Table*/
-                                    <table class="table">
-                                        <tr>
-                                            <td>
-                                                <input id="_proudct.Name" name="_proudct.Name" type="text" placeholder="Enter Name proudct" style="width:200px" />
-                                            </td>
-                                            <td>
-                                                <input id="_proudct.Quantity" name="_proudct.Quantity" type="number" placeholder="Enter Quantity" min="1" max="100" required="required" style="width:200px" />
-                                            </td>
-                                            <td>
-                                                <input type="submit" value="Add" class="btn btn-primary" style="width:200px" />
-                                            </td>
-                                        </tr>
-                                    </table>
+                                            <table class="table">
+                                                <tr>
+                                                    <td>
+                                                        <input id="_proudct.Name" name="_proudct.Name" type="text" placeholder="Enter Name proudct" style="width:200px" />
+                                                    </td>
+                                                    <td>
+                                                        <input id="_proudct.Quantity" name="_proudct.Quantity" type="number" placeholder="Enter Quantity" min="1" max="100" required="required" style="width:200px" />
+                                                    </td>
+                                                    <td>
+                                                        <input type="submit" value="Add" class="btn btn-primary" style="width:200px" />
+                                                    </td>
+                                                </tr>
+                                            </table>
                                         }
-                                </td>
-                            </tr>
-                        </tfoot>
+                                    </td>
+                                </tr>
+                            </tfoot>
                         }
                     </table>
                 </div>
@@ -368,75 +367,75 @@
                                 <th scope="col">Total</th>
                                 @if (User.Identity.Name == Model.NewList.UserId)
                                 {
-                                <th scope="col">Edit</th>
+                                    <th scope="col">Edit</th>
                                 }
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (Proudct proudct in Model.Cart.Proudcts)
                             {
-                            <tr>
+                                <tr>
 
-                                @*Name*@
-                                <td scope="col">
-                                    @Html.DisplayFor(modelItem => proudct.Name)
-                                </td>
+                                    @*Name*@
+                                    <td scope="col">
+                                        @Html.DisplayFor(modelItem => proudct.Name)
+                                    </td>
 
-                                @*Quantity*@
-                                <td scope="col">
-                                    @Html.DisplayFor(modelItem => proudct.Quantity)
-                                </td>
+                                    @*Quantity*@
+                                    <td scope="col">
+                                        @Html.DisplayFor(modelItem => proudct.Quantity)
+                                    </td>
 
-                                @*Price*@
-                                <td scope="col">
-                                    <script>
+                                    @*Price*@
+                                    <td scope="col">
+                                        <script>
                                         var a = (@proudct.Price) / (@proudct.Quantity);
                                         document.write(a);
-                                    </script>
-                                </td>
+                                        </script>
+                                    </td>
 
-                                @*Total*@
-                                <td scope="col">
-                                    @proudct.Price.ToString("₪#,##0.00")
-                                </td>
+                                    @*Total*@
+                                    <td scope="col">
+                                        @proudct.Price.ToString("₪#,##0.00")
+                                    </td>
 
-                                @if (User.Identity.Name == Model.NewList.UserId)
+                                    @if (User.Identity.Name == Model.NewList.UserId)
                                     {
-                                @*Delete*@
-                                <td>
-                                    @using (Html.BeginForm("Delete_product", "OnlineShopping", FormMethod.Post))
+                                        @*Delete*@
+                                        <td>
+                                            @using (Html.BeginForm("Delete_product", "OnlineShopping", FormMethod.Post))
                                             {
-                                    @Html.HiddenFor(m => m.id);
-                                    <input id="_proudct.Name" name="_proudct.Name" type="hidden" value="@proudct.Name" />
-                                    <input id="_proudct.Price" name="_proudct.Price" type="hidden" value="@proudct.Price" />
-                                    <input id="action" name="action" type="hidden" value="Cart" />
-                                    @Html.Hidden("NewList.NameList", Model.NewList.NameList)
-                                    @Html.HiddenFor(m => m.NewList.Cart_Amount);
-                                    @Html.HiddenFor(m => m.NewList.Id);
-                                    @Html.HiddenFor(m => m.NewList.UserId);
-                                    @for (int j = 0; j < Model.NewList.Proudcts.Count; j++)
+                                                @Html.HiddenFor(m => m.id);
+                                                <input id="_proudct.Name" name="_proudct.Name" type="hidden" value="@proudct.Name" />
+                                                <input id="_proudct.Price" name="_proudct.Price" type="hidden" value="@proudct.Price" />
+                                                <input id="action" name="action" type="hidden" value="Cart" />
+                                                @Html.Hidden("NewList.NameList", Model.NewList.NameList)
+                                                @Html.HiddenFor(m => m.NewList.Cart_Amount);
+                                                @Html.HiddenFor(m => m.NewList.Id);
+                                                @Html.HiddenFor(m => m.NewList.UserId);
+                                                @for (int j = 0; j < Model.NewList.Proudcts.Count; j++)
                                                 {
-                                    @Html.HiddenFor(m => m.NewList.Proudcts[j].Name);
-                                    @Html.HiddenFor(m => m.NewList.Proudcts[j].Quantity);
+                                                    @Html.HiddenFor(m => m.NewList.Proudcts[j].Name);
+                                                    @Html.HiddenFor(m => m.NewList.Proudcts[j].Quantity);
                                                 }
-                                    @Html.HiddenFor(m => m.Cart.NameCart)
-                                    @Html.HiddenFor(m => m.Cart.Id);
-                                    <input id="Cart.Total" name="Cart.Total" type="hidden" value="@Model.Cart.Total" />
+                                                @Html.HiddenFor(m => m.Cart.NameCart)
+                                                @Html.HiddenFor(m => m.Cart.Id);
+                                                <input id="Cart.Total" name="Cart.Total" type="hidden" value="@Model.Cart.Total" />
 
-                                    @for (int j = 0; j < Model.Cart.Proudcts.Count; j++)
+                                                @for (int j = 0; j < Model.Cart.Proudcts.Count; j++)
                                                 {
-                                    @Html.HiddenFor(m => m.Cart.Proudcts[j].Name);
-                                    @Html.HiddenFor(m => m.Cart.Proudcts[j].Quantity);
-                                    @Html.HiddenFor(m => m.Cart.Proudcts[j].Price);
+                                                    @Html.HiddenFor(m => m.Cart.Proudcts[j].Name);
+                                                    @Html.HiddenFor(m => m.Cart.Proudcts[j].Quantity);
+                                                    @Html.HiddenFor(m => m.Cart.Proudcts[j].Price);
 
                                                 }
-                                    <input type="submit" value="Delete" class="btn btn-primary" style="width:150px;background-color:darkred" />
+                                                <input type="submit" value="Delete" class="btn btn-primary" style="width:150px;background-color:darkred" />
                                             }
-                                </td>
+                                        </td>
                                     }
 
 
-                            </tr>
+                                </tr>
                             }
                         </tbody>
                     </table>
@@ -446,42 +445,42 @@
                 @*Save & Update*@
                 <div>
                     @if (User.Identity.Name == Model.NewList.UserId)
-            {
-                    <table>
-                        <tr>
-                            <td>
-                                @using (Html.BeginForm("Save_and_finish", "OnlineShopping", FormMethod.Post))
-                                {
-                                <input id="action" name="action" type="hidden" value="Cart" />
-                                @Html.HiddenFor(m => m.id);
-                                @Html.Hidden("NewList.NameList", Model.NewList.NameList)
-                                @Html.HiddenFor(m => m.NewList.Cart_Amount);
-                                @Html.HiddenFor(m => m.NewList.Id);
-                                @Html.HiddenFor(m => m.NewList.UserId);
-                                @for (int j = 0; j < Model.NewList.Proudcts.Count; j++)
+                    {
+                        <table>
+                            <tr>
+                                <td>
+                                    @using (Html.BeginForm("Save_and_finish", "OnlineShopping", FormMethod.Post))
                                     {
-                                @Html.HiddenFor(m => m.NewList.Proudcts[j].Name);
-                                <input type="hidden" @Html.Raw(string.Format($"id=NewList.Proudcts[{j}].Quantity name= NewList.Proudcts[{j}].Quantity value= {Model.NewList.Proudcts[j].Quantity}")) />
+                                        <input id="action" name="action" type="hidden" value="Cart" />
+                                        @Html.HiddenFor(m => m.id);
+                                        @Html.Hidden("NewList.NameList", Model.NewList.NameList)
+                                        @Html.HiddenFor(m => m.NewList.Cart_Amount);
+                                        @Html.HiddenFor(m => m.NewList.Id);
+                                        @Html.HiddenFor(m => m.NewList.UserId);
+                                        @for (int j = 0; j < Model.NewList.Proudcts.Count; j++)
+                                        {
+                                            @Html.HiddenFor(m => m.NewList.Proudcts[j].Name);
+                                            <input type="hidden" @Html.Raw(string.Format($"id=NewList.Proudcts[{j}].Quantity name= NewList.Proudcts[{j}].Quantity value= {Model.NewList.Proudcts[j].Quantity}")) />
+                                        }
+                                        @Html.HiddenFor(m => m.Cart.NameCart)
+                                        <input id="Cart.Total" name="Cart.Total" type="hidden" value="@Model.Cart.Total" />
+                                        @Html.HiddenFor(m => m.Cart.Id);
+
+                                        @for (int j = 0; j < Model.Cart.Proudcts.Count; j++)
+                                        {
+
+                                            @Html.HiddenFor(m => m.Cart.Proudcts[j].Name);
+                                            @Html.HiddenFor(m => m.Cart.Proudcts[j].Quantity);
+                                            @Html.HiddenFor(m => m.Cart.Proudcts[j].Price);
+                                        }
+                                        <input type="submit" value="Save&finish" class="btn btn-primary" style="width:150px;background-color:darkolivegreen" />
                                     }
-                                @Html.HiddenFor(m => m.Cart.NameCart)
-                                <input id="Cart.Total" name="Cart.Total" type="hidden" value="@Model.Cart.Total" />
-                                @Html.HiddenFor(m => m.Cart.Id);
+                                </td>
+                            </tr>
 
-                                @for (int j = 0; j < Model.Cart.Proudcts.Count; j++)
-                                    {
+                        </table>
 
-                                @Html.HiddenFor(m => m.Cart.Proudcts[j].Name);
-                                @Html.HiddenFor(m => m.Cart.Proudcts[j].Quantity);
-                                @Html.HiddenFor(m => m.Cart.Proudcts[j].Price);
-                                    }
-                                <input type="submit" value="Save&finish" class="btn btn-primary" style="width:150px;background-color:darkolivegreen" />
-                                }
-                            </td>
-                        </tr>
-
-                    </table>
-
-            }
+                    }
 
 
 

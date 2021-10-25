@@ -162,4 +162,4 @@ C:\GitHub\ShopWithMe\obj\Release\net5.0\ShopWithMe.dll
 C:\GitHub\ShopWithMe\obj\Release\net5.0\ref\ShopWithMe.dll
 C:\GitHub\ShopWithMe\obj\Release\net5.0\ShopWithMe.pdb
 C:\GitHub\ShopWithMe\obj\Release\net5.0\ShopWithMe.genruntimeconfig.cache
-C:\GitHub\ShopWithMe\obj\Release\net5.0\ShopWithMe.csprojAssemblyReference.cache
+C:\GitHub\ShopWithMe\obj\Release\net5.0\ShopWithMe.csproj.AssemblyReference.cache

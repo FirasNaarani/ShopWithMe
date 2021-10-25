@@ -71,7 +71,6 @@ namespace ShopWithMe.Controllers
         public async Task<ActionResult> DeleteConfirmedAsync(string id)
         {
             await _cosmosDbService.Delete_Invoice_Async(id);
-            await _cosmosDbService_Shopping.Delete_shoppingOL_Async(id);
             return RedirectToAction("Index");
         }
 
