@@ -17,6 +17,7 @@
             border: 5px double gold;
             width: 100%;
             text-align: center;
+            table-layout: fixed;
         }
 
         th {
@@ -43,15 +44,16 @@
         .item_table {
             background-color: lightgray;
             text-align: center;
-            width: fit-content;
+            width: 100%;
             border: 5px double gold;
-            margin: 0px 20px 20px 20px;
+            margin: 10px;
+            padding: 20px;
         }
     </style>
 </head>
 
 <body style="background-image: url(https://smallaxepeppers.com/wp-content/uploads/2019/05/Fresh-farmers-market-fruit-and-vegetable-from-above-with-copy-space-e1432779252529.jpg)">
-    <div style="opacity:90%;background-color:darkgrey;width:fit-content">
+    <div style="opacity:90%;background-color:darkgrey;">
         <center>
 
             @*Title*@
@@ -61,7 +63,7 @@
             </div>
 
             @*Table 1*@
-            <div style="width:fit-content">
+            <div style="width:contain">
                 <table class="table_List">
                     <thead>
                         <tr>
@@ -119,7 +121,7 @@
                                             @for (int i = 0, c = 0; i < Model.Favorites.Count;)
                                             {
                                                 <tr>
-                                                    @while (c < 3)
+                                                    @while (c <= 2)
                                                     {
                                                         <td>
                                                             <div class="div">
@@ -200,13 +202,13 @@
             </div>
 
             @*Table 2*@
-            <div style="width:fit-content">
+            <div style="width:contain">
                 <table>
                     <tbody>
                         <tr>
                             @*Add New Item*@
-                            <td width="50%">
-                                <table class="table_List">
+                            <td style="width:50%">
+                                <table style="width:contain">
                                     <tbody>
                                         <tr>
                                             <td>
@@ -230,7 +232,7 @@
                                                         @Html.HiddenFor(m => m.newList.Proudcts[j].Quantity);
                                                     }
                                                     /*Table*/
-                                                    <table>
+                                                    <table class="table_List">
                                                         <thead>
                                                             <tr>
                                                                 <th colspan="2">
@@ -260,8 +262,8 @@
                             </td>
 
                             @*Last Step*@
-                            <td width="50%">
-                                <table class="table_List">
+                            <td style="width:50%">
+                                <table style="width:contain">
                                     <tbody>
                                         <tr>
                                             <td>
@@ -282,7 +284,7 @@
                                                     }
 
                                                     /*Table*/
-                                                    <table>
+                                                    <table class="table_List">
                                                         <thead>
                                                             <tr>
                                                                 <th colspan="2">
@@ -290,10 +292,10 @@
                                                                 </th>
                                                             </tr>
                                                             <tr>
-                                                                <td>
+                                                                <td width="50%">
                                                                     @Html.TextBoxFor(m => m.newList.NameList, new { @type = "text", @placeholder = "Enter Name List", @required = "required" })
                                                                 </td>
-                                                                <td>
+                                                                <td width="50%">
                                                                     @Html.TextBoxFor(m => m.newList.Cart_Amount, new { @type = "number", @placeholder = "Enter Cart Amount", @required = "required" })
                                                                 </td>
                                                             </tr>
