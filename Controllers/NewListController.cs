@@ -126,6 +126,7 @@ namespace ShopWithMe.Controllers
         public IActionResult Delete_product(ContainerDataNewList container)
         {
             container.newList.Proudcts.Remove(container.newList.Proudcts.Find(r => r.Name == container._proudct.Name));
+            
             return View(container.Page_type, container);
         }
 
