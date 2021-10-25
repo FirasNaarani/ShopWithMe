@@ -148,7 +148,6 @@ C:\GitHub\ShopWithMe\obj\Release\net5.0\Razor\Views\NewList\CreateNewlist.cshtml
 C:\GitHub\ShopWithMe\obj\Release\net5.0\Razor\Views\NewList\Delete.cshtml.g.cs
 C:\GitHub\ShopWithMe\obj\Release\net5.0\Razor\Views\NewList\Edit.cshtml.g.cs
 C:\GitHub\ShopWithMe\obj\Release\net5.0\Razor\Views\NewList\Index.cshtml.g.cs
-C:\GitHub\ShopWithMe\obj\Release\net5.0\Razor\Views\OnlineShopping\Frame.cshtml.g.cs
 C:\GitHub\ShopWithMe\obj\Release\net5.0\Razor\Views\OnlineShopping\Shopping.cshtml.g.cs
 C:\GitHub\ShopWithMe\obj\Release\net5.0\Razor\Views\Shared\Error.cshtml.g.cs
 C:\GitHub\ShopWithMe\obj\Release\net5.0\Razor\Views\Shared\_Layout.cshtml.g.cs

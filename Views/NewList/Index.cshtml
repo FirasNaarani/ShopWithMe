@@ -6,6 +6,13 @@
 }
 <head>
     <style>
+        body {
+            background-image: url(https://smallaxepeppers.com/wp-content/uploads/2019/05/Fresh-farmers-market-fruit-and-vegetable-from-above-with-copy-space-e1432779252529.jpg);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
         h1 {
             text-shadow: 2px 2px 5px gold;
             font-family: Garamond, serif;
@@ -13,9 +20,7 @@
 
         .div {
             width: 200px;
-            height:auto;
             opacity: 60%;
-            margin: 10px 10px 10px 10px;
         }
 
             .div:hover {
@@ -44,16 +49,18 @@
             text-align: center;
             width: 100%;
             border: 5px double gold;
+            margin: 10px;
+            padding: 20px;
         }
 
-        .table {
+ /*       .table {
             width: 100%;
             display: flex;
             justify-content: space-around;
-        }
+        }*/
     </style>
 </head>
-<body style="background-image: url(https://smallaxepeppers.com/wp-content/uploads/2019/05/Fresh-farmers-market-fruit-and-vegetable-from-above-with-copy-space-e1432779252529.jpg)">
+<body>
     <div style="opacity:90%;background-color:darkgrey">
         <center>
 
@@ -74,7 +81,7 @@
                         @for (int i = 0, j = 0; i < Model.ToArray().Length;)
                         {
                             <tr>
-                                @while (j <= 2)
+                                @while (j <= 1)
                                 {
                                     <td>
                                         <div class="div">
@@ -92,7 +99,7 @@
                                     @if (i >= Model.ToArray().Length)
                                         break;
                                 }
-                                @if (j > 2)
+                                @if (j > 1)
                                 {
                                     j = 0;
                                 }

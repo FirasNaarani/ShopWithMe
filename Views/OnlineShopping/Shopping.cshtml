@@ -10,6 +10,21 @@
 
 <head>
     <style>
+        body {
+            background-image: url(https://smallaxepeppers.com/wp-content/uploads/2019/05/Fresh-farmers-market-fruit-and-vegetable-from-above-with-copy-space-e1432779252529.jpg);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .table_List {
+            border: 5px double gold;
+            overflow: auto;
+            width: 100%;
+            text-align: center;
+            table-layout: fixed;
+        }
+
         h1 {
             text-shadow: 2px 2px 5px gold;
             font-family: Garamond, serif;
@@ -65,6 +80,12 @@
         tr:hover {
             background-color: #f2f2f2;
         }
+
+        .tbody_scroll {
+            height: 50px; /* Just for the demo          */
+            overflow-y: auto; /* Trigger vertical scroll    */
+            /*overflow-x: hidden;*/ /* Hide the horizontal scroll */
+        }
     </style>
 
     @*<meta http-equiv="Refresh" content="10">
@@ -87,8 +108,8 @@
 
 </head>
 
-<body style="background-image: url(https://smallaxepeppers.com/wp-content/uploads/2019/05/Fresh-farmers-market-fruit-and-vegetable-from-above-with-copy-space-e1432779252529.jpg)">
-    <div style="opacity:90%;background-color:darkgrey;width:contain">
+<body>
+    <div style="opacity:90%;background-color:darkgrey;">
         <center>
 
             @*Title*@
@@ -155,7 +176,7 @@
                 </div>
 
                 @*Items Table*@
-                <div style="width:fit-content">
+                <div style="width:contain">
                     <table class="table">
                         <thead>
                             <tr>
@@ -172,7 +193,7 @@
                         </thead>
 
                         @*Scroll REQURE*@
-                        <tbody style="width: 100%; height: 150px; overflow: scroll;">
+                        <tbody class="tbody_scroll">
                             @foreach (Proudct proudct in products)
                             {
                                 <tr>
@@ -195,10 +216,10 @@
                                             <table>
                                                 <tr>
                                                     <td>
-                                                        <input id="_proudct.Quantity" name="_proudct.Quantity" type="number" placeholder="Enter Quantity" min="1" max="@proudct.Quantity" required="required" style="width:200px" />
+                                                        <input id="_proudct.Quantity" name="_proudct.Quantity" type="number" placeholder="Enter Quantity" min="1" max="@proudct.Quantity" required="required" style="width:150px" />
                                                     </td>
                                                     <td>
-                                                        <input id="_proudct.Price" name="_proudct.Price" type="number" placeholder="Enter Price" min="1" max="100" required="required" style="width:200px" />
+                                                        <input id="_proudct.Price" name="_proudct.Price" type="number" placeholder="Enter Price" min="1" max="100" required="required" style="width:150px" />
                                                     </td>
                                                     <td>
                                                         <input type="submit" value="Add to Cart" class="btn btn-primary" />
@@ -208,9 +229,9 @@
 
                                             @Html.Hidden("NewList.NameList", Model.NewList.NameList)
                                             @Html.HiddenFor(m => m.NewList.Cart_Amount);
-                                            @Html.HiddenFor(m => m.NewList.Id);
+                                            Html.Hidden("NewList.Id", Model.NewList.Id);
+                                            @*@Html.HiddenFor(m => m.NewList.Id);*@
                                             @Html.HiddenFor(m => m.NewList.UserId);
-
 
                                             @for (int j = 0; j < Model.NewList.Proudcts.Count; j++)
                                             {
