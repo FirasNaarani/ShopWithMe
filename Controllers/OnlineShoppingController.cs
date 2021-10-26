@@ -75,6 +75,7 @@ namespace ShopWithMe.Controllers
                     container.Cart.Proudcts[i].Price += (container._proudct.Quantity * container._proudct.Price);
 
                     container.Cart.Total += (container._proudct.Quantity * container._proudct.Price);
+                    await cosmosDbService_Shopping.Update_shoppingOL_Async(container.id, container);
                     await _hubContext.Clients.All.SendAsync("ShoppingListUpdated");
                     return RedirectToAction("Shopping", new { id = container.id }); ;
                 }
