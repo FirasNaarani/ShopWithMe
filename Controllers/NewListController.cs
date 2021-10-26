@@ -141,7 +141,7 @@ namespace ShopWithMe.Controllers
                 {
                     if (item.Name.ToLower().Equals(container._proudct.Name.ToLower()))
                     {
-                        item.Quantity = container._proudct.Quantity;
+                        item.Quantity += container._proudct.Quantity;
                         return View(container.Page_type, container);
                     }
                 }

@@ -238,6 +238,7 @@
                                                         @Html.HiddenFor(m => m.Favorites[j].Type);
                                                     }
                                                     @Html.Hidden("Page_type", Model.Page_type);
+                                                    @Html.Hidden("newList.NameList", Model.newList.NameList)
                                                     @Html.HiddenFor(m => m.newList.Cart_Amount);
                                                     @Html.HiddenFor(m => m.newList.Id);
                                                     @Html.HiddenFor(m => m.newList.UserId);
