@@ -88,7 +88,8 @@
         }
     </style>
 
-    <meta http-equiv="refresh" content="15; url=@Model.CartUrl" />
+
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
 
     @*Email Sender Function*@
     <script>
@@ -103,6 +104,9 @@
 </head>
 
 <body>
+    <meta http-equiv="refresh" content="15; url=@Model.CartUrl" />
+
+    <input type="hidden" value="@Model.id" id="cart-id" />
     <div style="opacity:90%;background-color:darkgrey;">
         <center>
 
@@ -140,20 +144,6 @@
                             <input type="hidden" @Html.Raw(string.Format($"id=NewList.Proudcts[{j}].Quantity name= NewList.Proudcts[{j}].Quantity value= {Model.NewList.Proudcts[j].Quantity}")) />
                         }
                     }
-                    @*<script type="text/javascript">
-                            $(document).ready(function () {
-                                $(document).on('click', '.Sender', function () {
-                                    $.ajax({
-                                        url: 'get_table.php',
-                                        method: "Post",
-                                        dataType: 'json',
-                                        success: function (response) {
-                                            $('#table-to-refresh').html(response);
-                                        }
-                                    });
-                                });
-                            });
-                        </script>*@
                 }
             </div>
 
@@ -192,7 +182,10 @@
                             {
                                 <tr>
                                     <td scope="col">
-                                        <input type="checkbox">
+                                        @if (proudct.Quantity is 0)
+                                        {
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Check_green_icon.svg/1200px-Check_green_icon.svg.png" alt="Checked" style="width:30px; height:30px">
+                                        }
                                     </td>
                                     <td scope="col">
                                         @Html.DisplayFor(modelItem => proudct.Name)
@@ -326,7 +319,7 @@
                                                         <input id="_proudct.Quantity" name="_proudct.Quantity" type="number" placeholder="Enter Quantity" min="1" max="100" required="required" style="width:200px" />
                                                     </td>
                                                     <td>
-                                                        <input type="submit" value="Add" class="btn btn-primary" style="width:200px" />
+                                                        <input type="submit" value="Add/Update" class="btn btn-primary" style="width:200px" />
                                                     </td>
                                                 </tr>
                                             </table>
@@ -402,6 +395,8 @@
                                                 @Html.HiddenFor(m => m.id);
                                                 <input id="_proudct.Name" name="_proudct.Name" type="hidden" value="@proudct.Name" />
                                                 <input id="_proudct.Price" name="_proudct.Price" type="hidden" value="@proudct.Price" />
+                                                <input id="_proudct.Quantity" name="_proudct.Quantity" type="hidden" value="@proudct.Quantity" />
+
                                                 <input id="action" name="action" type="hidden" value="Cart" />
                                                 @Html.Hidden("NewList.NameList", Model.NewList.NameList)
                                                 @Html.HiddenFor(m => m.NewList.Cart_Amount);
@@ -491,22 +486,5 @@
         </center>
     </div>
 
-    <input type="hidden" value="@Model.id" id="cart-id" />
-    <script src="~/js/signalr/dist/browser/signalr.js"></script>
-    <script>
 
-        var connection = new signalR.HubConnectionBuilder().withUrl("/shopping").build();
-        connection.start().then(function () {
-        }).catch(function (err) {
-            return console.error(err.toString());
-        });
-
-        var cartId = document.querySelector("#cart-id").value;
-        connection.on("UserConnected", function (connectionId) {
-            connection.invoke("AddToGroup", cartId, connectionId);
-            console.log("User with the connection id of" + connectionId + " has been added to group " + cartId);
-
-        });
-
-    </script>
 </body>

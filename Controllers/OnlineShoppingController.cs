@@ -75,16 +75,15 @@ namespace ShopWithMe.Controllers
                     container.Cart.Proudcts[i].Price += (container._proudct.Quantity * container._proudct.Price);
 
                     container.Cart.Total += (container._proudct.Quantity * container._proudct.Price);
+                    await _hubContext.Clients.All.SendAsync("ShoppingListUpdated");
                     return RedirectToAction("Shopping", new { id = container.id }); ;
                 }
             }
             container._proudct.Price = (container._proudct.Quantity * container._proudct.Price);
             container.Cart.Proudcts.Add(container._proudct);
             container.Cart.Total += container._proudct.Price;
-            //var opt = new JsonSerializerOptions() { WriteIndented = true };
-            //var strJson = JsonSerializer.Serialize<shoppingOL>(container, opt);
             await cosmosDbService_Shopping.Update_shoppingOL_Async(container.id, container);
-            await _hubContext.Clients.All.SendAsync("ShoppingListUpdated", container);
+            await _hubContext.Clients.All.SendAsync("ShoppingListUpdated");
             return RedirectToAction("Shopping", new { id = container.id });
         }
 
@@ -99,13 +98,16 @@ namespace ShopWithMe.Controllers
             else
             {
                 Proudct proudct2 = container.NewList.Proudcts.Find(r => r.Name == container._proudct.Name);
-                proudct2.Quantity += container._proudct.Quantity;
+                if (proudct2 is not null)
+                {
+                    proudct2.Quantity += container._proudct.Quantity;
+                }
                 container.Cart.Total -= container._proudct.Price;
                 container.Cart.Proudcts.Remove(container.Cart.Proudcts.Find(r => r.Name == container._proudct.Name));
 
             }
             await cosmosDbService_Shopping.Update_shoppingOL_Async(container.id, container);
-
+            await _hubContext.Clients.All.SendAsync("ShoppingListUpdated");
             return RedirectToAction("Shopping", new { id = container.id }); ;
         }
 
@@ -121,13 +123,15 @@ namespace ShopWithMe.Controllers
                     if (item.Name.ToLower().Equals(container._proudct.Name.ToLower()))
                     {
                         item.Quantity = container._proudct.Quantity;
+                        await cosmosDbService_Shopping.Update_shoppingOL_Async(container.id, container);
+                        await _hubContext.Clients.All.SendAsync("ShoppingListUpdated");
                         return RedirectToAction("Shopping", new { id = container.id }); ;
                     }
                 }
             }
             container.NewList.Proudcts.Add(container._proudct);
             await cosmosDbService_Shopping.Update_shoppingOL_Async(container.id, container);
-
+            await _hubContext.Clients.All.SendAsync("ShoppingListUpdated");
             return RedirectToAction("Shopping", new { id = container.id }); ;
         }
 

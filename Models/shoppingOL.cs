@@ -29,6 +29,7 @@ namespace ShopWithMe.Models
             this.Cart = new();
             Cart.Proudcts = new();
             this.NewList = new();
+            this.NewList.Proudcts = new();
             _proudct = new();
         }
 
