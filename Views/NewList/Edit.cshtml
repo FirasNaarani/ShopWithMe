@@ -93,7 +93,7 @@
                                         {
 
                                         <li class="list-group-item" style="font-family: Garamond, serif; text-shadow: 2px 2px 5px gold; font-size: large;">
-                                            @Html.DisplayFor(modelItem => product.Name) @Html.DisplayFor(modelItem => product.Quantity)
+                                            @Html.DisplayFor(modelItem => product.Name) - '@Html.DisplayFor(modelItem => product.Quantity)'
 
                                             @using (Html.BeginForm("Delete_product", "NewList", FormMethod.Post))
                                             {
